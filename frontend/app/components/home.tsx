@@ -1,8 +1,9 @@
 'use client'
 import {useState, useRef,useEffect} from 'react'
 import cn from 'classnames'
+import type {AllProjectsQueryResult} from '@/sanity.types'
  
-export default function Home() {
+export default function Home({projects}: {projects: AllProjectsQueryResult}) {
  
   const [mode ,setMode] = useState('row')
   const [slots, setSlots]= useState(1)
@@ -27,7 +28,12 @@ export default function Home() {
         {Array.from({length:slots}).map((_, i) => (
           <Slot key={i} index={i} length={slots} setMode={setMode} setActive={setActive} active={active} mode={mode}>
               { i < 1 ? (
-                <HomeContent slots={slots} setSlots={setSlots} setActive={setActive} index={i} />
+                <HomeContent
+                  slots={slots}
+                  setSlots={setSlots}
+                  setActive={setActive}
+                  projects={projects}
+                />
               ):(
                 <ProjectContent mode={mode} setMode={setMode} setSlots={setSlots} index={i}/> 
               )}
@@ -153,7 +159,17 @@ function Slot({children, index,length,setMode,setActive,active,mode }:{children:
 } 
 
 
-function HomeContent({setSlots, setActive, index,slots}:{ slots:any, setSlots:any, setActive:any, index:any}){
+function HomeContent({
+  setSlots,
+  setActive,
+  slots,
+  projects,
+}: {
+  slots: number
+  setSlots: any
+  setActive: any
+  projects: AllProjectsQueryResult
+}){
 
 
 
@@ -204,21 +220,24 @@ function HomeContent({setSlots, setActive, index,slots}:{ slots:any, setSlots:an
         <h3 className='font-sans text-2xl mb-4'> Projects </h3>
 
         <ul className='border-t mb-8'> 
-        {Array.from({length:10}).map((_,i)=>(
-
-          <li key={i}  onClick={()=> handleClick(i)}  className='flex cursor-pointer hover:bg-blue-500/10 border-b '>
+        {projects.map((project, i)=>(
+          <li
+            key={project._id ?? i}
+            onClick={()=> handleClick(i)}
+            className='flex cursor-pointer hover:bg-blue-500/10 border-b '
+          >
 
             <div className='border-r w-13 w-4'> 
-                <p> {index} </p>
+                <p> {i + 1} </p>
             </div>
             <div className='px-2 border-r w-full '> 
-              <p> Project Title </p>
+              <p> {project.title ?? 'Untitled'} </p>
             </div>
             <div className='px-2 border-r w-full '> 
-              <p> Website, Brand </p>
+              <p> {project.excerpt ?? 'Website, Brand'} </p>
             </div>
             <div className='px-2 w-10 '> 
-              <p> 2024 </p>
+              <p> {project.date ? new Date(project.date).getFullYear() : '—'} </p>
             </div>
 
           </li>
@@ -361,4 +380,3 @@ function ProjectContent({mode, setMode, setSlots, index}:{mode:any, setMode:any,
       </div>
   )
 }
-

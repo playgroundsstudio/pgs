@@ -20,7 +20,7 @@ console.log(projects)
 
   return (
     <>
-      <Home/>
+      <Home projects={projects} />
     </>
   )
 }
