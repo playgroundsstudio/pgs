@@ -9,7 +9,7 @@ import {headers} from 'next/headers'
  */
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const allPostsAndPages = await sanityFetch({
+  const allProjectsAndPages = await sanityFetch({
     query: sitemapData,
   })
   const headersList = await headers()
@@ -22,7 +22,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: 'monthly',
   })
 
-  if (allPostsAndPages != null && allPostsAndPages.data.length != 0) {
+  if (allProjectsAndPages != null && allProjectsAndPages.data.length != 0) {
     let priority: number
     let changeFrequency:
       | 'monthly'
@@ -35,17 +35,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       | undefined
     let url: string
 
-    for (const p of allPostsAndPages.data) {
+    for (const p of allProjectsAndPages.data) {
       switch (p._type) {
         case 'page':
           priority = 0.8
           changeFrequency = 'monthly'
           url = `${domain}/${p.slug}`
           break
-        case 'post':
+        case 'project':
           priority = 0.5
           changeFrequency = 'never'
-          url = `${domain}/posts/${p.slug}`
+          url = `${domain}/projects/${p.slug}`
           break
       }
       sitemap.push({

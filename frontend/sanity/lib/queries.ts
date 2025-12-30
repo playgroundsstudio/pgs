@@ -2,7 +2,7 @@ import {defineQuery} from 'next-sanity'
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
 
-const postFields = /* groq */ `
+const projectFields = /* groq */ `
   _id,
   "status": select(_originalId in path("drafts.**") => "draft", "published"),
   "title": coalesce(title, "Untitled"),
@@ -16,7 +16,7 @@ const postFields = /* groq */ `
 const linkReference = /* groq */ `
   _type == "link" => {
     "page": page->slug.current,
-    "post": post->slug.current
+    "project": project->slug.current
   }
 `
 
@@ -58,27 +58,27 @@ export const getPageQuery = defineQuery(`
 `)
 
 export const sitemapData = defineQuery(`
-  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {
+  *[_type == "page" || _type == "project" && defined(slug.current)] | order(_type asc) {
     "slug": slug.current,
     _type,
     _updatedAt,
   }
 `)
 
-export const allPostsQuery = defineQuery(`
-  *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) {
-    ${postFields}
+export const allProjectsQuery = defineQuery(`
+  *[_type == "project" && defined(slug.current)] | order(date desc, _updatedAt desc) {
+    ${projectFields}
   }
 `)
 
-export const morePostsQuery = defineQuery(`
-  *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {
-    ${postFields}
+export const moreProjectsQuery = defineQuery(`
+  *[_type == "project" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {
+    ${projectFields}
   }
 `)
 
-export const postQuery = defineQuery(`
-  *[_type == "post" && slug.current == $slug] [0] {
+export const projectQuery = defineQuery(`
+  *[_type == "project" && slug.current == $slug] [0] {
     content[]{
     ...,
     markDefs[]{
@@ -86,12 +86,12 @@ export const postQuery = defineQuery(`
       ${linkReference}
     }
   },
-    ${postFields}
+    ${projectFields}
   }
 `)
 
-export const postPagesSlugs = defineQuery(`
-  *[_type == "post" && defined(slug.current)]
+export const projectPagesSlugs = defineQuery(`
+  *[_type == "project" && defined(slug.current)]
   {"slug": slug.current}
 `)
 

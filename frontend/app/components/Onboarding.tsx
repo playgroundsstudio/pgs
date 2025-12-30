@@ -102,14 +102,14 @@ export default function Onboarding() {
       </svg>
       <OnboardingMessage
         message={{
-          title: 'No posts yet',
-          description: 'Get started by creating a new post.',
+          title: 'No projects yet',
+          description: 'Get started by creating a new project.',
         }}
         link={{
-          title: 'Create Post',
-          href: `${studioUrl}/structure/intent/create/template=post;type=post;path=title`,
+          title: 'Create Project',
+          href: `${studioUrl}/structure/intent/create/template=project;type=project;path=title`,
         }}
-        type="post"
+        type="project"
         path="title"
       />
     </div>

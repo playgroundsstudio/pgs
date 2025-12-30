@@ -2,23 +2,23 @@ import Link from 'next/link'
 
 import {studioUrl} from '@/sanity/lib/api'
 import {sanityFetch} from '@/sanity/lib/live'
-import {morePostsQuery, allPostsQuery} from '@/sanity/lib/queries'
-import {Post as PostType, AllPostsQueryResult} from '@/sanity.types'
+import {moreProjectsQuery, allProjectsQuery} from '@/sanity/lib/queries'
+import {Project as ProjectType, AllProjectsQueryResult} from '@/sanity.types'
 import DateComponent from '@/app/components/Date'
 import OnBoarding from '@/app/components/Onboarding'
 import Avatar from '@/app/components/Avatar'
 import {dataAttr} from '@/sanity/lib/utils'
 
-const Post = ({post}: {post: AllPostsQueryResult[number]}) => {
-  const {_id, title, slug, excerpt, date, author} = post
+const Project = ({project}: {project: AllProjectsQueryResult[number]}) => {
+  const {_id, title, slug, excerpt, date, author} = project
 
   return (
     <article
-      data-sanity={dataAttr({id: _id, type: 'post', path: 'title'}).toString()}
+      data-sanity={dataAttr({id: _id, type: 'project', path: 'title'}).toString()}
       key={_id}
       className="border border-gray-200 rounded-sm p-6 bg-gray-50 flex flex-col justify-between transition-colors hover:bg-white relative"
     >
-      <Link className="hover:text-brand underline transition-colors" href={`/posts/${slug}`}>
+      <Link className="hover:text-brand underline transition-colors" href={`/projects/${slug}`}>
         <span className="absolute inset-0 z-10" />
       </Link>
       <div>
@@ -40,7 +40,7 @@ const Post = ({post}: {post: AllPostsQueryResult[number]}) => {
   )
 }
 
-const Posts = ({
+const Projects = ({
   children,
   heading,
   subHeading,
@@ -56,9 +56,9 @@ const Posts = ({
   </div>
 )
 
-export const MorePosts = async ({skip, limit}: {skip: string; limit: number}) => {
+export const MoreProjects = async ({skip, limit}: {skip: string; limit: number}) => {
   const {data} = await sanityFetch({
-    query: morePostsQuery,
+    query: moreProjectsQuery,
     params: {skip, limit},
   })
 
@@ -67,29 +67,29 @@ export const MorePosts = async ({skip, limit}: {skip: string; limit: number}) =>
   }
 
   return (
-    <Posts heading={`Recent Posts (${data?.length})`}>
-      {data?.map((post: any) => (
-        <Post key={post._id} post={post} />
+    <Projects heading={`Recent Projects (${data?.length})`}>
+      {data?.map((project: any) => (
+        <Project key={project._id} project={project} />
       ))}
-    </Posts>
+    </Projects>
   )
 }
 
-export const AllPosts = async () => {
-  const {data} = await sanityFetch({query: allPostsQuery})
+export const AllProjects = async () => {
+  const {data} = await sanityFetch({query: allProjectsQuery})
 
   if (!data || data.length === 0) {
     return <OnBoarding />
   }
 
   return (
-    <Posts
-      heading="Recent Posts"
-      subHeading={`${data.length === 1 ? 'This blog post is' : `These ${data.length} blog posts are`} populated from your Sanity Studio.`}
+    <Projects
+      heading="Recent Projects"
+      subHeading={`${data.length === 1 ? 'This blog project is' : `These ${data.length} blog projects are`} populated from your Sanity Studio.`}
     >
-      {data.map((post: any) => (
-        <Post key={post._id} post={post} />
+      {data.map((project: any) => (
+        <Project key={project._id} project={project} />
       ))}
-    </Posts>
+    </Projects>
   )
 }

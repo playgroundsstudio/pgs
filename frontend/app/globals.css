@@ -41,5 +41,15 @@
   --color-gray-900: #1b1d27;
   --color-gray-950: #13141b;
 
+   --color-stroke-one: #eeeef1;
+
+  --color-activeslot:#0053ff;
+  --color-hoverslot:#cdea14;
+
+
+  --font-display: 'Inter', 'sans-serif';
+  --font-sans: 'Inter', 'sans-serif';
+
+
   --default-transition-duration: 250ms;
 }

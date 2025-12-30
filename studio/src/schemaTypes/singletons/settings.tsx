@@ -52,7 +52,7 @@ export const settings = defineType({
                       list: [
                         {title: 'URL', value: 'href'},
                         {title: 'Page', value: 'page'},
-                        {title: 'Post', value: 'post'},
+                        {title: 'Project', value: 'project'},
                       ],
                       layout: 'radio',
                     },
@@ -85,15 +85,15 @@ export const settings = defineType({
                       }),
                   }),
                   defineField({
-                    name: 'post',
-                    title: 'Post',
+                    name: 'project',
+                    title: 'Project',
                     type: 'reference',
-                    to: [{type: 'post'}],
-                    hidden: ({parent}) => parent?.linkType !== 'post',
+                    to: [{type: 'project'}],
+                    hidden: ({parent}) => parent?.linkType !== 'project',
                     validation: (Rule) =>
                       Rule.custom((value, context: any) => {
-                        if (context.parent?.linkType === 'post' && !value) {
-                          return 'Post reference is required when Link Type is Post'
+                        if (context.parent?.linkType === 'project' && !value) {
+                          return 'Project reference is required when Link Type is Project'
                         }
                         return true
                       }),

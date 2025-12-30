@@ -1,6 +1,6 @@
 import {person} from './documents/person'
 import {page} from './documents/page'
-import {post} from './documents/post'
+import {project} from './documents/project'
 import {callToAction} from './objects/callToAction'
 import {infoSection} from './objects/infoSection'
 import {settings} from './singletons/settings'
@@ -16,7 +16,7 @@ export const schemaTypes = [
   settings,
   // Documents
   page,
-  post,
+  project,
   person,
   // Objects
   button,
