@@ -151,7 +151,7 @@ export const project = defineType({
     select: {
       title: 'title',
       year: 'year',
-      media: 'coverImage',
+      media: 'logo',
     },
     prepare({title, media, year}) {
       return {title, media, subtitle: year ? String(year) : undefined}

@@ -43,7 +43,7 @@
 
    --color-stroke-one: #eeeef1;
 
-  --color-activeslot:#0053ff;
+  --color-activeslot:rgba(0,0,0,0.2);
   --color-hoverslot:#cdea14;
 
 
@@ -52,4 +52,16 @@
 
 
   --default-transition-duration: 250ms;
+}
+
+@layer base {
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  *::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }
