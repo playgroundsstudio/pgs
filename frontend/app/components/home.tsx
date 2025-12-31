@@ -14,6 +14,12 @@ export default function Home({
   projects: AllProjectsQueryResult
   settings: SettingsQueryResult
 }) {
+  type LogoImage = {
+    asset?: { _ref?: string }
+    alt?: string
+    hotspot?: { x: number; y: number }
+    crop?: { top: number; bottom: number; left: number; right: number }
+  }
  
   const scrollRef = useRef<HTMLDivElement>(null)
   const [mode ,setMode] = useState('row')
@@ -154,6 +160,9 @@ function Tab({
 }){
   
   const ref= useRef<HTMLDivElement>(null)
+  const settingsLogo = (settings as {logo?: LogoImage})?.logo
+  const projectLogo = (project as {logo?: LogoImage})?.logo
+  const projectFallbackImage = project?.coverImage
 
   useEffect(() => {
     const el = document.querySelector(
@@ -178,27 +187,38 @@ function Tab({
              active === index ? "border-activeslot":"  hover:border-hoverslot "
 
       )}>
-      {index === 0 && settings?.ogImage?.asset?._ref ? (
+      {index === 0 && settingsLogo?.asset?._ref ? (
         <Image
-          id={settings.ogImage.asset._ref}
-          alt={settings.ogImage?.alt || 'Site image'}
+          id={settingsLogo.asset._ref}
+          alt={settingsLogo?.alt || 'Site logo'}
           className='h-full w-full rounded-full'
           width={80}
           height={80}
           mode='contain'
-          hotspot={settings.ogImage.hotspot}
-          crop={settings.ogImage.crop}
+          hotspot={settingsLogo.hotspot}
+          crop={settingsLogo.crop}
         />
-      ) : project?.coverImage?.asset?._ref ? (
+      ) : projectLogo?.asset?._ref ? (
         <Image
-          id={project.coverImage.asset._ref}
-          alt={project.coverImage?.alt || project.title || ''}
+          id={projectLogo.asset._ref}
+          alt={projectLogo?.alt || project?.title || ''}
           className='h-full w-full rounded-full'
           width={80}
           height={80}
           mode='contain'
-          hotspot={project.coverImage.hotspot}
-          crop={project.coverImage.crop}
+          hotspot={projectLogo.hotspot}
+          crop={projectLogo.crop}
+        />
+      ) : projectFallbackImage?.asset?._ref ? (
+        <Image
+          id={projectFallbackImage.asset._ref}
+          alt={projectFallbackImage?.alt || project?.title || ''}
+          className='h-full w-full rounded-full'
+          width={80}
+          height={80}
+          mode='contain'
+          hotspot={projectFallbackImage.hotspot}
+          crop={projectFallbackImage.crop}
         />
       ) : (
         <p>{index}</p>
