@@ -9,7 +9,7 @@ import DateComponent from '@/app/components/Date'
 type ProjectContentProps = {
   mode: string
   setMode: (mode: string) => void
-  setActive: (index: number) => void
+  setActive: Dispatch<SetStateAction<number>>
   openProjectIds: string[]
   setOpenProjectIds: Dispatch<SetStateAction<string[]>>
   project: AllProjectsQueryResult[number] | undefined
@@ -27,6 +27,17 @@ export default function ProjectContent({
   index,
   isActive,
 }: ProjectContentProps) {
+  type GalleryItem = {
+    _key?: string
+    asset?: { _ref?: string }
+    alt?: string
+    hotspot?: { x: number; y: number }
+    crop?: { top: number; bottom: number; left: number; right: number }
+  }
+  const galleryItems: GalleryItem[] = Array.isArray(project?.gallery)
+    ? (project?.gallery as GalleryItem[])
+    : []
+
   const handleClickMode = () => {
     if (mode == 'row') {
       setMode('col')
@@ -87,9 +98,9 @@ export default function ProjectContent({
                 </div>
               )}
             </div>
-            {project.gallery?.length ? (
+            {galleryItems.length ? (
               <div className='flex flex-col gap-4'>
-                {project.gallery.map((image, imageIndex) => {
+                {galleryItems.map((image, imageIndex) => {
                   if (!image?.asset?._ref) {
                     return null
                   }

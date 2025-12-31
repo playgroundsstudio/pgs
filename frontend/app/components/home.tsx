@@ -178,27 +178,27 @@ function Tab({
              active === index ? "border-activeslot":"  hover:border-hoverslot "
 
       )}>
-      {index === 0 && settings?.logo?.asset?._ref ? (
+      {index === 0 && settings?.ogImage?.asset?._ref ? (
         <Image
-          id={settings.logo.asset._ref}
-          alt={settings.logo?.alt || 'Site logo'}
+          id={settings.ogImage.asset._ref}
+          alt={settings.ogImage?.alt || 'Site image'}
           className='h-full w-full rounded-full'
           width={80}
           height={80}
           mode='contain'
-          hotspot={settings.logo.hotspot}
-          crop={settings.logo.crop}
+          hotspot={settings.ogImage.hotspot}
+          crop={settings.ogImage.crop}
         />
-      ) : project?.logo?.asset?._ref ? (
+      ) : project?.coverImage?.asset?._ref ? (
         <Image
-          id={project.logo.asset._ref}
-          alt={project.logo?.alt || project.title || ''}
+          id={project.coverImage.asset._ref}
+          alt={project.coverImage?.alt || project.title || ''}
           className='h-full w-full rounded-full'
           width={80}
           height={80}
           mode='contain'
-          hotspot={project.logo.hotspot}
-          crop={project.logo.crop}
+          hotspot={project.coverImage.hotspot}
+          crop={project.coverImage.crop}
         />
       ) : (
         <p>{index}</p>
