@@ -7,6 +7,13 @@ import HomeContent from '@/app/components/HomeContent'
 import ProjectContent from '@/app/components/ProjectContent'
 import Slot from '@/app/components/Slot'
  
+type LogoImage = {
+  asset?: { _ref?: string }
+  alt?: string
+  hotspot?: { x: number; y: number }
+  crop?: { top: number; bottom: number; left: number; right: number }
+}
+
 export default function Home({
   projects,
   settings,
@@ -14,12 +21,6 @@ export default function Home({
   projects: AllProjectsQueryResult
   settings: SettingsQueryResult
 }) {
-  type LogoImage = {
-    asset?: { _ref?: string }
-    alt?: string
-    hotspot?: { x: number; y: number }
-    crop?: { top: number; bottom: number; left: number; right: number }
-  }
  
   const scrollRef = useRef<HTMLDivElement>(null)
   const [mode ,setMode] = useState('row')
@@ -160,8 +161,8 @@ function Tab({
 }){
   
   const ref= useRef<HTMLDivElement>(null)
-  const settingsLogo = (settings as {logo?: LogoImage})?.logo
-  const projectLogo = (project as {logo?: LogoImage})?.logo
+  const settingsLogo = (settings as unknown as {logo?: LogoImage})?.logo
+  const projectLogo = (project as unknown as {logo?: LogoImage})?.logo
   const projectFallbackImage = project?.coverImage
 
   useEffect(() => {
