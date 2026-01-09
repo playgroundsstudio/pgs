@@ -27,53 +27,60 @@ export default function HomeContent({
 
   return (
     <div className='p-2 pt-0 bg-white min-h-full'>
-      <div className='h-6 flex items-center '>
-        <p className='flex '> Play Grounds Studio </p>
+
+      <div className='h-fit flex pt-1'>
+
+        <p className='w-full text-td2 leading-tight max-w-120'>
+        <span className='flex w-full text-dt1'> Play Grounds Studio 🛝 </span> 
+          Lorpsum is simply dummy text of the printing and typesetting 
+          industry. Lorem Ipsum has been the industry's standard dummy 
+          text ever since the 1500s, when an unknown printer took a galley 
+          of type and scrambled it to make a type specimen book.
+       
+        </p> 
       </div>
+
+
+
+
       <div className='pt-8'>
-        <h3 className='font-sans text-2xl mb-4'> Internal </h3>
 
-        <ul className='border-t mb-8'>
-          {Array.from({length: 3}).map((_, i) => (
-            <li key={i} className=' flex cursor-pointer hover:bg-blue-500/10 border-b '>
-              <div className='border-r w-13 w-4'>
-                <p> 00 </p>
-              </div>
-              <div className='px-2 border-r w-full '>
-                <p> About </p>
-              </div>
-              <div className='px-2 border-r w-full '>
-                <p> Website, Brand </p>
-              </div>
-              <div className='px-2 w-10 '>
-                <p> 2024 </p>
-              </div>
-            </li>
-          ))}
-        </ul>
+      <div className='flex w-full '> 
+          <div className='w-full'> 
+              <h3 className='font-sans mb-4'> Featured Project </h3>
+          </div>
 
-        <h3 className='font-sans text-2xl mb-4'> Projects </h3>
+          <div className='w-full aspect-square bg-black/10'>
 
-        <ul className='border-t mb-8'>
+          </div>
+
+
+        </div>
+
+
+
+        <h3 className='font-sans mb-4'> Projects </h3>
+
+        <ul className='border-t  border-stroke-one mb-8'>
           {projects.map((project, i) => (
             <li
               key={project._id ?? i}
               onClick={() => handleClick(project._id)}
-              className='flex cursor-pointer hover:bg-blue-500/10 border-b '
+              className='flex  py-2 cursor-pointer hover:bg-blue-500/10 border-b border-stroke-one '
             >
-              <div className='border-r w-13 w-4'>
-                <p> {i + 1} </p>
+              <div className='w-13 w-4 text-td2'>
+                <p>0{i + 1} </p>
               </div>
-              <div className='px-2 border-r w-full '>
+              <div className='px-2  w-full '>
                 <p> {project.title ?? 'Untitled'} </p>
               </div>
-              <div className='px-2 border-r w-full '>
+              <div className='px-2 w-full '>
                 <p> {project.excerpt ?? 'Website, Brand'} </p>
               </div>
-              <div className='px-2 w-10 '>
+              <div className='px-2 w-10 '>  
                 <p> {project.date ? new Date(project.date).getFullYear() : '—'} </p>
               </div>
-            </li>
+            </li>  
           ))}
         </ul>
 

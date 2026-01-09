@@ -86,7 +86,7 @@ export default function Slot({
       )}
     >
       {!slotActive && (
-        <div className='absolute inset-0 z-0 flex items-center justify-center text-sm text-white/70'>
+        <div className='absolute inset-0 z-0 flex items-center justify-center text-sm text-white/70 '>
           <p>Click to activate</p>
         </div>
       )}
@@ -97,7 +97,10 @@ export default function Slot({
           <p>hover: {hoveredSlotIndex === index ? 'yes' : 'no'}</p>
         </div>
       )}
-      {children}
+      <div className={cn('h-full', !isActive && 'opacity-80')}>
+         {children}
+      </div>
+
     </div>
   )
 }

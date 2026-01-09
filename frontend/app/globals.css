@@ -41,7 +41,15 @@
   --color-gray-900: #1b1d27;
   --color-gray-950: #13141b;
 
+  --border-color-default: oklch(0.65 0.02 240);
+
    --color-stroke-one: #eeeef1;
+
+   --color-td1: rgba(0,0,0,0.8);
+   --color-td2: rgba(0,0,0,0.5);
+
+   --color-tl1: rgba(200,200,200,1);
+   --color-tl2: rgba(200,200,200,0.5);
 
   --color-activeslot:rgba(0,0,0,0.2);
   --color-hoverslot:#cdea14;

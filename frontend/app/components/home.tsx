@@ -77,7 +77,7 @@ export default function Home({
         mode === 'col' && "flex-col overflow-y-auto",
         hasPadding ? "  py-2 " : "p-0",
 
-        "text-[12px] h-screen  transition-all relative font-mono"
+        "text-[12px] h-screen  transition-all relative "
       )}
     >
      
