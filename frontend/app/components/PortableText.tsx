@@ -31,6 +31,7 @@ export default function CustomPortableText({
             <Image
               id={value.asset._ref}
               width={672}
+              alt={value.alt ?? ''}
               crop={value.crop}
               mode="cover"
               className="rounded-sm"

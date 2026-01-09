@@ -88,6 +88,7 @@ export default async function ProjectPage(props: Props) {
                     className="rounded-sm w-full"
                     width={1024}
                     height={538}
+                    alt={project.coverImage?.alt ?? project.title ?? ''}
                     mode="cover"
                     hotspot={project.coverImage.hotspot}
                     crop={project.coverImage.crop}
