@@ -202,6 +202,12 @@ export default function Home({
     }
   }
 
+  function handleCloseAllSlots(e: MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation()
+    setOpenProjectIds([])
+    setActive(0)
+  }
+
   return (
     <div
       ref={scrollRef}
@@ -264,13 +270,13 @@ export default function Home({
 
       ))}
 
-     <div className= {` ${slots > 1 ? "bottom-4":"bottom-[-400px]"} transition-all flex justify-center items-center w-full fixed  left-0 right-0 hide-scrollbar `}>
+     <div className= {` ${slots > 1 ? "bottom-4":"bottom-[-400px]"} transition-all flex justify-center items-center w-full fixed left-0 right-0 z-50 hide-scrollbar `}>
         <div className='bg-transparent flex items-end gap-1 p-2 w-fit overflow-visible rounded-xl'> 
           <button
             type='button'
             onClick={handleShareClick}
             aria-label='Share current page'
-            className='h-[22px] w-[22px] bg-white rounded-full border-1 flex justify-center items-center shadow-lg border hover:border-hoverslot transition-colors'
+            className='self-center h-[22px] w-[22px] bg-white rounded-full flex justify-center items-center shadow-lg transition-colors'
           >
             <svg viewBox='0 0 24 24' aria-hidden='true' className='h-3 w-3 text-td1'>
               <path
@@ -290,6 +296,14 @@ export default function Home({
               onClose={closeProjectTab}
             />
           ))}
+          <button
+            type='button'
+            onClick={handleCloseAllSlots}
+            aria-label='Close all open pages'
+            className='self-center h-[22px] w-[22px] bg-white rounded-full flex justify-center items-center shadow-lg transition-colors'
+          >
+            ×
+          </button>
         </div>
     </div> 
 
@@ -337,8 +351,8 @@ function Tab({
       ref={ref}
       data-indextab={index} 
       onClick={()=>{setActive(index)}}
-      className={ cn(`group relative bg-white rounded-full border-1 flex justify-center items-center shadow-lg border overflow-visible transition-[width,height,transform,border-color] duration-200`,
-             active === index ? "border-activeslot h-14 w-14 -translate-y-[5px]":"hover:border-hoverslot h-11 w-11 translate-y-0"
+      className={ cn(`group relative bg-white rounded-full flex justify-center items-center shadow-lg overflow-visible transition-[width,height,transform] duration-200`,
+             active === index ? "h-14 w-14 -translate-y-[5px]":"h-11 w-11 translate-y-0"
 
       )}>
       {index > 0 && (

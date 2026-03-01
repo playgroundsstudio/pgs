@@ -58,9 +58,10 @@
    --color-tgreen: #7edeb5;
    --color-tred: #f4a783;
    --color-subtle: rgba(0,0,0,0.02);
+   --color-disabled-page: #2f2f2f;
 
   --color-activeslot:rgba(0,0,0,0.2);
-  --color-hoverslot:#cdea14;
+  --color-hoverslot:rgba(0,0,0,0.05);
 
 
   --font-display: 'Helvetica', 'Arial', sans-serif;

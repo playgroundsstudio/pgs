@@ -74,14 +74,18 @@ export default function HomeContent({
       )}
 
       {!hasOpenProject && (
-        <div className={`flex w-full ${spaceAfterMeasurement}`}>
-          <div className='w-full'>
+        <div className={`w-full px-[90px] ${spaceAfterMeasurement}`}>
+          <div>
               <h3 className='font-sans text-sm text-td2'> Featured</h3>
               <p className='text-sm'>Robin Lambert</p>
           </div>
-
-          <div className='w-full aspect-video bg-black/10'>
-
+          <div className='mt-2 flex w-full items-start gap-[20px]'>
+            <div className='flex-1'>
+              <div className='w-full aspect-square bg-black/10' />
+            </div>
+            <div className='flex-1'>
+              <div className='w-full aspect-[4/5] bg-black/10' />
+            </div>
           </div>
         </div>
       )}
@@ -91,10 +95,10 @@ export default function HomeContent({
           <ul>
             {projects.map((project, i) => (
               <li
-                key={project._id ?? i}
-                onClick={() => handleClick(project._id)}
-                className={`group flex py-0 cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-td1 text-white' : 'hover:text-td2'}`}
-              >
+              key={project._id ?? i}
+              onClick={() => handleClick(project._id)}
+              className={`group flex py-0 cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-hoverslot text-black' : 'hover:text-td2'}`}
+            >
                 <div className='w-1/2 flex min-w-0'>
                   <div className='w-6 shrink-0' onClick={openProjectIds.includes(project._id) ? (e) => handleClose(e, project._id) : undefined}>
                     <p>{openProjectIds.includes(project._id) ? 'X' : i + 1}</p>

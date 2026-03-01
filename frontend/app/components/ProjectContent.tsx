@@ -97,6 +97,19 @@ export default function ProjectContent({
       <div className='px-2 flex flex-col gap-4'>
         {project ? (
           <>
+            {project.coverImage?.asset?._ref && (
+              <div className='-mx-2'>
+                <Image
+                  id={project.coverImage.asset._ref}
+                  alt={project.coverImage?.alt || project.title || ''}
+                  className='w-full h-auto'
+                  width={1600}
+                  mode='cover'
+                  hotspot={project.coverImage.hotspot}
+                  crop={project.coverImage.crop}
+                />
+              </div>
+            )}
             <div className={spaceAfterMeasurement}>
               <div className='flex flex-col gap-2'>
                 <div className='flex flex-col gap-0 pt-8'>
@@ -185,6 +198,7 @@ export default function ProjectContent({
         ) : (
           <p className='text-td2'>Project not found.</p>
         )}
+        <div className='h-32' />
       </div>
     </div>
   )

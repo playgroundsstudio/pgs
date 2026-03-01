@@ -86,7 +86,13 @@ export default function Slot({
       )}
     >
       {!slotActive && (
-        <div className='absolute inset-0 z-0 flex items-center justify-center text-sm text-white/70'>
+        <div className='absolute inset-0 z-20 bg-disabled-page/20 pointer-events-none' />
+      )}
+      {!slotActive && (
+        <div
+          className='absolute inset-0 z-20 flex items-center justify-center text-sm text-white/80 pointer-events-auto cursor-pointer'
+          onClick={handleClick}
+        >
           <p>Click to activate</p>
         </div>
       )}
@@ -97,7 +103,7 @@ export default function Slot({
           <p>hover: {hoveredSlotIndex === index ? 'yes' : 'no'}</p>
         </div>
       )}
-      <div className={cn('h-full w-full max-w-[2000px] border-r-[0.5px] border-stone-300' , !isActive && 'opacity-80')}>
+      <div className={cn('relative z-10 h-full w-full max-w-[2000px]', !isActive && 'opacity-100')}>
          {children}
       </div>
 
