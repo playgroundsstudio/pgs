@@ -63,37 +63,34 @@ export default function ProjectContent({
   return (
     <div
       className={cn(
-        'text-white/80 h-full bg-black overflow-hidden hide-scrollbar ',
+        'text-td1 h-full bg-white overflow-hidden hide-scrollbar ',
         isActive ? 'overflow-scroll' : 'overflow-hidden pointer-events-none'
       )}
     >
-      <div className='header sticky top-0 gap-2 p-2 leading-none bg-black/20 flex justify-between'>
+      <div className='header sticky top-0 h-[var(--font-size-sm--line-height)] gap-2 px-2 bg-white/90 flex items-center justify-between'>
         <div className='w-full'>
           <p> {project?.title ?? 'Project Title'}</p>
         </div>
-        <div className='w-full flex justify-center '>
-          <p> [{index}] </p>
-        </div>
         <div className='flex w-full gap-2 flex justify-end'>
-          <p onClick={handleClickMode} className='hover:text-red-500'>
+          <p onClick={handleClickMode} className='cursor-pointer hover:text-td2'>
             {' '}
             {mode == 'row' ? 'Expand' : 'Minimise'}{' '}
           </p>
-          <p onClick={handleClose}> Close </p>
+          <p onClick={handleClose} className='cursor-pointer hover:text-td2'> Close </p>
         </div>
       </div>
-      <div className='p-2 flex flex-col gap-4'>
+      <div className='px-2 flex flex-col gap-4'>
         {project ? (
           <>
             <div className='flex flex-col gap-2'>
-              <h3 className='text-2xl leading-none font-bold font-sans'>
+              <h3 className='text-sm font-medium font-sans'>
                 {project.description}
               </h3>
-              {project.excerpt && <p className='opacity-80'>{project.excerpt}</p>}
+              {project.excerpt && <p className='opacity-80 text-sm'>{project.excerpt}</p>}
               {project.author?.firstName && project.author?.lastName ? (
                 <Avatar person={project.author} date={project.date} small />
               ) : (
-                <div className='text-sm text-white/50'>
+                <div className='text-sm text-td2'>
                   <DateComponent dateString={project.date} />
                 </div>
               )}
@@ -122,7 +119,7 @@ export default function ProjectContent({
             ) : null}
           </>
         ) : (
-          <p className='opacity-60'>Project not found.</p>
+          <p className='text-td2'>Project not found.</p>
         )}
       </div>
     </div>

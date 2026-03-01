@@ -4,7 +4,7 @@ export const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
 
 const projectFields = /* groq */ `
   _id,
-  "status": select(_originalId in path("drafts.**") => "draft", "published"),
+  "draftStatus": select(_originalId in path("drafts.**") => "draft", "published"),
   "title": coalesce(title, "Untitled"),
   "slug": slug.current,
   excerpt,
@@ -12,6 +12,9 @@ const projectFields = /* groq */ `
   logo,
   gallery,
   coverImage,
+  location,
+  status,
+  "tags": tags[]->{ title },
   "date": coalesce(date, _updatedAt),
   "author": author->{firstName, lastName, picture},
 `
@@ -102,4 +105,12 @@ export const projectPagesSlugs = defineQuery(`
 export const pagesSlugs = defineQuery(`
   *[_type == "page" && defined(slug.current)]
   {"slug": slug.current}
+`)
+
+export const aboutPgsQuery = defineQuery(`
+  *[_type == "aboutPgs"][0]{
+    title,
+    description,
+    services[]{title}
+  }
 `)

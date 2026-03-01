@@ -9,7 +9,7 @@
   h4,
   h5,
   h6 {
-    @apply font-medium tracking-tight;
+    @apply text-sm font-medium tracking-tight;
   }
 }
 
@@ -21,6 +21,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  --font-size-sm: 11px;
+  --font-size-sm--line-height: 21px;
+
   --shadow-layer: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
 
   --color-framework: #000;
@@ -46,10 +49,15 @@
    --color-stroke-one: #eeeef1;
 
    --color-td1: rgba(0,0,0,0.7);
-   --color-td2: rgba(0,0,0,0.5);
+   --color-td2: rgba(0,0,0,0.3);
 
    --color-tl1: rgba(200,200,200,1);
    --color-tl2: rgba(200,200,200,0.5);
+   --color-labelcolor: #fff;
+
+   --color-tgreen: #7edeb5;
+   --color-tred: #f4a783;
+   --color-subtle: rgba(0,0,0,0.02);
 
   --color-activeslot:rgba(0,0,0,0.2);
   --color-hoverslot:#cdea14;

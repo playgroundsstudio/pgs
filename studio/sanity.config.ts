@@ -4,6 +4,7 @@
  */
 
 import {defineConfig} from 'sanity'
+import type {UserConfig} from 'vite'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './src/schemaTypes'
@@ -20,6 +21,12 @@ import {assist} from '@sanity/assist'
 // Environment variables for project configuration
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'your-projectID'
 const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
+
+if (!projectId || projectId === 'your-projectID' || projectId.includes('<paste your project ID here>')) {
+  throw new Error(
+    'Missing SANITY_STUDIO_PROJECT_ID. Create a .env file from .env.example and set a real project ID.',
+  )
+}
 
 // URL for preview functionality, defaults to localhost:3000 if not set
 const SANITY_STUDIO_PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
@@ -132,4 +139,21 @@ export default defineConfig({
   schema: {
     types: schemaTypes,
   },
+
+  // Keep a single module instance for these packages to avoid hook-context mismatches.
+  vite: (prevConfig: UserConfig) => ({
+    ...prevConfig,
+    resolve: {
+      ...prevConfig.resolve,
+      dedupe: Array.from(
+        new Set([...(prevConfig.resolve?.dedupe || []), 'react', 'react-dom', 'styled-components']),
+      ),
+      alias: {
+        ...(prevConfig.resolve?.alias || {}),
+        react: '/node_modules/react/index.js',
+        'react-dom': '/node_modules/react-dom/index.js',
+        'styled-components': '/node_modules/styled-components/dist/styled-components.browser.esm.js',
+      },
+    },
+  }),
 })

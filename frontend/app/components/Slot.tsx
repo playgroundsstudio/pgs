@@ -44,12 +44,12 @@ export default function Slot({
 
     if (el) {
       el.scrollIntoView({
-        behavior: 'smooth',
+        behavior: 'auto',
         block: 'nearest',
-        inline: 'nearest',
+        inline: 'center',
       })
     }
-  }, [active])
+  }, [active, length])
 
   const handleClick = () => {
     if (active != index) {
@@ -86,7 +86,7 @@ export default function Slot({
       )}
     >
       {!slotActive && (
-        <div className='absolute inset-0 z-0 flex items-center justify-center text-sm text-white/70 '>
+        <div className='absolute inset-0 z-0 flex items-center justify-center text-sm text-white/70'>
           <p>Click to activate</p>
         </div>
       )}
@@ -97,7 +97,7 @@ export default function Slot({
           <p>hover: {hoveredSlotIndex === index ? 'yes' : 'no'}</p>
         </div>
       )}
-      <div className={cn('h-full w-full max-w-[1100px] border-x-[0.5px] border-stone-300' , !isActive && 'opacity-80')}>
+      <div className={cn('h-full w-full max-w-[2000px] border-r-[0.5px] border-stone-300' , !isActive && 'opacity-80')}>
          {children}
       </div>
 

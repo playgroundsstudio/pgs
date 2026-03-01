@@ -140,10 +140,29 @@ export const project = defineType({
       ],
     }),
     defineField({
+      name: 'location',
+      title: 'Location',
+      type: 'string',
+      description: 'e.g. London, UK',
+    }),
+    defineField({
+      name: 'status',
+      title: 'Status',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'In Progress', value: 'inProgress'},
+          {title: 'Completed', value: 'completed'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'inProgress',
+    }),
+    defineField({
       name: 'tags',
       title: 'Tags',
       type: 'array',
-      of: [{type: 'string'}],
+      of: [{type: 'reference', to: [{type: 'tag'}]}],
     }),
   ],
   // List preview configuration. https://www.sanity.io/docs/previews-list-views
