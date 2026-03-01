@@ -26,7 +26,7 @@ export default function HomeContent({
   }
 
   return (
-    <div className='p-2 pt-0 bg-white min-h-full'>
+    <div className='p-2 pt-0 bg-white h-full w-full overflow-scroll text-dt1  '>
 
       <div className='h-fit flex pt-1'>
 

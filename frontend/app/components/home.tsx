@@ -75,7 +75,7 @@ export default function Home({
         "flex gap-0 md:gap-0",
         mode === 'row' && "flex overflow-x-auto",
         mode === 'col' && "flex-col overflow-y-auto",
-        hasPadding ? "  py-2 " : "p-0",
+        hasPadding ? "  py-0 " : "p-0",
 
         "text-[12px] h-screen  transition-all relative "
       )}

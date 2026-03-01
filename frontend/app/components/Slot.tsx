@@ -80,9 +80,9 @@ export default function Slot({
       className={cn(
         isRounded ? 'rounded-0' : '',
         isVisable ? 'block' : 'hidden',
-        hasPadding && index === 0 && length > 0 &&  'pl-2 pr-2',
-        hasPadding && index != 0 && length > 0 &&  'pl-0 pr-2',
-        'relative transition-radius h-full w-full min-w-[90vw] lg:min-w-[45vw] '
+        hasPadding && index === 0 && length > 0 &&  'pl-0 pr-0',
+        hasPadding && index != 0 && length > 0 &&  'pl-0 pr-0',
+        'relative transition-radius h-full w-full min-w-[vw] lg:min-w-[45vw] flex justify-center'
       )}
     >
       {!slotActive && (
@@ -97,7 +97,7 @@ export default function Slot({
           <p>hover: {hoveredSlotIndex === index ? 'yes' : 'no'}</p>
         </div>
       )}
-      <div className={cn('h-full', !isActive && 'opacity-80')}>
+      <div className={cn('h-full w-full max-w-[1100px] border-x-[0.5px] border-stone-300' , !isActive && 'opacity-80')}>
          {children}
       </div>
 
