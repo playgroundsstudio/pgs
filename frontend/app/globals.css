@@ -63,8 +63,8 @@
   --color-hoverslot:#cdea14;
 
 
-  --font-display: 'Inter', 'sans-serif';
-  --font-sans: 'Inter', 'sans-serif';
+  --font-display: 'Helvetica', 'Arial', sans-serif;
+  --font-sans: 'Helvetica', 'Arial', sans-serif;
 
 
   --default-transition-duration: 250ms;
