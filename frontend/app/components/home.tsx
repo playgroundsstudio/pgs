@@ -1,7 +1,7 @@
 'use client'
 import {useState, useRef, useEffect, useMemo} from 'react'
 import type {MouseEvent} from 'react'
-import cn from 'classnames'
+import {cn} from '@/app/lib/cn'
 import type {AllProjectsQueryResult, SettingsQueryResult} from '@/sanity.types'
 import Image from '@/app/components/SanityImage'
 import HomeContent from '@/app/components/HomeContent'

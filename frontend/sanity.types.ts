@@ -652,7 +652,7 @@ export type SitemapDataResult = Array<{
   _updatedAt: string;
 }>;
 // Variable: allProjectsQuery
-// Query: *[_type == "project" && defined(slug.current)] | order(date desc, _updatedAt desc) {      _id,  "draftStatus": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  description,  logo,  gallery,  coverImage,  location,  status,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
+// Query: *[_type == "project" && defined(slug.current)] | order(date desc, _updatedAt desc) {      _id,  "draftStatus": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  description,  logo,  gallery,  coverImage,  location,  status,  "tags": tags[]->{ title },  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
 export type AllProjectsQueryResult = Array<{
   _id: string;
   draftStatus: "draft" | "published";
@@ -677,6 +677,7 @@ export type AllProjectsQueryResult = Array<{
   } | null;
   location: null;
   status: null;
+  tags: null;
   date: string;
   author: {
     firstName: string;
@@ -697,7 +698,7 @@ export type AllProjectsQueryResult = Array<{
   } | null;
 }>;
 // Variable: moreProjectsQuery
-// Query: *[_type == "project" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {      _id,  "draftStatus": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  description,  logo,  gallery,  coverImage,  location,  status,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
+// Query: *[_type == "project" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {      _id,  "draftStatus": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  description,  logo,  gallery,  coverImage,  location,  status,  "tags": tags[]->{ title },  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
 export type MoreProjectsQueryResult = Array<{
   _id: string;
   draftStatus: "draft" | "published";
@@ -722,6 +723,7 @@ export type MoreProjectsQueryResult = Array<{
   } | null;
   location: null;
   status: null;
+  tags: null;
   date: string;
   author: {
     firstName: string;
@@ -742,7 +744,7 @@ export type MoreProjectsQueryResult = Array<{
   } | null;
 }>;
 // Variable: projectQuery
-// Query: *[_type == "project" && slug.current == $slug] [0] {    content[]{    ...,    markDefs[]{      ...,        _type == "link" => {    "page": page->slug.current,    "project": project->slug.current  }    }  },      _id,  "draftStatus": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  description,  logo,  gallery,  coverImage,  location,  status,  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
+// Query: *[_type == "project" && slug.current == $slug] [0] {    content[]{    ...,    markDefs[]{      ...,        _type == "link" => {    "page": page->slug.current,    "project": project->slug.current  }    }  },      _id,  "draftStatus": select(_originalId in path("drafts.**") => "draft", "published"),  "title": coalesce(title, "Untitled"),  "slug": slug.current,  excerpt,  description,  logo,  gallery,  coverImage,  location,  status,  "tags": tags[]->{ title },  "date": coalesce(date, _updatedAt),  "author": author->{firstName, lastName, picture},  }
 export type ProjectQueryResult = {
   content: Array<{
     children?: Array<{
@@ -802,6 +804,7 @@ export type ProjectQueryResult = {
   } | null;
   location: null;
   status: null;
+  tags: null;
   date: string;
   author: {
     firstName: string;
@@ -831,6 +834,9 @@ export type ProjectPagesSlugsResult = Array<{
 export type PagesSlugsResult = Array<{
   slug: string;
 }>;
+// Variable: aboutPgsQuery
+// Query: *[_type == "aboutPgs"][0]{    title,    description,    services[]{title}  }
+export type AboutPgsQueryResult = null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -839,10 +845,11 @@ declare module "@sanity/client" {
     "*[_type == \"settings\"][0]": SettingsQueryResult;
     "\n  *[_type == 'page' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    description,\n    slug,\n    heading,\n    subheading,\n    \"pageBuilder\": pageBuilder[]{\n      ...,\n      _type == \"callToAction\" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"project\": project->slug.current\n  }\n\n      }\n\n        }\n      },\n      _type == \"infoSection\" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"project\": project->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n": GetPageQueryResult;
     "\n  *[_type == \"page\" || _type == \"project\" && defined(slug.current)] | order(_type asc) {\n    \"slug\": slug.current,\n    _type,\n    _updatedAt,\n  }\n": SitemapDataResult;
-    "\n  *[_type == \"project\" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  \"draftStatus\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  description,\n  logo,\n  gallery,\n  coverImage,\n  location,\n  status,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{firstName, lastName, picture},\n\n  }\n": AllProjectsQueryResult;
-    "\n  *[_type == \"project\" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  \"draftStatus\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  description,\n  logo,\n  gallery,\n  coverImage,\n  location,\n  status,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{firstName, lastName, picture},\n\n  }\n": MoreProjectsQueryResult;
-    "\n  *[_type == \"project\" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"project\": project->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  \"draftStatus\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  description,\n  logo,\n  gallery,\n  coverImage,\n  location,\n  status,\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{firstName, lastName, picture},\n\n  }\n": ProjectQueryResult;
+    "\n  *[_type == \"project\" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  \"draftStatus\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  description,\n  logo,\n  gallery,\n  coverImage,\n  location,\n  status,\n  \"tags\": tags[]->{ title },\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{firstName, lastName, picture},\n\n  }\n": AllProjectsQueryResult;
+    "\n  *[_type == \"project\" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  \"draftStatus\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  description,\n  logo,\n  gallery,\n  coverImage,\n  location,\n  status,\n  \"tags\": tags[]->{ title },\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{firstName, lastName, picture},\n\n  }\n": MoreProjectsQueryResult;
+    "\n  *[_type == \"project\" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == \"link\" => {\n    \"page\": page->slug.current,\n    \"project\": project->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  \"draftStatus\": select(_originalId in path(\"drafts.**\") => \"draft\", \"published\"),\n  \"title\": coalesce(title, \"Untitled\"),\n  \"slug\": slug.current,\n  excerpt,\n  description,\n  logo,\n  gallery,\n  coverImage,\n  location,\n  status,\n  \"tags\": tags[]->{ title },\n  \"date\": coalesce(date, _updatedAt),\n  \"author\": author->{firstName, lastName, picture},\n\n  }\n": ProjectQueryResult;
     "\n  *[_type == \"project\" && defined(slug.current)]\n  {\"slug\": slug.current}\n": ProjectPagesSlugsResult;
     "\n  *[_type == \"page\" && defined(slug.current)]\n  {\"slug\": slug.current}\n": PagesSlugsResult;
+    "\n  *[_type == \"aboutPgs\"][0]{\n    title,\n    description,\n    services[]{title}\n  }\n": AboutPgsQueryResult;
   }
 }

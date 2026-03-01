@@ -19,9 +19,20 @@ export default async function Page() {
     query: aboutPgsQuery,
   })
 
-  const services = aboutPgs?.services?.map((s) => s.title).filter(Boolean) as string[] ?? []
-  const siteTitle = aboutPgs?.title ?? ''
-  const siteDescription = aboutPgs?.description ?? ''
+  const about = (aboutPgs ?? null) as
+    | {
+        services?: Array<{title?: string | null}> | null
+        title?: string | null
+        description?: string | null
+      }
+    | null
+
+  const services =
+    about?.services
+      ?.map((s: {title?: string | null}) => s.title)
+      .filter((title: string | null | undefined): title is string => typeof title === 'string' && title.length > 0) ?? []
+  const siteTitle = about?.title ?? ''
+  const siteDescription = about?.description ?? ''
 
   return (
     <>

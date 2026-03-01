@@ -1,7 +1,7 @@
 'use client'
 import {useEffect, useRef} from 'react'
 import type {Dispatch, SetStateAction} from 'react'
-import cn from 'classnames'
+import {cn} from '@/app/lib/cn'
 
 type SlotProps = {
   children: React.ReactNode

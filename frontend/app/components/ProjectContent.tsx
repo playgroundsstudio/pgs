@@ -1,6 +1,6 @@
 'use client'
 import type {Dispatch, SetStateAction} from 'react'
-import cn from 'classnames'
+import {cn} from '@/app/lib/cn'
 import type {AllProjectsQueryResult} from '@/sanity.types'
 import Image from '@/app/components/SanityImage'
 import Avatar from '@/app/components/Avatar'
