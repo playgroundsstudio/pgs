@@ -38,7 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     let url: string
 
     for (const p of allProjectsAndPages.data) {
-      switch (p._type) {
+      switch (p._type as string) {
         case 'page':
           priority = 0.8
           changeFrequency = 'monthly'

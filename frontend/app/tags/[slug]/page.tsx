@@ -43,11 +43,11 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
-  const {data: tag} = await sanityFetch({
+  const {data: tag} = (await sanityFetch({
     query: tagPageQuery,
     params,
     stega: false,
-  })
+  })) as {data: Record<string, any> | null}
 
   if (!tag?._id) {
     return {
@@ -86,10 +86,10 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function TagPage(props: Props) {
   const params = await props.params
-  const [{data: tag}, {data: aboutPgs}] = await Promise.all([
+  const [{data: tag}, {data: aboutPgs}] = (await Promise.all([
     sanityFetch({query: tagPageQuery, params}),
     sanityFetch({query: aboutPgsQuery}),
-  ])
+  ])) as [{data: Record<string, any> | null}, {data: Record<string, any> | null}]
 
   if (!tag?._id) {
     return notFound()
