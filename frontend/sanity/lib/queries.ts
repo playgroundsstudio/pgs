@@ -14,7 +14,7 @@ const projectFields = /* groq */ `
   coverImage,
   location,
   status,
-  "tags": tags[]->{ title },
+  "tags": tags[]->{ title, "slug": slug.current },
   "date": coalesce(date, _updatedAt),
   "author": author->{firstName, lastName, picture},
 `
@@ -65,7 +65,7 @@ export const getPageQuery = defineQuery(`
 `)
 
 export const sitemapData = defineQuery(`
-  *[_type == "page" || _type == "project" && defined(slug.current)] | order(_type asc) {
+  *[(_type == "page" || _type == "project" || _type == "tag") && defined(slug.current)] | order(_type asc) {
     "slug": slug.current,
     _type,
     _updatedAt,
@@ -105,6 +105,28 @@ export const projectPagesSlugs = defineQuery(`
 export const pagesSlugs = defineQuery(`
   *[_type == "page" && defined(slug.current)]
   {"slug": slug.current}
+`)
+
+export const tagPagesSlugs = defineQuery(`
+  *[_type == "tag" && defined(slug.current)]
+  {"slug": slug.current}
+`)
+
+export const tagPageQuery = defineQuery(`
+  *[_type == "tag" && slug.current == $slug][0]{
+    _id,
+    title,
+    pageTitle,
+    description,
+    "slug": slug.current,
+    "projects": *[_type == "project" && references(^._id)] | order(date desc, _updatedAt desc) {
+      _id,
+      "title": coalesce(title, "Untitled"),
+      "slug": slug.current,
+      coverImage,
+      gallery
+    }
+  }
 `)
 
 export const aboutPgsQuery = defineQuery(`

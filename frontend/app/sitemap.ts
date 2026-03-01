@@ -14,9 +14,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   })
   const headersList = await headers()
   const sitemap: MetadataRoute.Sitemap = []
-  const domain: String = headersList.get('host') as string
+  const host = headersList.get('host')
+  const protocol = headersList.get('x-forwarded-proto') || 'https'
+  const domain = host ? `${protocol}://${host}` : 'http://localhost:3000'
   sitemap.push({
-    url: domain as string,
+    url: domain,
     lastModified: new Date(),
     priority: 1,
     changeFrequency: 'monthly',
@@ -47,6 +49,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           changeFrequency = 'never'
           url = `${domain}/projects/${p.slug}`
           break
+        case 'tag':
+          priority = 0.7
+          changeFrequency = 'weekly'
+          url = `${domain}/tags/${p.slug}`
+          break
+        default:
+          continue
       }
       sitemap.push({
         lastModified: p._updatedAt || new Date(),
