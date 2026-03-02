@@ -217,12 +217,12 @@ export default function Home({
         mode === 'col' && "flex-col overflow-y-auto",
         hasPadding ? "  py-0 " : "p-0",
 
-        "text-[12px] h-screen  transition-all relative "
+        "h-screen  transition-all relative "
       )}
     >
      
       {showDebugUi && (
-        <div className='pointer-events-none overflow-hidden fixed top-2 right-2 z-50 text-[11px] text-green-600 bg-black/70 rounded-md px-2 py-1'>
+        <div className='pointer-events-none overflow-hidden fixed top-2 right-2 z-50 text-[11px] text-green-600 bg-black/70 rounded-md px-3 py-1'>
           <p>active: {active}</p>
           <p>mode: {mode}</p>
           <p>hoveringActive: {isHoveringActiveSlot ? 'yes' : 'no'}</p>

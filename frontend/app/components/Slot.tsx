@@ -97,7 +97,7 @@ export default function Slot({
         </div>
       )}
       {showDebugUi && (
-        <div className='absolute top-2 left-2 z-10 pointer-events-none text-[10px] text-white bg-black/70 rounded px-2 py-1'>
+        <div className='absolute top-2 left-2 z-10 pointer-events-none text-[10px] text-white bg-black/70 rounded px-3 py-1'>
           <p>slot: {index}</p>
           <p>active: {isActive ? 'yes' : 'no'}</p>
           <p>hover: {hoveredSlotIndex === index ? 'yes' : 'no'}</p>

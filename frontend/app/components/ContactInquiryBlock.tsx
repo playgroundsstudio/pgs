@@ -2,6 +2,7 @@
 
 import {useState} from 'react'
 import {cn} from '@/app/lib/cn'
+import Button from '@/app/components/Button'
 
 type ContactInquiryBlockProps = {
   services: string[]
@@ -47,7 +48,7 @@ export default function ContactInquiryBlock({
               <div className='w-40 shrink-0'>
                 <p className='truncate'>Phone</p>
               </div>
-              <div className='px-2 flex-1 min-w-0'>
+              <div className='px-3 flex-1 min-w-0'>
                 <p className='truncate'>+44 7778 4320 987</p>
               </div>
             </li>
@@ -55,7 +56,7 @@ export default function ContactInquiryBlock({
               <div className='w-40 shrink-0'>
                 <p className='truncate'>Email</p>
               </div>
-              <div className='px-2 flex-1 min-w-0'>
+              <div className='px-3 flex-1 min-w-0'>
                 <p className='truncate'>info@play-grounds.studio</p>
               </div>
             </li>
@@ -104,13 +105,9 @@ export default function ContactInquiryBlock({
                 <option value='yes'>Yes</option>
               </select>
             </div>
-            <button
-              type='submit'
-              disabled={submitting}
-              className='mt-[var(--font-size-sm--line-height)] text-sm w-full bg-td1 text-labelcolor h-[var(--font-size-sm--line-height)] hover:opacity-80 transition-opacity disabled:opacity-50'
-            >
+            <Button type='submit' disabled={submitting} className='mt-[var(--font-size-sm--line-height)]'>
               {submitting ? 'Sending...' : 'Submit'}
-            </button>
+            </Button>
           </form>
         )}
       </div>

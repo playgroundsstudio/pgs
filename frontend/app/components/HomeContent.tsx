@@ -65,7 +65,7 @@ export default function HomeContent({
 
 
 
-      <div className='pt-8 px-2'>
+      <div className='pt-8 px-3'>
 
       {!hasOpenProject && (
         <div className={`h-[300px] flex items-center justify-center ${spaceAfterMeasurement}`}>
@@ -103,7 +103,7 @@ export default function HomeContent({
                   <div className='w-6 shrink-0' onClick={openProjectIds.includes(project._id) ? (e) => handleClose(e, project._id) : undefined}>
                     <p>{openProjectIds.includes(project._id) ? 'X' : i + 1}</p>
                   </div>
-                  <div className='px-2 w-40 shrink-0'>
+                  <div className='px-3 w-60 shrink-0'>
                     <p className='truncate'>{project.title ?? 'Untitled'}</p>
                   </div>
                   <div className='min-w-0 flex-1 flex'>
@@ -134,13 +134,15 @@ export default function HomeContent({
                   <div className='w-1/2 flex min-w-0' />
                 ) : (
                   <div className='w-1/2 flex min-w-0'>
-                    <div className='flex-1 min-w-0'>
-                      <p className='truncate'>{(project as any).location ?? 'London, UK'}</p>
-                    </div>
-                    <div className='px-2 shrink-0'>
+                    {!hasOpenProject && (
+                      <div className='flex-1 min-w-0'>
+                        <p className='truncate'>{(project as any).location ?? 'London, UK'}</p>
+                      </div>
+                    )}
+                    <div className='px-3 shrink-0'>
                       <p className={`whitespace-nowrap ${(project as any).status === 'completed' ? 'group-hover:text-tgreen' : 'group-hover:text-tred'}`}>{(project as any).status === 'completed' ? 'Completed' : 'In Progress'}</p>
                     </div>
-                    <div className='px-2 shrink-0'>
+                    <div className='px-3 flex-1 text-right'>
                       <p className='whitespace-nowrap'>{project.date ? new Date(project.date).getFullYear() : '—'}</p>
                     </div>
                   </div>
@@ -166,7 +168,7 @@ export default function HomeContent({
                 <div className='w-40 shrink-0'>
                   <p className='truncate'>Instagram</p>
                 </div>
-                <div className='px-2 flex-1 min-w-0'>
+                <div className='px-3 flex-1 min-w-0'>
                   <p className='truncate'>@play-grounds.studio</p>
                 </div>
               </li>
@@ -174,7 +176,7 @@ export default function HomeContent({
                 <div className='w-40 shrink-0'>
                   <p className='truncate'>X</p>
                 </div>
-                <div className='px-2 flex-1 min-w-0'>
+                <div className='px-3 flex-1 min-w-0'>
                   <p className='truncate'>play-grounds-studio</p>
                 </div>
               </li>
@@ -182,7 +184,7 @@ export default function HomeContent({
                 <div className='w-40 shrink-0'>
                   <p className='truncate'>Behance</p>
                 </div>
-                <div className='px-2 flex-1 min-w-0'>
+                <div className='px-3 flex-1 min-w-0'>
                   <p className='truncate'>play-grounds-studio</p>
                 </div>
               </li>
@@ -190,7 +192,7 @@ export default function HomeContent({
                 <div className='w-40 shrink-0'>
                   <p className='truncate'>Are.na</p>
                 </div>
-                <div className='px-2 flex-1 min-w-0'>
+                <div className='px-3 flex-1 min-w-0'>
                   <p className='truncate'>playgroundsstudio</p>
                 </div>
               </li>

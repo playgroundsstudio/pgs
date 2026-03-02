@@ -35,7 +35,7 @@ export default function HomeHeader({
 
   return (
     <div className='sticky top-1 z-10 h-[var(--font-size-sm--line-height)] mt-1'>
-      <div className={`px-2 ${scrolled ? '' : 'w-full md:w-1/2'}`}>
+      <div className={`px-3 ${scrolled ? '' : 'w-full md:w-1/2'}`}>
         <p className='text-sm'>
           {title}
           {!hasOpenProject && !scrolled && description ? ` ${description}` : ''}

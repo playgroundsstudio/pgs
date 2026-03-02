@@ -146,7 +146,7 @@ export default async function TagPage(props: Props) {
         dangerouslySetInnerHTML={{__html: JSON.stringify(itemListJsonLd)}}
       />
       <HomeHeader title={headerTitle} description={headerDescription} />
-      <div className='px-2 pt-[200px] pb-4'>
+      <div className='px-3 pt-[200px] pb-4'>
         <h1 className='text-[100px] leading-[0.9] mb-8'>{title}</h1>
         <div className='grid grid-cols-8 gap-2'>
           {images.map((image) => (
@@ -166,7 +166,7 @@ export default async function TagPage(props: Props) {
         </div>
         <ContactInquiryBlock services={services} className='mt-16' />
       </div>
-      <footer className='h-[60vh] w-full flex items-end justify-start px-2 pb-4'>
+      <footer className='h-[60vh] w-full flex items-end justify-start px-3 pb-4'>
         <div className='h-[40vh] w-[40vh] max-w-[90vw] max-h-[90vw] bg-black flex items-center justify-center'>
           <PgsLogoMark className='h-[45%] w-auto text-white' />
         </div>

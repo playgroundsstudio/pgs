@@ -4,6 +4,7 @@ import type {Dispatch, SetStateAction} from 'react'
 import {cn} from '@/app/lib/cn'
 import type {AllProjectsQueryResult} from '@/sanity.types'
 import Image from '@/app/components/SanityImage'
+import Button from '@/app/components/Button'
 import DateComponent from '@/app/components/Date'
 
 type ProjectContentProps = {
@@ -82,7 +83,7 @@ export default function ProjectContent({
         isActive ? 'overflow-scroll' : 'overflow-hidden pointer-events-none'
       )}
     >
-      <div className='header sticky top-0 h-[var(--font-size-sm--line-height)] gap-2 px-2 bg-white/90 flex items-center justify-between'>
+      <div className='header sticky top-0 h-[var(--font-size-sm--line-height)] gap-2 px-3 z-30 flex items-center justify-between'>
         <div className='w-full'>
           <p> {project?.title ?? 'Project Title'}</p>
         </div>
@@ -94,15 +95,15 @@ export default function ProjectContent({
           <p onClick={handleClose} className='cursor-pointer hover:text-td2'> Close </p>
         </div>
       </div>
-      <div className='px-2 flex flex-col gap-4'>
+      <div className='px-3 flex flex-col gap-4'>
         {project ? (
           <>
             {project.coverImage?.asset?._ref && (
-              <div className='-mx-2'>
+              <div className='-mx-3 aspect-square overflow-hidden'>
                 <Image
                   id={project.coverImage.asset._ref}
                   alt={project.coverImage?.alt || project.title || ''}
-                  className='w-full h-auto'
+                  className='w-full h-full object-cover'
                   width={1600}
                   mode='cover'
                   hotspot={project.coverImage.hotspot}
@@ -163,12 +164,9 @@ export default function ProjectContent({
                       className='text-sm bg-transparent h-full w-full text-right outline-none placeholder:text-td2'
                     />
                   </div>
-                  <button
-                    type='submit'
-                    className='mt-[var(--font-size-sm--line-height)] text-sm w-full bg-td1 text-labelcolor h-[var(--font-size-sm--line-height)] hover:opacity-80 transition-opacity'
-                  >
+                  <Button type='submit' className='mt-[var(--font-size-sm--line-height)]'>
                     Sign Up
-                  </button>
+                  </Button>
                 </form>
               </div>
             )}
