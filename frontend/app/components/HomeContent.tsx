@@ -81,10 +81,10 @@ export default function HomeContent({
           </div>
           <div className='mt-2 flex w-full items-start gap-[20px]'>
             <div className='flex-1'>
-              <div className='w-full aspect-square bg-black/10' />
+              <div className='w-full aspect-square bg-gradient-to-b from-[#0a1628] to-[#8a9bb5]' />
             </div>
             <div className='flex-1'>
-              <div className='w-full aspect-[4/5] bg-black/10' />
+              <div className='w-full aspect-[4/5] bg-gradient-to-b from-[#0a1628] to-[#8a9bb5]' />
             </div>
           </div>
         </div>
