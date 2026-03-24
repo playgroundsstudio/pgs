@@ -66,7 +66,7 @@ export default function ContactInquiryBlock({
       <div className={inquiryIsFullWidth ? 'w-full' : 'w-1/2'}>
         <h3 className='font-sans text-sm text-td2'>Enquiry</h3>
         {submitted ? (
-          <p className='text-sm text-td1 mt-2'>Thank you for your enquiry. We'll be in touch soon.</p>
+          <p className='text-sm text-td1 mt-2'>Thank you for your enquiry. We&apos;ll be in touch soon.</p>
         ) : (
           <form onSubmit={handleSubmit} className='flex flex-col gap-px'>
             <div className='relative h-[var(--font-size-sm--line-height)] flex items-center border-b-[1.5px] border-solid border-[rgba(0,0,0,0.1)]'>
