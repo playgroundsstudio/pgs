@@ -100,35 +100,34 @@ export default function HomeContent({
               className={`group flex py-0 cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-hoverslot text-black' : 'hover:text-td2'}`}
             >
                 <div className='w-1/2 flex min-w-0'>
-                  <div className='w-6 shrink-0' onClick={openProjectIds.includes(project._id) ? (e) => handleClose(e, project._id) : undefined}>
-                    <p>{openProjectIds.includes(project._id) ? 'X' : i + 1}</p>
-                  </div>
                   <div className='px-2 w-40 shrink-0'>
                     <p className='truncate'>{project.title ?? 'Untitled'}</p>
                   </div>
-                  <div className='min-w-0 flex-1 flex'>
-                    {(() => {
-                      const tags = (project as any).tags?.filter(Boolean) || []
-                      const isExpanded = expandedTagsId === project._id
-                      if (!tags.length) return <p className='truncate text-td2'>No tags</p>
-                      if (isExpanded) {
+                  {!hasOpenProject && (
+                    <div className='min-w-0 flex-1 flex'>
+                      {(() => {
+                        const tags = (project as any).tags?.filter(Boolean) || []
+                        const isExpanded = expandedTagsId === project._id
+                        if (!tags.length) return <p className='truncate text-td2'>No tags</p>
+                        if (isExpanded) {
+                          return (
+                            <p className='truncate'>
+                              {tags.map(function(t: any) { return t.title }).join(', ')}
+                              <span className='ml-1 cursor-pointer hover:text-td2' onClick={function(e) { e.stopPropagation(); setExpandedTagsId(null) }}>X</span>
+                            </p>
+                          )
+                        }
+                        const first2 = tags.slice(0, 2)
+                        const remaining = tags.length - 2
                         return (
                           <p className='truncate'>
-                            {tags.map(function(t: any) { return t.title }).join(', ')}
-                            <span className='ml-1 cursor-pointer hover:text-td2' onClick={function(e) { e.stopPropagation(); setExpandedTagsId(null) }}>X</span>
+                            {first2.map(function(t: any) { return t.title }).join(', ')}
+                            {remaining > 0 && <span className='ml-1 cursor-pointer hover:text-td2 hover:bg-subtle' onClick={function(e) { e.stopPropagation(); setExpandedTagsId(project._id) }}>{' +' + remaining}</span>}
                           </p>
                         )
-                      }
-                      const first2 = tags.slice(0, 2)
-                      const remaining = tags.length - 2
-                      return (
-                        <p className='truncate'>
-                          {first2.map(function(t: any) { return t.title }).join(', ')}
-                          {remaining > 0 && <span className='ml-1 cursor-pointer hover:text-td2 hover:bg-subtle' onClick={function(e) { e.stopPropagation(); setExpandedTagsId(project._id) }}>{' +' + remaining}</span>}
-                        </p>
-                      )
-                    })()}
-                  </div>
+                      })()}
+                    </div>
+                  )}
                 </div>
                 {expandedTagsId === project._id ? (
                   <div className='w-1/2 flex min-w-0' />
@@ -140,9 +139,11 @@ export default function HomeContent({
                     <div className='px-2 shrink-0'>
                       <p className={`whitespace-nowrap ${(project as any).status === 'completed' ? 'group-hover:text-tgreen' : 'group-hover:text-tred'}`}>{(project as any).status === 'completed' ? 'Completed' : 'In Progress'}</p>
                     </div>
-                    <div className='px-2 shrink-0'>
-                      <p className='whitespace-nowrap'>{project.date ? new Date(project.date).getFullYear() : '—'}</p>
-                    </div>
+                    {!hasOpenProject && (
+                      <div className='px-2 shrink-0'>
+                        <p className='whitespace-nowrap'>{project.date ? new Date(project.date).getFullYear() : '—'}</p>
+                      </div>
+                    )}
                   </div>
                 )}
               </li>  
@@ -150,12 +151,14 @@ export default function HomeContent({
           </ul>
         </div>
 
-        <ContactInquiryBlock
-          services={services}
-          showContact={!hasOpenProject}
-          inquiryFullWidth={hasOpenProject}
-          className={spaceAfterMeasurement}
-        />
+        {!hasOpenProject && (
+          <ContactInquiryBlock
+            services={services}
+            showContact={!hasOpenProject}
+            inquiryFullWidth={hasOpenProject}
+            className={spaceAfterMeasurement}
+          />
+        )}
 
         {!hasOpenProject && (
           <div className={spaceAfterMeasurement}>
@@ -198,11 +201,13 @@ export default function HomeContent({
           </div>
         )}
 
-        <footer className='h-[60vh] w-full flex items-end justify-start pb-4'>
-          <div className='h-[40vh] w-[40vh] max-w-[90vw] max-h-[90vw] bg-td1 flex items-center justify-center'>
-            <PgsLogoMark className='h-[45%] w-auto text-white' />
-          </div>
-        </footer>
+        {!hasOpenProject && (
+          <footer className='h-[60vh] w-full flex items-end justify-start pb-4'>
+            <div className='h-[40vh] w-[40vh] max-w-[90vw] max-h-[90vw] bg-td1 flex items-center justify-center'>
+              <PgsLogoMark className='h-[45%] w-auto text-white' />
+            </div>
+          </footer>
+        )}
       </div>
     </div>
   )

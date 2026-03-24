@@ -44,7 +44,7 @@ export default function Slot({
 
     if (el) {
       el.scrollIntoView({
-        behavior: 'auto',
+        behavior: 'smooth',
         block: 'nearest',
         inline: 'center',
       })
