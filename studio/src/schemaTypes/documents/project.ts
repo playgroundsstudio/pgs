@@ -108,36 +108,10 @@ export const project = defineType({
       of: [{type: 'string'}],
     }),
     defineField({
-      name: 'gallery',
-      title: 'Gallery',
+      name: 'contentBlocks',
+      title: 'Content Blocks',
       type: 'array',
-      of: [
-        {
-          type: 'image',
-          options: {
-            hotspot: true,
-            aiAssist: {
-              imageDescriptionField: 'alt',
-            },
-          },
-          fields: [
-            {
-              name: 'alt',
-              type: 'string',
-              title: 'Alternative text',
-              description: 'Important for SEO and accessibility.',
-              validation: (rule) => {
-                return rule.custom((alt, context) => {
-                  if ((context.parent as any)?.asset?._ref && !alt) {
-                    return 'Required'
-                  }
-                  return true
-                })
-              },
-            },
-          ],
-        },
-      ],
+      of: [{type: 'sideBySideMedia'}, {type: 'centerMedia'}, {type: 'textCta'}],
     }),
     defineField({
       name: 'location',

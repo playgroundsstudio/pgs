@@ -10,7 +10,31 @@ const projectFields = /* groq */ `
   excerpt,
   description,
   logo,
-  gallery,
+  contentBlocks[]{
+    ...,
+    _type == "sideBySideMedia" => {
+      ...,
+      leftMedia { ..., video { ..., "asset": asset-> } },
+      rightMedia { ..., video { ..., "asset": asset-> } }
+    },
+    _type == "centerMedia" => {
+      ...,
+      media { ..., video { ..., "asset": asset-> } }
+    },
+    _type == "textCta" => {
+      ...,
+      button {
+        ...,
+        link {
+          ...,
+          _type == "link" => {
+            "page": page->slug.current,
+            "project": project->slug.current
+          }
+        }
+      }
+    }
+  },
   coverImage,
   location,
   status,
@@ -124,7 +148,7 @@ export const tagPageQuery = defineQuery(`
       "title": coalesce(title, "Untitled"),
       "slug": slug.current,
       coverImage,
-      gallery
+      contentBlocks
     }
   }
 `)

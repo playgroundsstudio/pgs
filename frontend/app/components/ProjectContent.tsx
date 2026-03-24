@@ -5,6 +5,7 @@ import {cn} from '@/app/lib/cn'
 import type {AllProjectsQueryResult} from '@/sanity.types'
 import Image from '@/app/components/SanityImage'
 import DateComponent from '@/app/components/Date'
+import ProjectContentBlockRenderer from '@/app/components/contentBlocks/ProjectContentBlockRenderer'
 
 type ProjectContentProps = {
   mode: string
@@ -27,15 +28,8 @@ export default function ProjectContent({
   index,
   isActive,
 }: ProjectContentProps) {
-  type GalleryItem = {
-    _key?: string
-    asset?: { _ref?: string }
-    alt?: string
-    hotspot?: { x: number; y: number }
-    crop?: { top: number; bottom: number; left: number; right: number }
-  }
-  const galleryItems: GalleryItem[] = Array.isArray(project?.gallery)
-    ? (project?.gallery as GalleryItem[])
+  const contentBlocks: any[] = Array.isArray((project as any)?.contentBlocks)
+    ? (project as any).contentBlocks
     : []
   const spaceAfterMeasurement = 'mb-16'
   const tagItems = Array.isArray((project as any)?.tags)
@@ -177,28 +171,17 @@ export default function ProjectContent({
                 </form>
               </div>
             )}
-            {normalizedStatus === 'completed' && galleryItems.length ? (
-              <div className='flex flex-col gap-4'>
-                {galleryItems.map((image, imageIndex) => {
-                  if (!image?.asset?._ref) {
-                    return null
-                  }
-                  return (
-                    <div key={image._key ?? image.asset._ref ?? imageIndex} className='pc'>
-                      <Image
-                        id={image.asset._ref}
-                        alt={image?.alt || ''}
-                        className='rounded-sm w-full h-auto'
-                        width={1200}
-                        mode='contain'
-                        hotspot={image.hotspot}
-                        crop={image.crop}
-                      />
-                    </div>
-                  )
-                })}
+            {contentBlocks.length > 0 && (
+              <div className='flex flex-col gap-2'>
+                {contentBlocks.map((block, blockIndex) => (
+                  <ProjectContentBlockRenderer
+                    key={block._key ?? blockIndex}
+                    block={block}
+                    mode={mode}
+                  />
+                ))}
               </div>
-            ) : null}
+            )}
           </>
         ) : (
           <p className='text-td2'>Project not found.</p>
