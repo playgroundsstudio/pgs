@@ -441,13 +441,13 @@ function NavBar({
     const restoreHeight = savedTabsSize.current.height || 'auto'
 
     if (shareMenuOpen) {
-      // 1. Hide tabs
+      // 1. Hide tabs first
       tl.set(tabsRef.current!.children, {scale: 0})
-      // 2. Morph container
+      // 2. Then morph container
       tl.to(containerRef.current, {
         width: 300, height: 400, borderRadius: '10px', padding: 0,
         duration: 0.3, ease: 'power2.out',
-      }, '-=0.05')
+      }, '+=0.1')
       // 3. Show logo after container morph finishes
       tl.fromTo(logoRef.current,
         {opacity: 0, y: -8},
