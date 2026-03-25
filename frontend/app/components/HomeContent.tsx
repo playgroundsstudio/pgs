@@ -1,6 +1,7 @@
 'use client'
 import {useRef, useState} from 'react'
 import type {Dispatch, SetStateAction} from 'react'
+import {cn} from '@/app/lib/cn'
 import type {AllProjectsQueryResult} from '@/sanity.types'
 import ContactInquiryBlock from '@/app/components/ContactInquiryBlock'
 import HomeHeader from '@/app/components/HomeHeader'
@@ -14,6 +15,9 @@ type HomeContentProps = {
   services: string[]
   siteTitle: string
   siteDescription: string
+  mode: string
+  setMode: (mode: string) => void
+  isActive: boolean
 }
 
 export default function HomeContent({
@@ -24,6 +28,9 @@ export default function HomeContent({
   services,
   siteTitle,
   siteDescription,
+  mode,
+  setMode,
+  isActive,
 }: HomeContentProps) {
   const hasOpenProject = openProjectIds.length > 0
   const spaceAfterMeasurement = 'mb-16'
@@ -53,8 +60,30 @@ export default function HomeContent({
 
   const scrollRef = useRef<HTMLDivElement>(null)
 
+  const handleClickMode = () => {
+    if (mode === 'row') {
+      setMode('col')
+    } else {
+      setMode('row')
+    }
+  }
+
   return (
     <div ref={scrollRef} className='relative bg-white h-full w-full overflow-auto'>
+      <div
+        className={cn(
+          'absolute top-4 right-4 z-40 flex items-center gap-3 px-4 py-2 rounded-full bg-white/80 backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-black/4 transition-all duration-300 ease-out',
+          isActive ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0 pointer-events-none'
+        )}
+      >
+        <button onClick={handleClickMode} className='cursor-pointer hover:text-td2' aria-label={mode === 'row' ? 'Expand' : 'Minimise'}>
+          {mode === 'row' ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          )}
+        </button>
+      </div>
       <HomeHeader
         scrollRef={scrollRef}
         title={siteTitle}
@@ -151,7 +180,7 @@ export default function HomeContent({
           </ul>
         </div>
 
-        {!hasOpenProject && (
+        {(!hasOpenProject || (isActive && mode === 'row')) && (
           <ContactInquiryBlock
             services={services}
             showContact={!hasOpenProject}

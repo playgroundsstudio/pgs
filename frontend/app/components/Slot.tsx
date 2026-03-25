@@ -82,15 +82,12 @@ export default function Slot({
         isVisable ? 'block' : 'hidden',
         hasPadding && index === 0 && length > 0 &&  'pl-0 pr-0',
         hasPadding && index != 0 && length > 0 &&  'pl-0 pr-0',
-        'relative transition-radius h-full w-full min-w-[vw] lg:min-w-[45vw] flex justify-center'
+        'relative transition-radius h-full w-full min-w-[80vw] lg:min-w-[50vw] flex justify-center'
       )}
     >
       {!slotActive && (
-        <div className='absolute inset-0 z-20 bg-disabled-page/20 pointer-events-none' />
-      )}
-      {!slotActive && (
         <div
-          className='absolute inset-0 z-20 flex items-center justify-center text-sm text-white/80 pointer-events-auto cursor-pointer'
+          className='absolute inset-0 z-20 bg-disabled-page/20 hover:bg-disabled-page/30 transition-colors pointer-events-auto cursor-pointer flex items-center justify-center text-sm text-white/80'
           onClick={handleClick}
         >
           <p>Click to activate</p>

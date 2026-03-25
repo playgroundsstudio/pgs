@@ -1,5 +1,6 @@
 'use client'
-import {useState, useRef, useEffect, useMemo} from 'react'
+import {useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo} from 'react'
+import gsap from 'gsap'
 import type {MouseEvent} from 'react'
 import {cn} from '@/app/lib/cn'
 import type {AllProjectsQueryResult, SettingsQueryResult} from '@/sanity.types'
@@ -7,6 +8,7 @@ import Image from '@/app/components/SanityImage'
 import HomeContent from '@/app/components/HomeContent'
 import ProjectContent from '@/app/components/ProjectContent'
 import Slot from '@/app/components/Slot'
+import PgsLogoMark from '@/app/components/PgsLogoMark'
  
 type LogoImage = {
   asset?: { _ref?: string }
@@ -38,6 +40,8 @@ export default function Home({
   const isHoveringActiveSlot = hoveredSlotIndex === active
   const slots = 1 + openProjectIds.length
   const showDebugUi = false
+  const [shareMenuOpen, setShareMenuOpen] = useState(false)
+  const shareMenuRef = useRef<HTMLDivElement>(null)
 
   const hasPadding = ( slots>1 && mode=='row' ) 
   console.log(hasPadding)
@@ -192,15 +196,52 @@ export default function Home({
     })
   }
 
-  async function handleShareClick(e: MouseEvent<HTMLButtonElement>) {
-    e.stopPropagation()
+  async function handleShareConfiguration() {
     if (typeof window === 'undefined') return
     try {
       await navigator.clipboard.writeText(buildShareUrl())
     } catch {
-      // no-op: clipboard may be unavailable in some browser contexts
+      // no-op
     }
+    setShareMenuOpen(false)
   }
+
+  async function handleShareHomePage() {
+    if (typeof window === 'undefined') return
+    try {
+      await navigator.clipboard.writeText(window.location.origin)
+    } catch {
+      // no-op
+    }
+    setShareMenuOpen(false)
+  }
+
+  function handleEnquire() {
+    const activeProject = active > 0
+      ? projects.find((p) => p._id === openProjectIds[active - 1])
+      : null
+    const subject = activeProject?.title
+      ? `Enquiry about ${activeProject.title}`
+      : 'Enquiry'
+    window.open(`mailto:?subject=${encodeURIComponent(subject)}`, '_blank')
+    setShareMenuOpen(false)
+  }
+
+  function handleShareClick(e: MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation()
+    setShareMenuOpen((prev) => !prev)
+  }
+
+  useEffect(() => {
+    if (!shareMenuOpen) return
+    function handleClickOutside(e: globalThis.MouseEvent) {
+      if (shareMenuRef.current && !shareMenuRef.current.contains(e.target as Node)) {
+        setShareMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [shareMenuOpen])
 
   function handleCloseAllSlots(e: MouseEvent<HTMLButtonElement>) {
     e.stopPropagation()
@@ -253,6 +294,9 @@ export default function Home({
                   services={services}
                   siteTitle={siteTitle}
                   siteDescription={siteDescription}
+                  mode={mode}
+                  setMode={setMode}
+                  isActive={active === i}
                 />
               ):(
                 <ProjectContent
@@ -270,43 +314,246 @@ export default function Home({
 
       ))}
 
-     <div className= {` ${slots > 1 ? "bottom-4":"bottom-[-400px]"} transition-all flex justify-center items-center w-full fixed left-0 right-0 z-50 hide-scrollbar `}>
-        <div className='bg-transparent flex items-end gap-1 p-2 w-fit overflow-visible rounded-xl'> 
-          <button
-            type='button'
-            onClick={handleShareClick}
-            aria-label='Share current page'
-            className='self-center h-[22px] w-[22px] bg-white rounded-full flex justify-center items-center shadow-lg transition-colors'
-          >
-            <svg viewBox='0 0 24 24' aria-hidden='true' className='h-3 w-3 text-td1'>
-              <path
-                d='M16 5a3 3 0 1 0-2.83-4H13a3 3 0 0 0 .17 1L7.91 5.1a3 3 0 1 0 0 3.8l5.26 3.1A3 3 0 1 0 14 10a3 3 0 0 0-.83.12L7.91 7.02A3 3 0 0 0 8 6.5c0-.18-.03-.35-.05-.52l5.22-3.08A3 3 0 0 0 16 5z'
-                fill='currentColor'
-              />
-            </svg>
-          </button>
-          {Array.from({length:slots}).map((_,i)=>(
-            <Tab
-              key={i}
-              index={i}
-              active={active}
-              setActive={setActive}
-              project={i > 0 ? projects.find((p) => p._id === openProjectIds[i - 1]) : undefined}
-              settings={settings}
-              onClose={closeProjectTab}
-            />
-          ))}
-          <button
-            type='button'
-            onClick={handleCloseAllSlots}
-            aria-label='Close all open pages'
-            className='self-center h-[22px] w-[22px] bg-white rounded-full flex justify-center items-center shadow-lg transition-colors'
-          >
-            ×
-          </button>
-        </div>
+     <div ref={shareMenuRef} className={` ${slots > 1 ? "bottom-4":"bottom-[-400px]"} group/nav transition-all flex justify-center items-center gap-2 w-full fixed left-0 right-0 z-50 hide-scrollbar `}>
+        <button
+          type='button'
+          onClick={handleShareClick}
+          aria-label='Share current page'
+          className={cn('cursor-pointer self-center h-[22px] w-[22px] bg-black/80 rounded-full flex justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] transition-all duration-200 opacity-0 scale-0', !shareMenuOpen && 'group-hover/nav:opacity-100 group-hover/nav:scale-100')}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='h-3 w-3 text-white'>
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+            <polyline points="16 6 12 2 8 6" />
+            <line x1="12" y1="2" x2="12" y2="15" />
+          </svg>
+        </button>
+        <NavBar
+          slots={slots}
+          active={active}
+          setActive={setActive}
+          projects={projects}
+          openProjectIds={openProjectIds}
+          settings={settings}
+          closeProjectTab={closeProjectTab}
+          shareMenuOpen={shareMenuOpen}
+          onShareConfiguration={handleShareConfiguration}
+          onShareHomePage={handleShareHomePage}
+          onEnquire={handleEnquire}
+        />
+        <button
+          type='button'
+          onClick={handleCloseAllSlots}
+          aria-label='Close all open pages'
+          className={cn('cursor-pointer self-center h-[22px] w-[22px] bg-black/80 text-white rounded-full flex justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] transition-all duration-200 opacity-0 scale-0', !shareMenuOpen && 'group-hover/nav:opacity-100 group-hover/nav:scale-100')}
+        >
+          ×
+        </button>
     </div> 
 
+    </div>
+  )
+}
+
+function NavBar({
+  slots,
+  active,
+  setActive,
+  projects,
+  openProjectIds,
+  settings,
+  closeProjectTab,
+  shareMenuOpen,
+  onShareConfiguration,
+  onShareHomePage,
+  onEnquire,
+}: {
+  slots: number
+  active: number
+  setActive: any
+  projects: AllProjectsQueryResult
+  openProjectIds: string[]
+  settings: SettingsQueryResult
+  closeProjectTab: (tabIndex: number) => void
+  shareMenuOpen: boolean
+  onShareConfiguration: () => void
+  onShareHomePage: () => void
+  onEnquire: () => void
+}) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const tabsRef = useRef<HTMLDivElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const logoRef = useRef<HTMLDivElement>(null)
+  const menuItemsRef = useRef<HTMLDivElement>(null)
+  const [highlight, setHighlight] = useState({left: 0, width: 0})
+  const [tabsSize, setTabsSize] = useState({width: 0, height: 0})
+
+  const updateHighlight = useCallback(() => {
+    if (shareMenuOpen) return
+    const container = containerRef.current
+    if (!container) return
+    const activeEl = container.querySelector(`[data-indextab="${active}"]`) as HTMLElement | null
+    if (!activeEl) return
+    const borderLeft = parseFloat(getComputedStyle(container).borderLeftWidth)
+    const containerRect = container.getBoundingClientRect()
+    const activeRect = activeEl.getBoundingClientRect()
+    setHighlight({
+      left: activeRect.left - containerRect.left - borderLeft,
+      width: activeRect.width,
+    })
+  }, [active, shareMenuOpen])
+
+  useLayoutEffect(() => {
+    updateHighlight()
+  }, [updateHighlight, slots])
+
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      updateHighlight()
+      if (tabsRef.current && !shareMenuOpen) {
+        setTabsSize({
+          width: tabsRef.current.scrollWidth + 16,
+          height: tabsRef.current.scrollHeight + 16,
+        })
+      }
+    })
+    if (containerRef.current) observer.observe(containerRef.current)
+    if (tabsRef.current) observer.observe(tabsRef.current)
+    return () => observer.disconnect()
+  }, [updateHighlight, shareMenuOpen])
+
+  const prevShareMenuOpen = useRef(false)
+  const savedTabsSize = useRef({width: 0, height: 0})
+
+  // Always keep savedTabsSize up to date when menu is closed
+  useEffect(() => {
+    if (!shareMenuOpen && tabsSize.width > 0) {
+      savedTabsSize.current = tabsSize
+    }
+  }, [tabsSize, shareMenuOpen])
+
+  useEffect(() => {
+    // Skip initial render
+    if (prevShareMenuOpen.current === shareMenuOpen) return
+    prevShareMenuOpen.current = shareMenuOpen
+
+    const tl = gsap.timeline()
+    const restoreWidth = savedTabsSize.current.width || 'auto'
+    const restoreHeight = savedTabsSize.current.height || 'auto'
+
+    if (shareMenuOpen) {
+      // 1. Hide tabs
+      tl.set(tabsRef.current!.children, {scale: 0})
+      // 2. Morph container
+      tl.to(containerRef.current, {
+        width: 300, height: 400, borderRadius: '10px', padding: 0,
+        duration: 0.3, ease: 'power2.out',
+      }, '-=0.05')
+      // 3. Show logo after container morph finishes
+      tl.fromTo(logoRef.current,
+        {opacity: 0, y: -8},
+        {opacity: 1, y: 0, duration: 0.4, ease: 'power2.out'},
+        '+=0.15'
+      )
+      // 4. Stagger menu items after logo
+      tl.fromTo(menuItemsRef.current!.children,
+        {opacity: 0, y: -8},
+        {opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', stagger: 0.07},
+        '-=0.1'
+      )
+    } else {
+      // 1. Hide menu items + logo
+      tl.to(menuItemsRef.current!.children, {opacity: 0, y: -8, duration: 0.1, ease: 'power2.in'})
+      tl.to(logoRef.current, {opacity: 0, y: -8, duration: 0.1, ease: 'power2.in'}, '<')
+      // 2. Morph container back
+      tl.to(containerRef.current, {
+        width: restoreWidth, height: restoreHeight,
+        borderRadius: '50px', padding: 8,
+        duration: 0.3, ease: 'power2.out',
+      })
+      // 3. Clear container inline styles first, then show tabs
+      tl.call(() => {
+        gsap.set(containerRef.current, {clearProps: 'width,height,padding'})
+      })
+      tl.add(() => {
+        const children = Array.from(tabsRef.current!.children) as HTMLElement[]
+        children.forEach((child, i) => {
+          const isActive = child.dataset.indextab === String(active)
+          const targetScale = isActive ? 1.18 : 1
+          gsap.fromTo(child, {scale: 0}, {scale: targetScale, duration: 0.2, ease: 'power2.out', delay: i * 0.04, onComplete: () => {
+            gsap.set(child, {clearProps: 'scale'})
+          }})
+        })
+      }, '+=0.05')
+    }
+
+    return () => { tl.kill() }
+  }, [shareMenuOpen])
+
+  return (
+    <div
+      ref={containerRef}
+      className='relative backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-black/4 flex overflow-hidden items-center gap-2 p-2'
+      style={{
+        borderRadius: '50px',
+        width: tabsSize.width || 'fit-content',
+        height: tabsSize.height || 'fit-content',
+        backgroundColor: shareMenuOpen ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.8)',
+        transition: 'background-color 0.3s ease-out',
+      }}
+    >
+      <div
+        className={cn(
+          'absolute top-1/2 -translate-y-1/2 rounded-full bg-black/[0.05] transition-all duration-300 ease-out aspect-square',
+          shareMenuOpen && 'opacity-0 scale-0'
+        )}
+        style={{left: highlight.left - 4, width: highlight.width + 8}}
+      />
+      <div ref={tabsRef} className='flex items-center gap-2 origin-center'>
+        {Array.from({length: slots}).map((_, i) => (
+          <Tab
+            key={i}
+            index={i}
+            active={active}
+            setActive={setActive}
+            project={i > 0 ? projects.find((p) => p._id === openProjectIds[i - 1]) : undefined}
+            settings={settings}
+            onClose={closeProjectTab}
+          />
+        ))}
+      </div>
+      <div ref={menuRef} className='absolute inset-0 flex flex-col w-full justify-start h-full pb-4' style={{pointerEvents: shareMenuOpen ? 'auto' : 'none'}}>
+        <div ref={logoRef} className='flex justify-center items-center flex-1 w-full' style={{opacity: 0}}>
+          <PgsLogoMark className='h-16 w-auto text-white' />
+        </div>
+        <div ref={menuItemsRef} className='flex flex-col w-full'>
+          <button
+            type='button'
+            onClick={onShareConfiguration}
+            className='cursor-pointer text-sm px-4 py-2 hover:bg-white/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white flex items-center justify-between'
+            style={{opacity: 0}}
+          >
+            <span>Share Configuration</span><span>&rarr;</span>
+          </button>
+          <div className='h-px w-full bg-white/20 shrink-0' style={{opacity: 0}} />
+          <button
+            type='button'
+            onClick={onShareHomePage}
+            className='cursor-pointer text-sm px-4 py-2 hover:bg-white/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white flex items-center justify-between'
+            style={{opacity: 0}}
+          >
+            <span>Share Home Page</span><span>&rarr;</span>
+          </button>
+          <div className='h-px w-full bg-white/20 shrink-0' style={{opacity: 0}} />
+          <button
+            type='button'
+            onClick={onEnquire}
+            className='cursor-pointer text-sm px-4 py-2 hover:bg-white/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white flex items-center justify-between'
+            style={{opacity: 0}}
+          >
+            <span>Enquire About Selected Project</span><span>&rarr;</span>
+          </button>
+        </div>
+      </div>
     </div>
   )
 }
@@ -347,13 +594,16 @@ function Tab({
 
 
   return(
+    <>
+    {index === 1 && (
+      <div className='w-px h-6 bg-black/10 mx-1 self-center shrink-0' />
+    )}
     <div
       ref={ref}
-      data-indextab={index} 
+      data-indextab={index}
       onClick={()=>{setActive(index)}}
-      className={ cn(`group relative bg-white rounded-full flex justify-center items-center shadow-lg overflow-visible transition-[width,height,transform] duration-200`,
-             active === index ? "h-14 w-14 -translate-y-[5px]":"h-11 w-11 translate-y-0"
-
+      className={ cn(`group relative bg-white rounded-full flex flex-col justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-visible transition-all duration-200 cursor-pointer h-11 w-11`,
+        active === index && 'scale-[1.18] ring-1 ring-black/50'
       )}>
       {index > 0 && (
         <button
@@ -363,7 +613,7 @@ function Tab({
             e.stopPropagation()
             onClose(index)
           }}
-          className='absolute top-0 right-0 z-20 h-[18px] w-[18px] translate-x-[10%] -translate-y-[10%] rounded-full bg-td1 text-labelcolor text-[13px] leading-[1] flex items-center justify-center opacity-0 transition-opacity group-hover:opacity-100'
+          className='absolute top-0 right-0 z-20 h-[18px] w-[18px] translate-x-[10%] -translate-y-[10%] rounded-full bg-black/10 backdrop-blur-[10px] text-td1 text-[11px] leading-none flex items-center justify-center pb-[1px] opacity-0 transition-opacity group-hover:opacity-100'
         >
           ×
         </button>
@@ -403,7 +653,8 @@ function Tab({
         />
       ) : (
         <p>{index}</p>
-      )} 
+      )}
     </div>
+    </>
   )
 }
