@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="absolute inset-0 bg-[url(/images/tile-grid-black.png)] bg-size-[17px] opacity-20 bg-position-[0_1]" />
       <div className="container relative">
         <div className="flex flex-col items-center py-28 lg:flex-row">
-          <h3 className="mb-10 text-center text-sm font-mono tracking-tighter lg:mb-0 lg:w-1/2 lg:pr-4 lg:text-left">
+          <h3 className="mb-10 text-center font-mono tracking-tighter lg:mb-0 lg:w-1/2 lg:pr-4 lg:text-left">
             Built with Sanity + Next.js.
           </h3>
           <div className="flex flex-col gap-3 items-center justify-center lg:w-1/2 lg:flex-row lg:pl-4">

@@ -32,8 +32,8 @@ const OnboardingMessage = ({message, link, type, path}: OnboardingMessageProps) 
   return (
     <>
       <div>
-        <h3 className="text-sm font-medium">{message.title}</h3>
-        <p className="mt-1 text-sm text-white/80">{message.description}</p>
+        <h3 className="font-medium">{message.title}</h3>
+        <p className="mt-1 text-white/80">{message.description}</p>
       </div>
 
       <div>

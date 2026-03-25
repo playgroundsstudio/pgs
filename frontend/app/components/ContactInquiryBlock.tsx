@@ -40,10 +40,10 @@ export default function ContactInquiryBlock({
     <div className={cn(showContact ? 'flex' : 'block', className)}>
       {showContact && (
         <div className='w-1/2'>
-          <h3 className='font-sans text-sm text-td2'> Contact </h3>
+          <h3 className='font-sans text-dark-2'> Contact </h3>
 
           <ul>
-            <li className='group flex py-0 cursor-pointer hover:text-td2 overflow-hidden'>
+            <li className='group flex py-0 cursor-pointer hover:text-dark-2 overflow-hidden'>
               <div className='w-40 shrink-0'>
                 <p className='truncate'>Phone</p>
               </div>
@@ -51,7 +51,7 @@ export default function ContactInquiryBlock({
                 <p className='truncate'>+44 7778 4320 987</p>
               </div>
             </li>
-            <li className='group flex py-0 cursor-pointer hover:text-td2 overflow-hidden'>
+            <li className='group flex py-0 cursor-pointer hover:text-dark-2 overflow-hidden'>
               <div className='w-40 shrink-0'>
                 <p className='truncate'>Email</p>
               </div>
@@ -64,42 +64,42 @@ export default function ContactInquiryBlock({
       )}
 
       <div className={inquiryIsFullWidth ? 'w-full' : 'w-1/2'}>
-        <h3 className='font-sans text-sm text-td2'>Enquiry</h3>
+        <h3 className='font-sans text-dark-2'>Enquiry</h3>
         {submitted ? (
-          <p className='text-sm text-td1 mt-2'>Thank you for your enquiry. We&apos;ll be in touch soon.</p>
+          <p className='text-dark-1 mt-2'>Thank you for your enquiry. We&apos;ll be in touch soon.</p>
         ) : (
           <form onSubmit={handleSubmit} className='flex flex-col gap-px'>
-            <div className='relative h-[var(--font-size-sm--line-height)] flex items-center border-b-[1.5px] border-solid border-[rgba(0,0,0,0.1)]'>
-              <span className='text-sm text-td1 pointer-events-none absolute left-0'>Name</span>
-              <input type='text' name='name' placeholder='John Doe' className='text-sm bg-transparent h-full w-full text-right outline-none placeholder:text-td2' />
+            <div className='relative h-[var(--font-size-sm--line-height)] flex items-center border-b-[1.5px] border-solid border-border-form'>
+              <span className='text-dark-1 pointer-events-none absolute left-0'>Name</span>
+              <input type='text' name='name' placeholder='John Doe' className='bg-transparent h-full w-full text-right outline-none placeholder:text-dark-2' />
             </div>
-            <div className='relative h-[var(--font-size-sm--line-height)] flex items-center border-b-[1.5px] border-solid border-[rgba(0,0,0,0.1)]'>
-              <span className='text-sm text-td1 pointer-events-none absolute left-0'>Role</span>
-              <input type='text' name='role' placeholder='Creative Director' className='text-sm bg-transparent h-full w-full text-right outline-none placeholder:text-td2' />
+            <div className='relative h-[var(--font-size-sm--line-height)] flex items-center border-b-[1.5px] border-solid border-border-form'>
+              <span className='text-dark-1 pointer-events-none absolute left-0'>Role</span>
+              <input type='text' name='role' placeholder='Creative Director' className='bg-transparent h-full w-full text-right outline-none placeholder:text-dark-2' />
             </div>
-            <div className='relative h-[var(--font-size-sm--line-height)] flex items-center border-b-[1.5px] border-solid border-[rgba(0,0,0,0.1)]'>
-              <span className='text-sm text-td1 pointer-events-none absolute left-0'>Services</span>
-              <select name='service' className='text-sm bg-transparent h-full w-full text-right outline-none appearance-none cursor-pointer text-td2'>
+            <div className='relative h-[var(--font-size-sm--line-height)] flex items-center border-b-[1.5px] border-solid border-border-form'>
+              <span className='text-dark-1 pointer-events-none absolute left-0'>Services</span>
+              <select name='service' className='bg-transparent h-full w-full text-right outline-none appearance-none cursor-pointer text-dark-2'>
                 <option value=''>Select a service</option>
                 {services.map((service) => (
                   <option key={service} value={service}>{service}</option>
                 ))}
               </select>
             </div>
-            <div className='relative h-[var(--font-size-sm--line-height)] flex items-center border-b-[1.5px] border-solid border-[rgba(0,0,0,0.1)]'>
-              <span className='text-sm text-td1 pointer-events-none absolute left-0'>Budget</span>
-              <input type='text' name='budget' placeholder='£5,000 — £10,000' className='text-sm bg-transparent h-full w-full text-right outline-none placeholder:text-td2' />
+            <div className='relative h-[var(--font-size-sm--line-height)] flex items-center border-b-[1.5px] border-solid border-border-form'>
+              <span className='text-dark-1 pointer-events-none absolute left-0'>Budget</span>
+              <input type='text' name='budget' placeholder='£5,000 — £10,000' className='bg-transparent h-full w-full text-right outline-none placeholder:text-dark-2' />
             </div>
-            <div className='min-h-[120px] flex border-b-[1.5px] border-solid border-[rgba(0,0,0,0.1)] py-2'>
+            <div className='min-h-[120px] flex border-b-[1.5px] border-solid border-border-form py-2'>
               <textarea
                 name='message'
                 placeholder='message'
-                className='text-sm bg-transparent w-full min-h-[104px] text-left outline-none placeholder:text-td2 resize-none'
+                className='bg-transparent w-full min-h-[104px] text-left outline-none placeholder:text-dark-2 resize-none'
               />
             </div>
-            <div className='relative h-[var(--font-size-sm--line-height)] flex items-center border-b-[1.5px] border-solid border-[rgba(0,0,0,0.1)]'>
-              <span className='text-sm text-td1 pointer-events-none absolute left-0'>Are you a social good company?</span>
-              <select name='social-good' defaultValue='no' className='text-sm bg-transparent h-full w-full text-right outline-none appearance-none cursor-pointer text-td2'>
+            <div className='relative h-[var(--font-size-sm--line-height)] flex items-center border-b-[1.5px] border-solid border-border-form'>
+              <span className='text-dark-1 pointer-events-none absolute left-0'>Are you a social good company?</span>
+              <select name='social-good' defaultValue='no' className='bg-transparent h-full w-full text-right outline-none appearance-none cursor-pointer text-dark-2'>
                 <option value='no'>No</option>
                 <option value='yes'>Yes</option>
               </select>
@@ -107,7 +107,7 @@ export default function ContactInquiryBlock({
             <button
               type='submit'
               disabled={submitting}
-              className='mt-[var(--font-size-sm--line-height)] text-sm w-full bg-td1 text-labelcolor h-[var(--font-size-sm--line-height)] hover:opacity-80 transition-opacity disabled:opacity-50'
+              className='mt-[var(--font-size-sm--line-height)] w-full bg-dark-1 text-labelcolor h-[var(--font-size-sm--line-height)] hover:opacity-80 transition-opacity disabled:opacity-50'
             >
               {submitting ? 'Sending...' : 'Submit'}
             </button>

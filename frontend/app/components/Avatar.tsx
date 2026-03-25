@@ -34,11 +34,11 @@ export default function Avatar({person, date, small = false}: Props) {
       )}
       <div className="flex flex-col">
         {firstName && lastName && (
-          <div className="text-sm">
+          <div className="">
             {firstName} {lastName}
           </div>
         )}
-        <div className="text-sm">
+        <div className="">
           <DateComponent dateString={date} />
         </div>
       </div>

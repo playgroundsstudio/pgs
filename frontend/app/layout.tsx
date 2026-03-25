@@ -54,7 +54,10 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   const {isEnabled: isDraftMode} = await draftMode()
 
   return (
-    <html lang="en" className={`bg-white text-td1 font-medium text-sm`}>
+    <html lang="en" className={`bg-surface text-dark-1 font-medium`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{__html: `(function(){try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}})()`}} />
+      </head>
       <body>
         <section className="min-h-screen ">
           {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}

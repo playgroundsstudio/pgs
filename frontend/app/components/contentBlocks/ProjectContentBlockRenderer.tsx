@@ -32,7 +32,7 @@ export default function ProjectContentBlockRenderer({
   }
 
   return (
-    <div className='w-full bg-gray-100 text-center text-td1 p-20 rounded'>
+    <div className='w-full bg-gray-100 text-center text-dark-1 p-20 rounded'>
       A &ldquo;{block._type}&rdquo; block hasn&apos;t been created
     </div>
   )

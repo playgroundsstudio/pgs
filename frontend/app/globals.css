@@ -2,14 +2,120 @@
 
 @plugin "@tailwindcss/typography";
 
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-Thin.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-ThinItalic.woff2') format('woff2');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-LightItalic.woff2') format('woff2');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-MediumItalic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-BlackItalic.woff2') format('woff2');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-ExtraBlack.woff2') format('woff2');
+  font-weight: 950;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Unica77';
+  src: url('/fonts/Unica77LLTrialWeb-ExtraBlackItalic.woff2') format('woff2');
+  font-weight: 950;
+  font-style: italic;
+  font-display: swap;
+}
+
 @layer base {
+  html {
+    font-size: 15px;
+    line-height: 25px;
+  }
+
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply text-sm font-medium tracking-tight;
+    @apply font-medium tracking-tight;
+    font-size: inherit;
+    line-height: inherit;
   }
 }
 
@@ -20,9 +126,41 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+  --surface: #fff;
+  --surface-secondary: #f6f6f8;
+  --text-primary: rgba(0,0,0,0.5);
+  --text-secondary: rgba(0,0,0,0.3);
+  --label-color: #fff;
+  --hover-slot: rgba(0,0,0,0.05);
+  --border-subtle: rgba(0,0,0,0.04);
+  --border-form: rgba(0,0,0,0.1);
+  --pill-bg: rgba(255,255,255,0.8);
+  --disabled-page: #2f2f2f;
+  --divider: rgba(0,0,0,0.1);
+  --button-solid: rgba(0,0,0,0.8);
+  --button-solid-text: #fff;
+}
+
+.dark {
+  --surface: #0b0b0b;
+  --surface-secondary: #1b1d27;
+  --text-primary: rgba(255,255,255,0.9);
+  --text-secondary: rgba(255,255,255,0.5);
+  --label-color: #0b0b0b;
+  --hover-slot: rgba(255,255,255,0.05);
+  --border-subtle: rgba(255,255,255,0.04);
+  --border-form: rgba(255,255,255,0.1);
+  --pill-bg: rgba(50,50,50,1);
+  --disabled-page: #d0d0d0;
+  --divider: rgba(255,255,255,0.1);
+  --button-solid: rgba(255,255,255,0.8);
+  --button-solid-text: #0b0b0b;
+}
+
 @theme {
-  --font-size-sm: 13px;
-  --font-size-sm--line-height: 23px;
+  --font-size-sm: 15px;
+  --font-size-sm--line-height: 25px;
 
   --shadow-layer: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
 
@@ -48,24 +186,33 @@
 
    --color-stroke-one: #eeeef1;
 
-   --color-td1: rgba(0,0,0,0.7);
-   --color-td2: rgba(0,0,0,0.3);
+   --color-dark-1: var(--text-primary);
+   --color-dark-2: var(--text-secondary);
 
    --color-tl1: rgba(200,200,200,1);
    --color-tl2: rgba(200,200,200,0.5);
-   --color-labelcolor: #fff;
+   --color-labelcolor: var(--label-color);
 
    --color-tgreen: #7edeb5;
    --color-tred: #f4a783;
    --color-subtle: rgba(0,0,0,0.02);
-   --color-disabled-page: #2f2f2f;
+   --color-disabled-page: var(--disabled-page);
 
   --color-activeslot:rgba(0,0,0,0.2);
-  --color-hoverslot:rgba(0,0,0,0.05);
+  --color-hoverslot: var(--hover-slot);
+
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-pill: var(--pill-bg);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-form: var(--border-form);
+  --color-divider: var(--divider);
+  --color-button-solid: var(--button-solid);
+  --color-button-solid-text: var(--button-solid-text);
 
 
-  --font-display: 'Helvetica', 'Arial', sans-serif;
-  --font-sans: 'Helvetica', 'Arial', sans-serif;
+  --font-display: 'Unica77', 'Helvetica', 'Arial', sans-serif;
+  --font-sans: 'Unica77', 'Helvetica', 'Arial', sans-serif;
 
 
   --default-transition-duration: 250ms;
@@ -82,3 +229,4 @@
     height: 0;
   }
 }
+

@@ -17,17 +17,17 @@ export default function TextCtaBlock({block, mode}: TextCtaBlockProps) {
     >
       <div className='flex flex-col gap-2'>
         {block.heading && (
-          <h3 className='text-sm font-medium font-sans'>{block.heading}</h3>
+          <h3 className='font-medium font-sans'>{block.heading}</h3>
         )}
         {block.body && (
-          <CustomPortableText value={block.body} className='text-sm' />
+          <CustomPortableText value={block.body} className='' />
         )}
       </div>
       {block.button?.buttonText && (
         <div className='flex items-start'>
           <ResolvedLink
             link={block.button.link}
-            className='text-sm bg-td1 text-labelcolor px-4 h-[var(--font-size-sm--line-height)] flex items-center hover:opacity-80 transition-opacity'
+            className='bg-dark-1 text-labelcolor px-4 h-[var(--font-size-sm--line-height)] flex items-center hover:opacity-80 transition-opacity'
           >
             {block.button.buttonText}
           </ResolvedLink>

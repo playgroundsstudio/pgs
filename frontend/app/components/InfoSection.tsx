@@ -15,9 +15,9 @@ export default function CTA({block}: InfoProps) {
   return (
     <div className="container my-12">
       <div className="max-w-3xl">
-        {block?.heading && <h2 className="text-sm">{block.heading}</h2>}
+        {block?.heading && <h2 className="">{block.heading}</h2>}
         {block?.subheading && (
-          <span className="block mt-4 mb-8 text-sm uppercase font-medium">
+          <span className="block mt-4 mb-8 uppercase font-medium">
             {block.subheading}
           </span>
         )}

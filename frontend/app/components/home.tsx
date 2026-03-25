@@ -258,7 +258,7 @@ export default function Home({
         mode === 'col' && "flex-col overflow-y-auto",
         hasPadding ? "  py-0 " : "p-0",
 
-        "text-[12px] h-screen  transition-all relative "
+        "h-screen transition-all relative"
       )}
     >
      
@@ -315,18 +315,6 @@ export default function Home({
       ))}
 
      <div ref={shareMenuRef} className={` ${slots > 1 ? "bottom-4":"bottom-[-400px]"} group/nav transition-all flex justify-center items-center gap-2 w-full fixed left-0 right-0 z-50 hide-scrollbar `}>
-        <button
-          type='button'
-          onClick={handleShareClick}
-          aria-label='Share current page'
-          className={cn('cursor-pointer self-center h-[22px] w-[22px] bg-black/80 rounded-full flex justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] transition-all duration-200 opacity-0 scale-0', !shareMenuOpen && 'group-hover/nav:opacity-100 group-hover/nav:scale-100')}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='h-3 w-3 text-white'>
-            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-            <polyline points="16 6 12 2 8 6" />
-            <line x1="12" y1="2" x2="12" y2="15" />
-          </svg>
-        </button>
         <NavBar
           slots={slots}
           active={active}
@@ -336,18 +324,12 @@ export default function Home({
           settings={settings}
           closeProjectTab={closeProjectTab}
           shareMenuOpen={shareMenuOpen}
+          onShareClick={handleShareClick}
+          onCloseAll={handleCloseAllSlots}
           onShareConfiguration={handleShareConfiguration}
           onShareHomePage={handleShareHomePage}
           onEnquire={handleEnquire}
         />
-        <button
-          type='button'
-          onClick={handleCloseAllSlots}
-          aria-label='Close all open pages'
-          className={cn('cursor-pointer self-center h-[22px] w-[22px] bg-black/80 text-white rounded-full flex justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] transition-all duration-200 opacity-0 scale-0', !shareMenuOpen && 'group-hover/nav:opacity-100 group-hover/nav:scale-100')}
-        >
-          ×
-        </button>
     </div> 
 
     </div>
@@ -363,6 +345,8 @@ function NavBar({
   settings,
   closeProjectTab,
   shareMenuOpen,
+  onShareClick,
+  onCloseAll,
   onShareConfiguration,
   onShareHomePage,
   onEnquire,
@@ -375,6 +359,8 @@ function NavBar({
   settings: SettingsQueryResult
   closeProjectTab: (tabIndex: number) => void
   shareMenuOpen: boolean
+  onShareClick: (e: MouseEvent<HTMLButtonElement>) => void
+  onCloseAll: (e: MouseEvent<HTMLButtonElement>) => void
   onShareConfiguration: () => void
   onShareHomePage: () => void
   onEnquire: () => void
@@ -441,47 +427,49 @@ function NavBar({
     const restoreHeight = savedTabsSize.current.height || 'auto'
 
     if (shareMenuOpen) {
-      // 1. Hide tabs first
-      tl.set(tabsRef.current!.children, {scale: 0})
-      // 2. Then morph container
+      // 1. Thumbnails disappear instantly (override CSS transition)
+      tl.set(tabsRef.current!.children, {scale: 0, transition: 'none'})
+      // 2. Height, width and bg color change
       tl.to(containerRef.current, {
         width: 300, height: 400, borderRadius: '10px', padding: 0,
+        backgroundColor: 'rgba(0,0,0,0.8)',
         duration: 0.3, ease: 'power2.out',
-      }, '+=0.1')
-      // 3. Show logo after container morph finishes
+      })
+      // 3. Logo staggers in
       tl.fromTo(logoRef.current,
         {opacity: 0, y: -8},
         {opacity: 1, y: 0, duration: 0.4, ease: 'power2.out'},
-        '+=0.15'
+        '+=0.1'
       )
-      // 4. Stagger menu items after logo
+      // 4. Links stagger in
       tl.fromTo(menuItemsRef.current!.children,
         {opacity: 0, y: -8},
         {opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', stagger: 0.07},
         '-=0.1'
       )
     } else {
-      // 1. Hide menu items + logo
-      tl.to(menuItemsRef.current!.children, {opacity: 0, y: -8, duration: 0.1, ease: 'power2.in'})
-      tl.to(logoRef.current, {opacity: 0, y: -8, duration: 0.1, ease: 'power2.in'}, '<')
-      // 2. Morph container back
+      // 1. Logo and links disappear instantly
+      tl.set(menuItemsRef.current!.children, {opacity: 0, y: -8})
+      tl.set(logoRef.current, {opacity: 0, y: -8})
+      // 2. Height, width and bg color change
       tl.to(containerRef.current, {
         width: restoreWidth, height: restoreHeight,
         borderRadius: '50px', padding: 8,
+        backgroundColor: 'var(--pill-bg)',
         duration: 0.3, ease: 'power2.out',
       })
-      // 3. Clear container inline styles first, then show tabs
+      // 3. Thumbnails stagger in
       tl.call(() => {
-        gsap.set(containerRef.current, {clearProps: 'width,height,padding'})
+        gsap.set(containerRef.current, {clearProps: 'width,height,padding,backgroundColor'})
       })
       tl.add(() => {
         const children = Array.from(tabsRef.current!.children) as HTMLElement[]
         children.forEach((child, i) => {
-          const isActive = child.dataset.indextab === String(active)
-          const targetScale = isActive ? 1.18 : 1
-          gsap.fromTo(child, {scale: 0}, {scale: targetScale, duration: 0.2, ease: 'power2.out', delay: i * 0.04, onComplete: () => {
-            gsap.set(child, {clearProps: 'scale'})
-          }})
+          gsap.set(child, {clearProps: 'scale,transition'})
+          gsap.set(child, {opacity: 0, transition: 'none'})
+          gsap.delayedCall(i * 0.05, () => {
+            gsap.set(child, {opacity: 1})
+          })
         })
       }, '+=0.05')
     }
@@ -492,18 +480,15 @@ function NavBar({
   return (
     <div
       ref={containerRef}
-      className='relative backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-black/4 flex overflow-hidden items-center gap-2 p-2'
+      className='relative backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle flex overflow-hidden items-center gap-2 p-2'
       style={{
         borderRadius: '50px',
-        width: tabsSize.width || 'fit-content',
-        height: tabsSize.height || 'fit-content',
-        backgroundColor: shareMenuOpen ? 'rgba(0,0,0,0.8)' : 'rgba(255,255,255,0.8)',
-        transition: 'background-color 0.3s ease-out',
+        backgroundColor: 'var(--pill-bg)',
       }}
     >
       <div
         className={cn(
-          'absolute top-1/2 -translate-y-1/2 rounded-full bg-black/[0.05] transition-all duration-300 ease-out aspect-square',
+          'absolute top-1/2 -translate-y-1/2 rounded-full bg-hoverslot transition-all duration-300 ease-out aspect-square',
           shareMenuOpen && 'opacity-0 scale-0'
         )}
         style={{left: highlight.left - 4, width: highlight.width + 8}}
@@ -520,6 +505,29 @@ function NavBar({
             onClose={closeProjectTab}
           />
         ))}
+        <div className='w-px h-6 bg-divider mx-1 self-center shrink-0' />
+        <button
+          type='button'
+          onClick={onShareClick}
+          aria-label='Share current page'
+          className='cursor-pointer h-11 w-11 bg-button-solid rounded-full flex justify-center items-center shrink-0'
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='h-4 w-4 text-button-solid-text'>
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+            <polyline points="16 6 12 2 8 6" />
+            <line x1="12" y1="2" x2="12" y2="15" />
+          </svg>
+        </button>
+        <button
+          type='button'
+          onClick={onCloseAll}
+          aria-label='Close all open pages'
+          className='cursor-pointer h-11 w-11 bg-button-solid text-button-solid-text rounded-full flex justify-center items-center shrink-0'
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='h-4 w-4 text-button-solid-text'>
+            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
       </div>
       <div ref={menuRef} className='absolute inset-0 flex flex-col w-full justify-start h-full pb-4' style={{pointerEvents: shareMenuOpen ? 'auto' : 'none'}}>
         <div ref={logoRef} className='flex justify-center items-center flex-1 w-full' style={{opacity: 0}}>
@@ -529,7 +537,7 @@ function NavBar({
           <button
             type='button'
             onClick={onShareConfiguration}
-            className='cursor-pointer text-sm px-4 py-2 hover:bg-white/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white flex items-center justify-between'
+            className='cursor-pointer px-4 py-2 hover:bg-white/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white flex items-center justify-between'
             style={{opacity: 0}}
           >
             <span>Share Configuration</span><span>&rarr;</span>
@@ -538,7 +546,7 @@ function NavBar({
           <button
             type='button'
             onClick={onShareHomePage}
-            className='cursor-pointer text-sm px-4 py-2 hover:bg-white/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white flex items-center justify-between'
+            className='cursor-pointer px-4 py-2 hover:bg-white/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white flex items-center justify-between'
             style={{opacity: 0}}
           >
             <span>Share Home Page</span><span>&rarr;</span>
@@ -547,7 +555,7 @@ function NavBar({
           <button
             type='button'
             onClick={onEnquire}
-            className='cursor-pointer text-sm px-4 py-2 hover:bg-white/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white flex items-center justify-between'
+            className='cursor-pointer px-4 py-2 hover:bg-white/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white flex items-center justify-between'
             style={{opacity: 0}}
           >
             <span>Enquire About Selected Project</span><span>&rarr;</span>
@@ -596,14 +604,14 @@ function Tab({
   return(
     <>
     {index === 1 && (
-      <div className='w-px h-6 bg-black/10 mx-1 self-center shrink-0' />
+      <div className='w-px h-6 bg-divider mx-1 self-center shrink-0' />
     )}
     <div
       ref={ref}
       data-indextab={index}
       onClick={()=>{setActive(index)}}
-      className={ cn(`group relative bg-white rounded-full flex flex-col justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-visible transition-all duration-200 cursor-pointer h-11 w-11`,
-        active === index && 'scale-[1.18] ring-1 ring-black/50'
+      className={ cn(`group relative bg-surface rounded-full flex flex-col justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-visible transition-all duration-200 cursor-pointer h-11 w-11`,
+        active === index && 'scale-[1.18] ring-1 ring-dark-1'
       )}>
       {index > 0 && (
         <button
@@ -613,7 +621,7 @@ function Tab({
             e.stopPropagation()
             onClose(index)
           }}
-          className='absolute top-0 right-0 z-20 h-[18px] w-[18px] translate-x-[10%] -translate-y-[10%] rounded-full bg-black/10 backdrop-blur-[10px] text-td1 text-[11px] leading-none flex items-center justify-center pb-[1px] opacity-0 transition-opacity group-hover:opacity-100'
+          className='absolute top-0 right-0 z-20 h-[18px] w-[18px] translate-x-[10%] -translate-y-[10%] rounded-full bg-hoverslot backdrop-blur-[10px] text-dark-1 text-[11px] leading-none flex items-center justify-center pb-[1px] opacity-0 transition-opacity group-hover:opacity-100'
         >
           ×
         </button>

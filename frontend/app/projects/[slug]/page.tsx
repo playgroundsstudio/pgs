@@ -72,7 +72,7 @@ export default async function ProjectPage(props: Props) {
           <div>
             <div className="pb-6 grid gap-6 mb-6 border-b border-gray-100">
               <div className="max-w-3xl flex flex-col gap-6">
-                <h1 className="text-sm">{project.title}</h1>
+                <h1 className="">{project.title}</h1>
               </div>
               <div className="max-w-3xl flex gap-4 items-center">
                 {project.author && project.author.firstName && project.author.lastName && (

@@ -22,9 +22,9 @@ const Project = ({project}: {project: AllProjectsQueryResult[number]}) => {
         <span className="absolute inset-0 z-10" />
       </Link>
       <div>
-        <h3 className="text-sm mb-4">{title}</h3>
+        <h3 className="mb-4">{title}</h3>
 
-        <p className="line-clamp-3 text-sm max-w-[70ch]">{excerpt}</p>
+        <p className="line-clamp-3 max-w-[70ch]">{excerpt}</p>
       </div>
       <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
         {author && author.firstName && author.lastName && (
@@ -32,7 +32,7 @@ const Project = ({project}: {project: AllProjectsQueryResult[number]}) => {
             <Avatar person={author} small={true} />
           </div>
         )}
-        <time className="text-sm font-mono" dateTime={date}>
+        <time className="font-mono" dateTime={date}>
           <DateComponent dateString={date} />
         </time>
       </div>
@@ -50,8 +50,8 @@ const Projects = ({
   subHeading?: string
 }) => (
   <div>
-    {heading && <h2 className="text-sm">{heading}</h2>}
-    {subHeading && <p className="mt-2 text-sm">{subHeading}</p>}
+    {heading && <h2 className="">{heading}</h2>}
+    {subHeading && <p className="mt-2">{subHeading}</p>}
     <div className="pt-6 space-y-6">{children}</div>
   </div>
 )
