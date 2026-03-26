@@ -7,6 +7,7 @@ type HomeHeaderProps = {
   description: string
   hasOpenProject?: boolean
   scrollRef?: RefObject<HTMLDivElement | null>
+  onAboutClick?: () => void
 }
 
 export default function HomeHeader({
@@ -14,6 +15,7 @@ export default function HomeHeader({
   description,
   hasOpenProject = false,
   scrollRef,
+  onAboutClick,
 }: HomeHeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [isDark, setIsDark] = useState(false)
@@ -51,20 +53,25 @@ export default function HomeHeader({
         <p className=''>
           {title}
           {!hasOpenProject && !scrolled && description ? ` ${description}` : ''}
+          {!hasOpenProject && !scrolled && (
+            <button type='button' onClick={onAboutClick} className='inline-flex items-center justify-center h-[16px] px-[5px] ml-1 bg-dark-2 rounded-full align-middle leading-none cursor-pointer hover:bg-dark-1 transition-colors'>
+              <span className='text-surface text-[10px] tracking-[1px]'>...</span>
+            </button>
+          )}
         </p>
       </div>
-      <div className='px-2 flex gap-1 mt-0.5'>
+      <div className='fixed bottom-4 right-4 z-50 flex gap-1.5'>
         <button
           type='button'
           aria-label='Light mode'
           onClick={() => setTheme('light')}
-          className={`w-2 h-2 rounded-[1px] bg-white border border-black/10 cursor-pointer ${!isDark ? 'ring-1 ring-black/30 ring-offset-1' : ''}`}
+          className={`w-3.5 h-3.5 rounded-[2px] bg-white border border-black/10 cursor-pointer ${!isDark ? 'ring-1 ring-black/30 ring-offset-1' : ''}`}
         />
         <button
           type='button'
           aria-label='Dark mode'
           onClick={() => setTheme('dark')}
-          className={`w-2 h-2 rounded-[1px] bg-[#0b0b0b] cursor-pointer ${isDark ? 'ring-1 ring-white/30 ring-offset-1 ring-offset-surface' : ''}`}
+          className={`w-3.5 h-3.5 rounded-[2px] bg-[#0b0b0b] cursor-pointer ${isDark ? 'ring-1 ring-white/30 ring-offset-1 ring-offset-surface' : ''}`}
         />
       </div>
     </div>

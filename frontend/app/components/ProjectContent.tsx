@@ -97,62 +97,70 @@ export default function ProjectContent({
       <div className='px-2 flex flex-col gap-4'>
         {project ? (
           <>
-            {project.coverImage?.asset?._ref && (
-              <div className='-mx-2 aspect-square overflow-hidden'>
-                <Image
-                  id={project.coverImage.asset._ref}
-                  alt={project.coverImage?.alt || project.title || ''}
-                  className='w-full h-full object-cover'
-                  width={1600}
-                  mode='cover'
-                  hotspot={project.coverImage.hotspot}
-                  crop={project.coverImage.crop}
-                />
-              </div>
-            )}
-            <div className='flex flex-col gap-0'>
-              <h3 className='font-sans text-dark-2'>Title</h3>
-              <h3 className='font-medium font-sans'>{project?.title ?? 'Project Title'}</h3>
-            </div>
-            <div className={spaceAfterMeasurement}>
-              <div className='flex flex-col gap-2'>
+            <div className={cn(
+              'flex flex-col gap-4',
+              mode === 'col' && 'md:flex-row md:justify-between'
+            )}>
+              {project.coverImage?.asset?._ref && (
+                <div className={cn(
+                  '-mx-2 aspect-square overflow-hidden',
+                  mode === 'col' && 'md:mx-0 md:w-1/2 md:shrink-0 md:order-last'
+                )}>
+                  <Image
+                    id={project.coverImage.asset._ref}
+                    alt={project.coverImage?.alt || project.title || ''}
+                    className='w-full h-full object-cover'
+                    width={1600}
+                    mode='cover'
+                    hotspot={project.coverImage.hotspot}
+                    crop={project.coverImage.crop}
+                  />
+                </div>
+              )}
+              <div className='flex flex-col gap-4 max-w-[550px]'>
                 <div className='flex flex-col gap-0'>
-                  <h3 className='font-sans text-dark-2'>Description</h3>
-                  <h3 className='font-medium font-sans'>
-                    {project.description}
-                  </h3>
+                  <h3 className='font-sans text-dark-2'>Title</h3>
+                  <h3 className='font-medium font-sans'>{project?.title ?? 'Project Title'}</h3>
                 </div>
-                <div className='flex gap-2'>
-                <div className='w-full flex flex-col gap-0'>
-                  <h3 className='font-sans text-dark-2'>Tags</h3>
-                  <h3 className='font-medium font-sans'>
-                    {tagItems.length ? (
-                      tagItems.map((tag, tagIndex) => (
-                        <span key={tag.slug}>
-                          <Link href={`/tags/${tag.slug}`} className='hover:text-dark-2'>
-                            {tag.title}
-                          </Link>
-                          {tagIndex < tagItems.length - 1 ? ', ' : ''}
-                        </span>
-                      ))
-                    ) : (
-                      'No tags'
-                    )}
-                  </h3>
-                </div>
-                  <div className='w-full flex flex-col gap-0'>
-                    <h3 className='font-sans text-dark-2'>Date</h3>
+                <div className='flex flex-col gap-2'>
+                  <div className='flex flex-col gap-0'>
+                    <h3 className='font-sans text-dark-2'>Description</h3>
                     <h3 className='font-medium font-sans'>
-                      <DateComponent dateString={project.date} />
+                      {project.description}
                     </h3>
                   </div>
-                </div>
-                {project.excerpt && <p className='opacity-80'>{project.excerpt}</p>}
-                {project.author?.firstName && project.author?.lastName && (
-                  <div className='text-dark-2'>
-                    By {project.author.firstName} {project.author.lastName}
+                  <div className='flex gap-2'>
+                    <div className='w-full flex flex-col gap-0'>
+                      <h3 className='font-sans text-dark-2'>Tags</h3>
+                      <h3 className='font-medium font-sans'>
+                        {tagItems.length ? (
+                          tagItems.map((tag, tagIndex) => (
+                            <span key={tag.slug}>
+                              <Link href={`/tags/${tag.slug}`} className='hover:text-dark-2'>
+                                {tag.title}
+                              </Link>
+                              {tagIndex < tagItems.length - 1 ? ', ' : ''}
+                            </span>
+                          ))
+                        ) : (
+                          'No tags'
+                        )}
+                      </h3>
+                    </div>
+                    <div className='w-full flex flex-col gap-0'>
+                      <h3 className='font-sans text-dark-2'>Date</h3>
+                      <h3 className='font-medium font-sans'>
+                        <DateComponent dateString={project.date} />
+                      </h3>
+                    </div>
                   </div>
-                )}
+                  {project.excerpt && <p className='opacity-80'>{project.excerpt}</p>}
+                  {project.author?.firstName && project.author?.lastName && (
+                    <div className='text-dark-2'>
+                      By {project.author.firstName} {project.author.lastName}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             {normalizedStatus !== 'completed' && (
@@ -169,7 +177,7 @@ export default function ProjectContent({
                   </div>
                   <button
                     type='submit'
-                    className='mt-[var(--font-size-sm--line-height)] w-full bg-dark-1 text-labelcolor h-[var(--font-size-sm--line-height)] hover:opacity-80 transition-opacity'
+                    className='mt-[var(--font-size-sm--line-height)] w-full bg-dark-1 text-labelcolor h-10 hover:opacity-80 transition-opacity'
                   >
                     Sign Up
                   </button>

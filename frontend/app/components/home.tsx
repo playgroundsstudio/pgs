@@ -7,6 +7,7 @@ import type {AllProjectsQueryResult, SettingsQueryResult} from '@/sanity.types'
 import Image from '@/app/components/SanityImage'
 import HomeContent from '@/app/components/HomeContent'
 import ProjectContent from '@/app/components/ProjectContent'
+import AboutContent from '@/app/components/AboutContent'
 import Slot from '@/app/components/Slot'
 import PgsLogoMark from '@/app/components/PgsLogoMark'
  
@@ -298,7 +299,17 @@ export default function Home({
                   setMode={setMode}
                   isActive={active === i}
                 />
-              ):(
+              ) : openProjectIds[i - 1] === '__about__' ? (
+                <AboutContent
+                  mode={mode}
+                  setMode={setMode}
+                  setActive={setActive}
+                  openProjectIds={openProjectIds}
+                  setOpenProjectIds={setOpenProjectIds}
+                  index={i}
+                  isActive={active === i}
+                />
+              ) : (
                 <ProjectContent
                   mode={mode}
                   setMode={setMode}
@@ -307,8 +318,8 @@ export default function Home({
                   setOpenProjectIds={setOpenProjectIds}
                   project={projects.find((p) => p._id === openProjectIds[i - 1])}
                   index={i}
-                  isActive={ active === i } 
-                /> 
+                  isActive={ active === i }
+                />
               )}
           </Slot>
 

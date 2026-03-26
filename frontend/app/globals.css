@@ -103,8 +103,8 @@
 
 @layer base {
   html {
-    font-size: 15px;
-    line-height: 25px;
+    font-size: 13px;
+    line-height: 20px;
   }
 
   h1,
@@ -160,7 +160,7 @@
 
 @theme {
   --font-size-sm: 15px;
-  --font-size-sm--line-height: 25px;
+  --font-size-sm--line-height: 20px;
 
   --shadow-layer: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
 

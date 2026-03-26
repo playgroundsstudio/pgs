@@ -27,7 +27,7 @@ export default function TextCtaBlock({block, mode}: TextCtaBlockProps) {
         <div className='flex items-start'>
           <ResolvedLink
             link={block.button.link}
-            className='bg-dark-1 text-labelcolor px-4 h-[var(--font-size-sm--line-height)] flex items-center hover:opacity-80 transition-opacity'
+            className='bg-dark-1 text-labelcolor px-4 h-10 flex items-center hover:opacity-80 transition-opacity'
           >
             {block.button.buttonText}
           </ResolvedLink>
