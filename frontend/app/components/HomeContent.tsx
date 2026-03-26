@@ -105,7 +105,7 @@ export default function HomeContent({
         {isExpanded ? (
           <div className='flex w-full gap-[20px]'>
             {/* Left column — 1/5 */}
-            <div className='w-1/5 flex flex-col gap-2 border-t border-dark-1 pt-2'>
+            <div className='w-1/5 flex flex-col gap-2 border-t border-dark-1 pt-2 sticky top-12 self-start'>
               <div className='mb-14'>
                 <h3 className='font-sans text-dark-2 text-center'>Featured</h3>
                 <div className='mt-2 w-full px-[10%]'><div className='w-full aspect-[3/4] bg-gradient-to-b from-[#0a1628] to-[#8a9bb5]' /></div>
@@ -160,14 +160,14 @@ export default function HomeContent({
             </div>
 
             {/* Right column — 4/5 */}
-            <div className='w-4/5 flex flex-col gap-2 border-t border-dark-1 pt-2'>
+            <div className='w-4/5 flex flex-col gap-2'>
               <div className='mb-14'>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center justify-between sticky top-12 z-20 border-t border-dark-1 pt-2'>
                   <h3 className='font-sans text-dark-2'>Projects</h3>
                   <div className='flex gap-2'>
-                    <button type='button' onClick={() => setProjectView('list')} className={cn('transition-colors', projectView === 'list' ? 'text-dark-1' : 'text-dark-2 hover:text-dark-1')}>List</button>
+                    <button type='button' onClick={() => setProjectView('list')} className={cn('transition-colors', projectView === 'list' ? 'text-dark-1' : 'text-dark-2 hover:text-dark-1')}>Text</button>
                     <span className='text-dark-2'>/</span>
-                    <button type='button' onClick={() => setProjectView('grid')} className={cn('transition-colors', projectView === 'grid' ? 'text-dark-1' : 'text-dark-2 hover:text-dark-1')}>Grid</button>
+                    <button type='button' onClick={() => setProjectView('grid')} className={cn('transition-colors', projectView === 'grid' ? 'text-dark-1' : 'text-dark-2 hover:text-dark-1')}>Images</button>
                   </div>
                 </div>
 
@@ -236,7 +236,7 @@ export default function HomeContent({
                     ))}
                   </ul>
                 ) : (
-                  <div className='grid grid-cols-3 mt-1 gap-y-8' style={{columnGap: 'calc(15%)'}}>
+                  <div className='grid grid-cols-1 mt-1 gap-y-8 px-[20%]'>
                     {projects.map((project, i) => (
                       <div
                         key={project._id ?? i}
