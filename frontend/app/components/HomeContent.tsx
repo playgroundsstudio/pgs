@@ -3,7 +3,6 @@ import {useRef, useState} from 'react'
 import type {Dispatch, SetStateAction} from 'react'
 import {cn} from '@/app/lib/cn'
 import type {AllProjectsQueryResult} from '@/sanity.types'
-import ContactInquiryBlock from '@/app/components/ContactInquiryBlock'
 import HomeHeader from '@/app/components/HomeHeader'
 import PgsLogoMark from '@/app/components/PgsLogoMark'
 import Image from '@/app/components/SanityImage'
@@ -102,6 +101,11 @@ export default function HomeContent({
 
 
       <div className='pt-32 px-2'>
+        {isExpanded && (
+          <div className='w-full flex items-center justify-center mb-16'>
+            <PgsLogoMark className='w-full h-auto text-dark-1' />
+          </div>
+        )}
         {isExpanded ? (
           <div className='flex w-full gap-[20px]'>
             {/* Left column — 1/5 */}
@@ -121,25 +125,25 @@ export default function HomeContent({
                 <ul>
                   <li className='group flex items-center py-0 cursor-pointer hover:text-dark-2 overflow-hidden'>
                     <div className='w-[100px] shrink-0'><p className='truncate'>Instagram</p></div>
-                    <span className='px-1 text-dark-2'>—</span>
+
                     <div className='flex-1 min-w-0'><p className='truncate'>@play-grounds.studio</p></div>
                     <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
                   </li>
                   <li className='group flex items-center py-0 cursor-pointer hover:text-dark-2 overflow-hidden'>
                     <div className='w-[100px] shrink-0'><p className='truncate'>X</p></div>
-                    <span className='px-1 text-dark-2'>—</span>
+
                     <div className='flex-1 min-w-0'><p className='truncate'>play-grounds-studio</p></div>
                     <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
                   </li>
                   <li className='group flex items-center py-0 cursor-pointer hover:text-dark-2 overflow-hidden'>
                     <div className='w-[100px] shrink-0'><p className='truncate'>Behance</p></div>
-                    <span className='px-1 text-dark-2'>—</span>
+
                     <div className='flex-1 min-w-0'><p className='truncate'>play-grounds-studio</p></div>
                     <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
                   </li>
                   <li className='group flex items-center py-0 cursor-pointer hover:text-dark-2 overflow-hidden'>
                     <div className='w-[100px] shrink-0'><p className='truncate'>Are.na</p></div>
-                    <span className='px-1 text-dark-2'>—</span>
+
                     <div className='flex-1 min-w-0'><p className='truncate'>playgroundsstudio</p></div>
                     <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
                   </li>
@@ -151,24 +155,36 @@ export default function HomeContent({
                 <ul>
                   <li className='group flex items-center py-0 cursor-pointer hover:text-dark-2 overflow-hidden' onClick={() => navigator.clipboard.writeText('+44 7778 4320 987')}>
                     <div className='w-[100px] shrink-0'><p className='truncate'>Phone</p></div>
-                    <span className='px-1 text-dark-2'>—</span>
+
                     <div className='flex-1 min-w-0'><p className='truncate'>+44 7778 4320 987</p></div>
                     <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
                   </li>
                   <li className='group flex items-center py-0 cursor-pointer hover:text-dark-2 overflow-hidden' onClick={() => navigator.clipboard.writeText('info@play-grounds.studio')}>
                     <div className='w-[100px] shrink-0'><p className='truncate'>Email</p></div>
-                    <span className='px-1 text-dark-2'>—</span>
+
                     <div className='flex-1 min-w-0'><p className='truncate'>info@play-grounds.studio</p></div>
                     <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
                   </li>
                 </ul>
               </div>
 
-              <ContactInquiryBlock
-                services={services}
-                showContact={false}
-                inquiryFullWidth={true}
-              />
+              <div className='mb-14'>
+                <h3 className='font-sans text-dark-2'>Forms</h3>
+                <ul>
+                  <li className='group flex items-center py-0 cursor-pointer hover:text-dark-2 overflow-hidden'>
+                    <div className='w-[100px] shrink-0'><p className='truncate'>Enquire</p></div>
+
+                    <div className='flex-1 min-w-0'><p className='truncate'>Kick off a project</p></div>
+                    <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+                  </li>
+                  <li className='group flex items-center py-0 cursor-pointer hover:text-dark-2 overflow-hidden'>
+                    <div className='w-[100px] shrink-0'><p className='truncate'>Newsletter</p></div>
+
+                    <div className='flex-1 min-w-0'><p className='truncate'>Keep in touch</p></div>
+                    <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                  </li>
+                </ul>
+              </div>
             </div>
 
             {/* Right column — 4/5 */}

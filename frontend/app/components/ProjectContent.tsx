@@ -163,27 +163,6 @@ export default function ProjectContent({
                 </div>
               </div>
             </div>
-            {normalizedStatus !== 'completed' && (
-              <div>
-                <h3 className='font-sans text-dark-2'>Newsletter</h3>
-                <form className='flex flex-col gap-px'>
-                  <div className='relative h-[var(--font-size-sm--line-height)] flex items-center border-b-[1.5px] border-solid border-border-form'>
-                    <span className='text-dark-1 pointer-events-none absolute left-0'>Email</span>
-                    <input
-                      type='email'
-                      placeholder='your@email.com'
-                      className='bg-transparent h-full w-full text-right outline-none placeholder:text-dark-2'
-                    />
-                  </div>
-                  <button
-                    type='submit'
-                    className='mt-[var(--font-size-sm--line-height)] w-full bg-dark-1 text-labelcolor h-10 hover:opacity-80 transition-opacity'
-                  >
-                    Sign Up
-                  </button>
-                </form>
-              </div>
-            )}
             {contentBlocks.length > 0 && (
               <div className='flex flex-col gap-2'>
                 {contentBlocks.map((block, blockIndex) => (
