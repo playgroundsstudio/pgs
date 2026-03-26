@@ -135,7 +135,7 @@
 :root {
   --surface: #fff;
   --surface-secondary: #f6f6f8;
-  --text-primary: rgba(0,0,0,0.5);
+  --text-primary: rgba(0,0,0,0.8);
   --text-secondary: rgba(0,0,0,0.3);
   --label-color: #fff;
   --hover-slot: rgba(0,0,0,0.05);
