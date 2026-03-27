@@ -6,11 +6,10 @@ import {moreProjectsQuery, allProjectsQuery} from '@/sanity/lib/queries'
 import {Project as ProjectType, AllProjectsQueryResult} from '@/sanity.types'
 import DateComponent from '@/app/components/Date'
 import OnBoarding from '@/app/components/Onboarding'
-import Avatar from '@/app/components/Avatar'
 import {dataAttr} from '@/sanity/lib/utils'
 
 const Project = ({project}: {project: AllProjectsQueryResult[number]}) => {
-  const {_id, title, slug, excerpt, date, author} = project
+  const {_id, title, slug, excerpt, date} = project
 
   return (
     <article
@@ -27,11 +26,6 @@ const Project = ({project}: {project: AllProjectsQueryResult[number]}) => {
         <p className="line-clamp-3 max-w-[70ch]">{excerpt}</p>
       </div>
       <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
-        {author && author.firstName && author.lastName && (
-          <div className="flex items-center">
-            <Avatar person={author} small={true} />
-          </div>
-        )}
         <time className="font-mono" dateTime={date}>
           <DateComponent dateString={date} />
         </time>

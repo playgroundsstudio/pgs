@@ -20,12 +20,14 @@ type LogoImage = {
 
 export default function Home({
   projects,
+  featuredProject,
   settings,
   services,
   siteTitle,
   siteDescription,
 }: {
   projects: AllProjectsQueryResult
+  featuredProject: AllProjectsQueryResult[number] | null
   settings: SettingsQueryResult
   services: string[]
   siteTitle: string
@@ -244,6 +246,40 @@ export default function Home({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [shareMenuOpen])
 
+  useEffect(() => {
+    const html = document.documentElement
+    const body = document.body
+    const previousBackgroundColor = html.style.backgroundColor
+    const previousBodyBackgroundColor = body.style.backgroundColor
+    const accentColor = getComputedStyle(html).getPropertyValue('--overlay').trim()
+
+    const surfaceColor = getComputedStyle(html).getPropertyValue('--surface').trim()
+
+    if (shareMenuOpen) {
+      // Set current color first so transition has a starting point
+      html.style.backgroundColor = surfaceColor
+      body.style.backgroundColor = surfaceColor
+      // Force reflow so the browser registers the starting value
+      void html.offsetHeight
+      html.style.backgroundColor = accentColor
+      body.style.backgroundColor = accentColor
+    } else {
+      html.style.backgroundColor = surfaceColor
+      body.style.backgroundColor = surfaceColor
+      // After transition completes, remove inline styles
+      const cleanup = setTimeout(() => {
+        html.style.backgroundColor = ''
+        body.style.backgroundColor = ''
+      }, 400)
+      return () => clearTimeout(cleanup)
+    }
+
+    return () => {
+      html.style.backgroundColor = previousBackgroundColor
+      body.style.backgroundColor = previousBodyBackgroundColor
+    }
+  }, [shareMenuOpen])
+
   function handleCloseAllSlots(e: MouseEvent<HTMLButtonElement>) {
     e.stopPropagation()
     setOpenProjectIds([])
@@ -284,12 +320,14 @@ export default function Home({
             setHoveredSlotIndex={setHoveredSlotIndex}
             showDebugUi={showDebugUi}
             hasPadding={hasPadding}
+            blurred={shareMenuOpen}
           >
                   
               { i < 1 ? (
                 <HomeContent
                   setActive={setActive}
                   projects={projects}
+                  featuredProject={featuredProject}
                   openProjectIds={openProjectIds}
                   setOpenProjectIds={setOpenProjectIds}
                   services={services}
@@ -376,6 +414,7 @@ function NavBar({
   onShareHomePage: () => void
   onEnquire: () => void
 }) {
+  const CLOSED_NAV_HEIGHT = 60
   const containerRef = useRef<HTMLDivElement>(null)
   const tabsRef = useRef<HTMLDivElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -435,41 +474,59 @@ function NavBar({
 
     const tl = gsap.timeline()
     const restoreWidth = savedTabsSize.current.width || 'auto'
-    const restoreHeight = savedTabsSize.current.height || 'auto'
+    const restoreHeight = CLOSED_NAV_HEIGHT
+    const rootStyles = getComputedStyle(document.documentElement)
+    const pillColor = rootStyles.getPropertyValue('--pill-bg').trim()
 
     if (shareMenuOpen) {
       // 1. Thumbnails disappear instantly (override CSS transition)
       tl.set(tabsRef.current!.children, {scale: 0, transition: 'none'})
-      // 2. Height, width and bg color change
+      // 2. Width expands first
       tl.to(containerRef.current, {
-        width: 300, height: 400, borderRadius: '10px', padding: 0,
-        backgroundColor: 'rgba(0,0,0,0.8)',
+        width: 300,
+        duration: 0.22, ease: 'power2.out',
+      })
+      // 3. Radius changes second
+      tl.to(containerRef.current, {
+        borderRadius: '10px',
+        duration: 0.18, ease: 'power2.out',
+      })
+      // 4. Height follows, with the visual rest state
+      tl.to(containerRef.current, {
+        height: 400, padding: 0,
         duration: 0.3, ease: 'power2.out',
       })
-      // 3. Logo staggers in
+      // 5. Logo appears after the container finishes
       tl.fromTo(logoRef.current,
         {opacity: 0, y: -8},
-        {opacity: 1, y: 0, duration: 0.4, ease: 'power2.out'},
-        '+=0.1'
+        {opacity: 1, y: 0, duration: 0.4, ease: 'power2.out'}
       )
-      // 4. Links stagger in
+      // 6. Links stagger in after the logo starts
       tl.fromTo(menuItemsRef.current!.children,
         {opacity: 0, y: -8},
         {opacity: 1, y: 0, duration: 0.3, ease: 'power2.out', stagger: 0.07},
-        '-=0.1'
+        '+=0.05'
       )
     } else {
       // 1. Logo and links disappear instantly
       tl.set(menuItemsRef.current!.children, {opacity: 0, y: -8})
       tl.set(logoRef.current, {opacity: 0, y: -8})
-      // 2. Height, width and bg color change
+      // 2. Height collapses first
       tl.to(containerRef.current, {
-        width: restoreWidth, height: restoreHeight,
-        borderRadius: '50px', padding: 8,
-        backgroundColor: 'var(--pill-bg)',
+        height: restoreHeight, backgroundColor: pillColor,
         duration: 0.3, ease: 'power2.out',
       })
-      // 3. Thumbnails stagger in
+      // 3. Radius restores second
+      tl.to(containerRef.current, {
+        borderRadius: '20px',
+        duration: 0.18, ease: 'power2.out',
+      })
+      // 4. Width follows and restores the pill styling
+      tl.to(containerRef.current, {
+        width: restoreWidth, padding: 8,
+        duration: 0.22, ease: 'power2.out',
+      })
+      // 5. Thumbnails stagger in
       tl.call(() => {
         gsap.set(containerRef.current, {clearProps: 'width,height,padding,backgroundColor'})
       })
@@ -491,20 +548,25 @@ function NavBar({
   return (
     <div
       ref={containerRef}
-      className='relative backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle flex overflow-hidden items-center gap-2 p-2'
+      className='relative h-[60px] bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-2 p-2'
       style={{
-        borderRadius: '50px',
-        backgroundColor: 'var(--pill-bg)',
+        borderRadius: '20px',
       }}
     >
       <div
         className={cn(
-          'absolute top-1/2 -translate-y-1/2 rounded-full bg-hoverslot transition-all duration-300 ease-out aspect-square',
+          'pointer-events-none absolute inset-0 z-0 bg-surface2 backdrop-blur-[40px] transition-opacity duration-300 ease-out',
+          shareMenuOpen ? 'opacity-100' : 'opacity-0'
+        )}
+      />
+      <div
+        className={cn(
+          'absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-hoverslot transition-all duration-300 ease-out aspect-square',
           shareMenuOpen && 'opacity-0 scale-0'
         )}
         style={{left: highlight.left - 4, width: highlight.width + 8}}
       />
-      <div ref={tabsRef} className='flex items-center gap-2 origin-center'>
+      <div ref={tabsRef} className='relative z-10 flex items-center gap-2 origin-center'>
         {Array.from({length: slots}).map((_, i) => (
           <Tab
             key={i}
@@ -516,6 +578,7 @@ function NavBar({
             onClose={closeProjectTab}
           />
         ))}
+        <div className='ml-auto' />
         <div className='w-px h-6 bg-divider mx-1 self-center shrink-0' />
         <button
           type='button'
@@ -540,33 +603,33 @@ function NavBar({
           </svg>
         </button>
       </div>
-      <div ref={menuRef} className='absolute inset-0 flex flex-col w-full justify-start h-full pb-4' style={{pointerEvents: shareMenuOpen ? 'auto' : 'none'}}>
+      <div ref={menuRef} className='absolute inset-0 z-10 flex flex-col w-full justify-start h-full pb-4' style={{pointerEvents: shareMenuOpen ? 'auto' : 'none'}}>
         <div ref={logoRef} className='flex justify-center items-center flex-1 w-full' style={{opacity: 0}}>
-          <PgsLogoMark className='h-16 w-auto text-white' />
+          <PgsLogoMark className='h-16 w-auto text-white dark:text-black' />
         </div>
         <div ref={menuItemsRef} className='flex flex-col w-full'>
           <button
             type='button'
             onClick={onShareConfiguration}
-            className='cursor-pointer px-4 py-2 hover:bg-white/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white flex items-center justify-between'
+            className='cursor-pointer px-4 py-2 hover:bg-white/10 dark:hover:bg-black/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white dark:text-black flex items-center justify-between'
             style={{opacity: 0}}
           >
             <span>Share Configuration</span><span>&rarr;</span>
           </button>
-          <div className='h-px w-full bg-white/20 shrink-0' style={{opacity: 0}} />
+          <div className='h-px w-full bg-white/20 dark:bg-black/20 shrink-0' style={{opacity: 0}} />
           <button
             type='button'
             onClick={onShareHomePage}
-            className='cursor-pointer px-4 py-2 hover:bg-white/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white flex items-center justify-between'
+            className='cursor-pointer px-4 py-2 hover:bg-white/10 dark:hover:bg-black/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white dark:text-black flex items-center justify-between'
             style={{opacity: 0}}
           >
             <span>Share Home Page</span><span>&rarr;</span>
           </button>
-          <div className='h-px w-full bg-white/20 shrink-0' style={{opacity: 0}} />
+          <div className='h-px w-full bg-white/20 dark:bg-black/20 shrink-0' style={{opacity: 0}} />
           <button
             type='button'
             onClick={onEnquire}
-            className='cursor-pointer px-4 py-2 hover:bg-white/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white flex items-center justify-between'
+            className='cursor-pointer px-4 py-2 hover:bg-white/10 dark:hover:bg-black/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white dark:text-black flex items-center justify-between'
             style={{opacity: 0}}
           >
             <span>Enquire About Selected Project</span><span>&rarr;</span>
@@ -621,7 +684,7 @@ function Tab({
       ref={ref}
       data-indextab={index}
       onClick={()=>{setActive(index)}}
-      className={ cn(`group relative bg-surface rounded-full flex flex-col justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-visible transition-all duration-200 cursor-pointer h-11 w-11`,
+      className={ cn(`group relative rounded-full flex flex-col justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-visible transition-all duration-200 cursor-pointer h-11 w-11`,
         active === index && 'scale-[1.18] ring-1 ring-dark-1'
       )}>
       {index > 0 && (

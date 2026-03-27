@@ -72,7 +72,7 @@ export default function ProjectContent({
   return (
     <div
       className={cn(
-        'text-dark-1 h-full bg-surface overflow-hidden hide-scrollbar ',
+        'text-dark-1 h-full overflow-hidden hide-scrollbar ',
         isActive ? 'overflow-scroll' : 'overflow-hidden pointer-events-none'
       )}
     >
@@ -155,11 +155,6 @@ export default function ProjectContent({
                     </div>
                   </div>
                   {project.excerpt && <p className='opacity-80'>{project.excerpt}</p>}
-                  {project.author?.firstName && project.author?.lastName && (
-                    <div className='text-dark-2'>
-                      By {project.author.firstName} {project.author.lastName}
-                    </div>
-                  )}
                 </div>
               </div>
             </div>

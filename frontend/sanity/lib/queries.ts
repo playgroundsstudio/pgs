@@ -102,6 +102,17 @@ export const allProjectsQuery = defineQuery(`
   }
 `)
 
+export const homepageQuery = defineQuery(`
+  *[_type == "homepage"][0]{
+    "featuredProject": featuredProject->{
+      ${projectFields}
+    },
+    "projectList": projectList[]->{
+      ${projectFields}
+    }
+  }
+`)
+
 export const moreProjectsQuery = defineQuery(`
   *[_type == "project" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {
     ${projectFields}

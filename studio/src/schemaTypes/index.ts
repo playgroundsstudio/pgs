@@ -6,6 +6,7 @@ import {callToAction} from './objects/callToAction'
 import {infoSection} from './objects/infoSection'
 import {settings} from './singletons/settings'
 import {aboutPgs} from './singletons/aboutPgs'
+import {homepage} from './singletons/homepage'
 import {link} from './objects/link'
 import {blockContent} from './objects/blockContent'
 import button from './objects/button'
@@ -21,6 +22,7 @@ export const schemaTypes = [
   // Singletons
   settings,
   aboutPgs,
+  homepage,
   // Documents
   page,
   project,

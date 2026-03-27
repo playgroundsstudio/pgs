@@ -102,9 +102,10 @@
 }
 
 @layer base {
-  html {
+  html, body {
     font-size: 13px;
     line-height: 20px;
+    transition: background-color 400ms ease;
   }
 
   h1,
@@ -135,6 +136,10 @@
 :root {
   --surface: #fff;
   --surface-secondary: #f6f6f8;
+  --surface2: rgba(0,0,0,0.8);
+  --accent: #14b8a6;
+  --overlay: rgba(200,200,200,1);
+  --overlay-blur: 2px;
   --text-primary: rgba(0,0,0,0.8);
   --text-secondary: rgba(0,0,0,0.3);
   --label-color: #fff;
@@ -151,17 +156,21 @@
 .dark {
   --surface: #0b0b0b;
   --surface-secondary: #1b1d27;
+  --surface2: rgba(255,255,255,0.8);
+  --accent: #ff2bd6;
+  --overlay:  rgba(20,20,20,1);
+  --overlay-blur: 2px;
   --text-primary: rgba(255,255,255,0.9);
   --text-secondary: rgba(255,255,255,0.5);
   --label-color: #0b0b0b;
   --hover-slot: rgba(255,255,255,0.05);
   --border-subtle: rgba(255,255,255,0.04);
   --border-form: rgba(255,255,255,0.1);
-  --pill-bg: rgba(50,50,50,1);
+  --pill-bg: rgba(50,50,50,0.8);
   --disabled-page: #d0d0d0;
   --divider: rgba(255,255,255,0.1);
-  --button-solid: rgba(255,255,255,0.8);
-  --button-solid-text: #0b0b0b;
+  --button-solid: rgba(50,50,50,1);
+  --button-solid-text: #fff;
 }
 
 @theme {
@@ -209,6 +218,9 @@
 
   --color-surface: var(--surface);
   --color-surface-secondary: var(--surface-secondary);
+  --color-surface2: var(--surface2);
+  --color-accent: var(--accent);
+  --color-overlay: var(--overlay);
   --color-pill: var(--pill-bg);
   --color-border-subtle: var(--border-subtle);
   --color-border-form: var(--border-form);
@@ -235,4 +247,3 @@
     height: 0;
   }
 }
-

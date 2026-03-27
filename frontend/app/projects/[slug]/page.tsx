@@ -3,7 +3,6 @@ import {notFound} from 'next/navigation'
 import {type PortableTextBlock} from 'next-sanity'
 import {Suspense} from 'react'
 
-import Avatar from '@/app/components/Avatar'
 import {MoreProjects} from '@/app/components/Projects'
 import PortableText from '@/app/components/PortableText'
 import Image from '@/app/components/SanityImage'
@@ -45,10 +44,6 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
   const ogImage = resolveOpenGraphImage(project?.coverImage)
 
   return {
-    authors:
-      project?.author?.firstName && project?.author?.lastName
-        ? [{name: `${project.author.firstName} ${project.author.lastName}`}]
-        : [],
     title: project?.title,
     description: project?.excerpt,
     openGraph: {
@@ -65,6 +60,8 @@ export default async function ProjectPage(props: Props) {
     return notFound()
   }
 
+  const content = (project.content ?? []) as PortableTextBlock[]
+
   return (
     <>
       <div className="">
@@ -73,11 +70,6 @@ export default async function ProjectPage(props: Props) {
             <div className="pb-6 grid gap-6 mb-6 border-b border-gray-100">
               <div className="max-w-3xl flex flex-col gap-6">
                 <h1 className="">{project.title}</h1>
-              </div>
-              <div className="max-w-3xl flex gap-4 items-center">
-                {project.author && project.author.firstName && project.author.lastName && (
-                  <Avatar person={project.author} date={project.date} />
-                )}
               </div>
             </div>
             <article className="gap-6 grid max-w-4xl">
@@ -95,10 +87,10 @@ export default async function ProjectPage(props: Props) {
                   />
                 )}
               </div>
-              {project.content?.length && (
+              {content.length > 0 && (
                 <PortableText
                   className="max-w-2xl prose-headings:font-medium prose-headings:tracking-tight"
-                  value={project.content as PortableTextBlock[]}
+                  value={content}
                 />
               )}
             </article>

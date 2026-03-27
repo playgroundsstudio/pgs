@@ -1,5 +1,6 @@
 'use client'
 import {useEffect, useState} from 'react'
+import {createPortal} from 'react-dom'
 import type {RefObject} from 'react'
 
 type HomeHeaderProps = {
@@ -19,9 +20,11 @@ export default function HomeHeader({
 }: HomeHeaderProps) {
   const [scrolled, setScrolled] = useState(false)
   const [isDark, setIsDark] = useState(false)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains('dark'))
+    setMounted(true)
   }, [])
 
   function setTheme(theme: 'light' | 'dark') {
@@ -49,31 +52,36 @@ export default function HomeHeader({
 
   return (
     <div className='sticky top-1 z-10 h-[var(--font-size-sm--line-height)] mt-1'>
-      <div className={`px-2 ${scrolled ? '' : 'w-full md:w-1/2'}`}>
+      <div className={`px-2 ${scrolled ? '' : 'w-full lg:w-1/2 xl:w-1/3'}`}>
         <p className=''>
           {title}
           {!hasOpenProject && !scrolled && description ? ` ${description}` : ''}
           {!hasOpenProject && !scrolled && (
             <button type='button' onClick={onAboutClick} className='inline-flex items-center justify-center h-[16px] px-[5px] ml-1 bg-dark-2 rounded-full align-middle leading-none cursor-pointer hover:bg-dark-1 transition-colors'>
-              <span className='text-surface text-[10px] tracking-[1px]'>...</span>
+              <span className='relative -top-[2px] text-surface text-[10px] tracking-[1px] leading-none'>...</span>
             </button>
           )}
         </p>
       </div>
-      <div className='fixed bottom-4 right-4 z-50 flex gap-1.5'>
-        <button
-          type='button'
-          aria-label='Light mode'
-          onClick={() => setTheme('light')}
-          className={`w-3.5 h-3.5 rounded-[2px] bg-white border border-black/10 cursor-pointer ${!isDark ? 'ring-1 ring-black/30 ring-offset-1' : ''}`}
-        />
-        <button
-          type='button'
-          aria-label='Dark mode'
-          onClick={() => setTheme('dark')}
-          className={`w-3.5 h-3.5 rounded-[2px] bg-[#0b0b0b] cursor-pointer ${isDark ? 'ring-1 ring-white/30 ring-offset-1 ring-offset-surface' : ''}`}
-        />
-      </div>
+      {mounted
+        ? createPortal(
+            <div className='pointer-events-auto fixed bottom-4 right-4 z-[10000] isolate flex gap-1.5'>
+              <button
+                type='button'
+                aria-label='Light mode'
+                onClick={() => setTheme('light')}
+                className={`w-3.5 h-3.5 rounded-[2px] bg-white border border-black/10 cursor-pointer ${!isDark ? 'ring-1 ring-black/30 ring-offset-1' : ''}`}
+              />
+              <button
+                type='button'
+                aria-label='Dark mode'
+                onClick={() => setTheme('dark')}
+                className={`w-3.5 h-3.5 rounded-[2px] bg-[#0b0b0b] cursor-pointer ${isDark ? 'ring-1 ring-white/30 ring-offset-1 ring-offset-surface' : ''}`}
+              />
+            </div>,
+            document.body
+          )
+        : null}
     </div>
   )
 }

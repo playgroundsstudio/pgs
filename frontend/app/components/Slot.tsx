@@ -15,6 +15,7 @@ type SlotProps = {
   isActive: boolean
   showDebugUi: boolean
   hasPadding: boolean
+  blurred?: boolean
 }
 
 export default function Slot({
@@ -29,6 +30,7 @@ export default function Slot({
   isActive,
   showDebugUi,
   hasPadding,
+  blurred,
 }: SlotProps) {
   const ref = useRef<HTMLDivElement>(null)
   const numActive = Number(active)
@@ -82,15 +84,18 @@ export default function Slot({
         isVisable ? 'block' : 'hidden',
         hasPadding && index === 0 && length > 0 &&  'pl-0 pr-0',
         hasPadding && index != 0 && length > 0 &&  'pl-0 pr-0',
-        'relative transition-radius h-full w-full min-w-[80vw] lg:min-w-[50vw] flex justify-center'
+        'relative h-full w-full min-w-[80vw] lg:min-w-[50vw] flex justify-center transition-[filter] duration-400 ease-out',
+        blurred && 'blur-[var(--overlay-blur)]'
       )}
     >
       {!slotActive && (
         <div
-          className='absolute inset-0 z-20 bg-disabled-page/20 hover:bg-disabled-page/30 transition-colors pointer-events-auto cursor-pointer flex items-center justify-center text-white/80'
+          className='absolute inset-0 z-20 bg-disabled-page/20 hover:bg-disabled-page/30 transition-colors pointer-events-auto cursor-pointer flex items-center justify-center'
           onClick={handleClick}
         >
-          <p>Click to activate</p>
+          <div className='bg-black/20 backdrop-blur-[2px] text-white px-3 py-1 rounded-full'>
+            <p>Activate</p>
+          </div>
         </div>
       )}
       {showDebugUi && (
