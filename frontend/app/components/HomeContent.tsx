@@ -1,6 +1,7 @@
 'use client'
 import {useEffect, useRef, useState} from 'react'
 import type {Dispatch, SetStateAction} from 'react'
+import gsap from 'gsap'
 import {cn} from '@/app/lib/cn'
 import type {AllProjectsQueryResult} from '@/sanity.types'
 import HomeHeader from '@/app/components/HomeHeader'
@@ -63,8 +64,67 @@ export default function HomeContent({
 
   const [expandedTagsId, setExpandedTagsId] = useState<string | null>(null)
   const [hoveredProjectIndex, setHoveredProjectIndex] = useState<number | null>(null)
+  const [showreelExpanded, setShowreelExpanded] = useState(false)
+  const showreelContainerRef = useRef<HTMLDivElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
   const projectListRef = useRef<HTMLUListElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const container = showreelContainerRef.current
+    const overlay = overlayRef.current
+    if (!container || !overlay) return
+
+    if (showreelExpanded) {
+      const rect = container.getBoundingClientRect()
+      // Snapshot current position
+      gsap.set(container, {
+        position: 'fixed',
+        top: rect.top,
+        left: rect.left,
+        width: rect.width,
+        zIndex: 9999,
+      })
+      // Animate to center
+      gsap.to(container, {
+        top: '50%',
+        left: '50%',
+        xPercent: -50,
+        yPercent: -50,
+        width: '90vw',
+        duration: 0.5,
+        ease: 'power3.out',
+      })
+      // Fade in overlay
+      gsap.to(overlay, {
+        opacity: 1,
+        duration: 0.3,
+        ease: 'power2.out',
+        onStart: () => { overlay.style.pointerEvents = 'auto' },
+      })
+    } else {
+      // Animate back
+      gsap.to(container, {
+        top: '',
+        left: '',
+        xPercent: 0,
+        yPercent: 0,
+        width: 350,
+        duration: 0.4,
+        ease: 'power3.inOut',
+        onComplete: () => {
+          gsap.set(container, {clearProps: 'position,top,left,width,zIndex,xPercent,yPercent'})
+        },
+      })
+      // Fade out overlay
+      gsap.to(overlay, {
+        opacity: 0,
+        duration: 0.3,
+        ease: 'power2.in',
+        onComplete: () => { overlay.style.pointerEvents = 'none' },
+      })
+    }
+  }, [showreelExpanded])
 
   const handleClickMode = () => {
     if (mode === 'row') {
@@ -80,7 +140,11 @@ export default function HomeContent({
     <div className='mb-14'>
       <h3 className='font-sans text-dark-2'>Showreel</h3>
       <div className='mt-2'>
-        <div className='w-[350px] overflow-hidden rounded-[1cqi] shadow-[0_8px_30px_rgba(0,0,0,0.12)]'>
+        <div
+          ref={showreelContainerRef}
+          onClick={() => setShowreelExpanded((v) => !v)}
+          className='w-[350px] overflow-hidden rounded-[1cqi] shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer'
+        >
           <MuxPlayer
             theme='minimal'
             playbackId={showreelPlaybackId}
@@ -167,6 +231,13 @@ export default function HomeContent({
 
   return (
     <div ref={scrollRef} className='relative h-full w-full overflow-auto'>
+      {/* Showreel overlay backdrop */}
+      <div
+        ref={overlayRef}
+        onClick={() => setShowreelExpanded(false)}
+        className='fixed inset-0 bg-black/50 z-[9998]'
+        style={{opacity: 0, pointerEvents: 'none'}}
+      />
       <div
         className={cn(
           'absolute top-4 right-4 z-40 flex items-center gap-3 px-4 py-2 rounded-full bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle transition-all duration-300 ease-out',

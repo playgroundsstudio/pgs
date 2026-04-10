@@ -518,7 +518,7 @@ function NavBar({
       })
       // 3. Radius restores second
       tl.to(containerRef.current, {
-        borderRadius: '20px',
+        borderRadius: '60px',
         duration: 0.18, ease: 'power2.out',
       })
       // 4. Width follows and restores the pill styling
@@ -550,7 +550,7 @@ function NavBar({
       ref={containerRef}
       className='relative h-[60px] bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-2 p-2'
       style={{
-        borderRadius: '20px',
+        borderRadius: '60px',
       }}
     >
       <div
