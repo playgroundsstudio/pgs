@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@mux/mux-player':
+        specifier: ^3.11.7
+        version: 3.11.7(react@19.2.4)
       '@mux/mux-player-react':
         specifier: ^3.11.6
         version: 3.11.7(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)

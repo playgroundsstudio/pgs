@@ -197,7 +197,7 @@
   --color-gray-900: #1b1d27;
   --color-gray-950: #13141b;
 
-  --border-color-default: oklch(0.65 0.02 240);
+  --border-color-default: transparent;
 
    --color-stroke-one: #eeeef1;
 

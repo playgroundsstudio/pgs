@@ -1,5 +1,6 @@
 import Image from '@/app/components/SanityImage'
 import MuxPlayer from '@mux/mux-player-react'
+import '@mux/mux-player/themes/minimal'
 
 type MediaItem = {
   mediaType?: 'image' | 'video'
@@ -33,12 +34,13 @@ export default function MediaRenderer({media}: MediaRendererProps) {
     return (
       <div className='w-full overflow-hidden' style={aspectStyle}>
         <MuxPlayer
+          theme='minimal'
           playbackId={media.video.asset.playbackId}
           streamType='on-demand'
           autoPlay='muted'
           loop
           muted
-          style={{width: '100%', height: '100%', ...(aspectStyle || {aspectRatio: '16/9'})}}
+          style={{width: '100%', height: '100%', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none', ...(aspectStyle || {aspectRatio: '16/9'})} as React.CSSProperties}
         />
       </div>
     )

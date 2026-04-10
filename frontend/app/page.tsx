@@ -34,16 +34,13 @@ export default async function Page() {
     ? ((homepage as {projectList?: AllProjectsQueryResult}).projectList ?? [])
     : []
   const projects = homepageProjects.length > 0 ? homepageProjects : allProjects
-  const featuredProject =
-    ((homepage as {featuredProject?: AllProjectsQueryResult[number] | null} | null)?.featuredProject ?? null) ||
-    projects[0] ||
-    null
+  const showreel = (homepage as {showreel?: {asset?: {playbackId?: string}} | null} | null)?.showreel ?? null
 
   return (
     <>
       <Home
         projects={projects}
-        featuredProject={featuredProject}
+        showreel={showreel}
         settings={settings}
         services={services}
         siteTitle={siteTitle}

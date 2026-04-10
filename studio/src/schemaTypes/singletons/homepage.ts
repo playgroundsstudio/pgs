@@ -8,11 +8,10 @@ export const homepage = defineType({
   icon: HomeIcon,
   fields: [
     defineField({
-      name: 'featuredProject',
-      title: 'Featured Project',
-      type: 'reference',
-      to: [{type: 'project'}],
-      description: 'Project used in the featured panel on the homepage.',
+      name: 'showreel',
+      title: 'Showreel',
+      type: 'mux.video',
+      description: 'A single showreel video displayed on the homepage.',
     }),
     defineField({
       name: 'projectList',

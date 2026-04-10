@@ -20,14 +20,14 @@ type LogoImage = {
 
 export default function Home({
   projects,
-  featuredProject,
+  showreel,
   settings,
   services,
   siteTitle,
   siteDescription,
 }: {
   projects: AllProjectsQueryResult
-  featuredProject: AllProjectsQueryResult[number] | null
+  showreel: {asset?: {playbackId?: string}} | null
   settings: SettingsQueryResult
   services: string[]
   siteTitle: string
@@ -327,7 +327,7 @@ export default function Home({
                 <HomeContent
                   setActive={setActive}
                   projects={projects}
-                  featuredProject={featuredProject}
+                  showreel={showreel}
                   openProjectIds={openProjectIds}
                   setOpenProjectIds={setOpenProjectIds}
                   services={services}

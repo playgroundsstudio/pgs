@@ -1,16 +1,17 @@
 'use client'
-import {useEffect, useMemo, useRef, useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import type {Dispatch, SetStateAction} from 'react'
 import {cn} from '@/app/lib/cn'
 import type {AllProjectsQueryResult} from '@/sanity.types'
 import HomeHeader from '@/app/components/HomeHeader'
 import PgsLogoMark from '@/app/components/PgsLogoMark'
-import Image from '@/app/components/SanityImage'
+import MuxPlayer from '@mux/mux-player-react'
+import '@mux/mux-player/themes/minimal'
 
 type HomeContentProps = {
   setActive: Dispatch<SetStateAction<number>>
   projects: AllProjectsQueryResult
-  featuredProject: AllProjectsQueryResult[number] | null
+  showreel: {asset?: {playbackId?: string}} | null
   openProjectIds: string[]
   setOpenProjectIds: Dispatch<SetStateAction<string[]>>
   services: string[]
@@ -24,7 +25,7 @@ type HomeContentProps = {
 export default function HomeContent({
   setActive,
   projects,
-  featuredProject,
+  showreel,
   openProjectIds,
   setOpenProjectIds,
   services,
@@ -62,7 +63,6 @@ export default function HomeContent({
 
   const [expandedTagsId, setExpandedTagsId] = useState<string | null>(null)
   const [hoveredProjectIndex, setHoveredProjectIndex] = useState<number | null>(null)
-  const [featuredPage, setFeaturedPage] = useState(0)
   const projectListRef = useRef<HTMLUListElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
@@ -74,83 +74,26 @@ export default function HomeContent({
     }
   }
 
-  const featuredSlides = useMemo(() => {
-    const blocks = Array.isArray(featuredProject?.contentBlocks)
-      ? featuredProject.contentBlocks.slice(0, 3)
-      : []
+  const showreelPlaybackId = showreel?.asset?.playbackId
 
-    const blockSlides = blocks.map((block) => {
-      if (block?._type === 'centerMedia') {
-        return block.media ?? null
-      }
-
-      if (block?._type === 'sideBySideMedia') {
-        if (block.highlighted === 'right') return block.rightMedia ?? block.leftMedia ?? null
-        return block.leftMedia ?? block.rightMedia ?? null
-      }
-
-      return null
-    })
-
-    if (featuredProject?.coverImage) {
-      return [
-        {
-          mediaType: 'image',
-          image: featuredProject.coverImage,
-        },
-        ...blockSlides.filter(Boolean),
-      ]
-    }
-
-    return blockSlides.filter(Boolean)
-  }, [featuredProject])
-
-  const activeFeaturedSlide = featuredSlides[featuredPage] ?? featuredSlides[0] ?? null
-
-  useEffect(() => {
-    if (featuredPage >= featuredSlides.length) {
-      setFeaturedPage(0)
-    }
-  }, [featuredPage, featuredSlides.length])
-
-  const featuredContent = (
+  const showreelContent = showreelPlaybackId ? (
     <div className='mb-14'>
-      <h3 className='font-sans text-dark-2 text-center'>Featured</h3>
-      <div className='mt-2 w-full px-[10%]'>
-        <div className='flex w-full aspect-[3/4] items-start justify-center overflow-hidden'>
-          {activeFeaturedSlide?.image?.asset?._ref ? (
-            <Image
-              id={activeFeaturedSlide.image.asset._ref}
-              alt={activeFeaturedSlide.image?.alt || featuredProject?.title || ''}
-              className='h-full w-auto max-w-full object-contain'
-              width={1200}
-              mode='contain'
-              hotspot={activeFeaturedSlide.image.hotspot}
-              crop={activeFeaturedSlide.image.crop}
-            />
-          ) : null}
+      <h3 className='font-sans text-dark-2'>Showreel</h3>
+      <div className='mt-2'>
+        <div className='w-[350px] overflow-hidden rounded-[1cqi] shadow-[0_8px_30px_rgba(0,0,0,0.12)]'>
+          <MuxPlayer
+            theme='minimal'
+            playbackId={showreelPlaybackId}
+            streamType='on-demand'
+            autoPlay='muted'
+            loop
+            muted
+            style={{width: '100%', display: 'block', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none'} as React.CSSProperties}
+          />
         </div>
       </div>
-      <div className='mt-1 flex items-center justify-center gap-3 px-[10%]'>
-        {featuredSlides.map((_, index) => (
-          <button
-            key={index}
-            type='button'
-            className={cn(
-              'transition-colors',
-              featuredPage === index ? 'text-dark-1' : 'text-dark-2 hover:text-dark-1'
-            )}
-            onClick={(e) => {
-              e.stopPropagation()
-              setFeaturedPage(index)
-            }}
-          >
-            {`${index + 1}.`}
-          </button>
-        ))}
-      </div>
     </div>
-  )
+  ) : null
 
   const sidebarMetaContent = (
     <>
@@ -258,14 +201,14 @@ export default function HomeContent({
           </div>
         )}
         {isExpanded ? (
-          <div className='relative z-10 flex flex-col w-full gap-[20px] lg:flex-row'>
-            <div className='w-full shrink-0 border-t border-dark-1 pt-2 lg:hidden'>
-              {featuredContent}
+          <div className='relative z-10 flex flex-col w-full divide-y divide-dark-1 lg:divide-y-0 lg:flex-row lg:gap-[20px]'>
+            <div className='w-full shrink-0 pt-2 pb-[20px] lg:pb-0 lg:hidden'>
+              {showreelContent}
             </div>
 
             <div className='hidden shrink-0 lg:block lg:w-[350px] xl:w-[550px]'>
-              <div className='flex flex-col gap-2 border-t border-dark-1 pt-2 self-start lg:sticky lg:top-12'>
-                {featuredContent}
+              <div className='flex flex-col gap-2 pt-2 self-start lg:sticky lg:top-12'>
+                {showreelContent}
                 {sidebarMetaContent}
               </div>
             </div>
@@ -273,7 +216,7 @@ export default function HomeContent({
             {/* Right column — fills remaining space */}
             <div className='flex-1 min-w-0 flex flex-col gap-2'>
               <div className='mb-14'>
-                <div className='flex items-center justify-between sticky top-12 z-20 border-t border-dark-1 pt-2'>
+                <div className='flex items-center justify-between sticky top-12 z-20 pt-2'>
                   <h3 className='font-sans text-dark-2'>Projects</h3>
                 </div>
 
@@ -343,7 +286,7 @@ export default function HomeContent({
               </div>
             </div>
 
-            <div className='w-full border-t border-dark-1 pt-2 lg:hidden'>
+            <div className='w-full pt-2 lg:hidden'>
               {sidebarMetaContent}
             </div>
           </div>
