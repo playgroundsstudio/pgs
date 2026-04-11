@@ -181,7 +181,7 @@ export default function HomeContent({
             muted
             style={{width: '100%', display: 'block', borderRadius: 0, '--controls': 'none', '--media-object-fit': 'cover', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none'} as any}
           />
-          <div className='absolute inset-0 bg-black/0 group-hover/showreel:bg-black/10 transition-colors duration-200 pointer-events-none rounded-lg' />
+          <div className='absolute inset-0 bg-black/10 group-hover/showreel:bg-black/20 transition-colors duration-200 pointer-events-none rounded-lg' />
         </div>
       </div>
     </div>
