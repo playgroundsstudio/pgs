@@ -86,7 +86,7 @@ export default function HomeContent({
     const mq = window.matchMedia('(min-width: 1024px)')
     if (!mq.matches) return
 
-    const timeout = setTimeout(() => setPipVisible(true), 2000)
+    const timeout = setTimeout(() => setPipVisible(true), 1000)
 
     const el = scrollRef.current
     if (!el) return
