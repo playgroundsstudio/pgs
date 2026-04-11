@@ -67,7 +67,12 @@ export default function HomeContent({
   const [expandedTagsId, setExpandedTagsId] = useState<string | null>(null)
   const [hoveredProjectIndex, setHoveredProjectIndex] = useState<number | null>(null)
   const [showreelExpanded, setShowreelExpanded] = useState(false)
+  const [expandSource, setExpandSource] = useState<'inline' | 'pip'>('inline')
+  const [pipVisible, setPipVisible] = useState(false)
   const showreelContainerRef = useRef<HTMLDivElement>(null)
+  const pipRef = useRef<HTMLDivElement>(null)
+  const lastPipRectRef = useRef<DOMRect | null>(null)
+  const [pipHidden, setPipHidden] = useState(false)
   const showreelWrapperRef = useRef<HTMLDivElement>(null)
   const portalShowreelRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
@@ -76,6 +81,52 @@ export default function HomeContent({
 
   useEffect(() => setMounted(true), [])
 
+  // Desktop-only PiP: slide in on mount, respond to scroll
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 1024px)')
+    if (!mq.matches) return
+
+    const timeout = setTimeout(() => setPipVisible(true), 2000)
+
+    const el = scrollRef.current
+    if (!el) return
+
+    const onScroll = () => {
+      if (el.scrollTop > 0) {
+        setPipVisible(false)
+      } else {
+        setPipVisible(true)
+      }
+    }
+
+    el.addEventListener('scroll', onScroll, {passive: true})
+    return () => {
+      clearTimeout(timeout)
+      el.removeEventListener('scroll', onScroll)
+    }
+  }, [])
+
+  // GSAP animation for PiP slide in/out
+  useEffect(() => {
+    const el = pipRef.current
+    if (!el) return
+    if (pipHidden) return
+
+    if (pipVisible) {
+      gsap.to(el, {
+        left: 24,
+        duration: 0.5,
+        ease: 'power3.out',
+      })
+    } else {
+      gsap.to(el, {
+        left: -400,
+        duration: 0.4,
+        ease: 'power3.in',
+      })
+    }
+  }, [pipVisible, pipHidden])
+
   useEffect(() => {
     const inlineEl = showreelContainerRef.current
     const portalEl = portalShowreelRef.current
@@ -83,19 +134,22 @@ export default function HomeContent({
     if (!overlay) return
 
     if (showreelExpanded) {
-      if (!inlineEl || !portalEl) return
+      if (!portalEl) return
 
-      // Measure inline position before hiding
-      const rect = inlineEl.getBoundingClientRect()
+      // Pick source rect based on what was clicked
+      const rect = expandSource === 'pip'
+        ? lastPipRectRef.current
+        : inlineEl?.getBoundingClientRect()
+      if (!rect) return
 
-      // Preserve wrapper height so layout doesn't collapse
-      const wrapper = showreelWrapperRef.current
-      if (wrapper) wrapper.style.minHeight = `${wrapper.offsetHeight}px`
+      // Preserve wrapper height so layout doesn't collapse (inline only)
+      if (expandSource === 'inline' && inlineEl) {
+        const wrapper = showreelWrapperRef.current
+        if (wrapper) wrapper.style.minHeight = `${wrapper.offsetHeight}px`
+        inlineEl.style.visibility = 'hidden'
+      }
 
-      // Hide inline (keeps space via wrapper minHeight)
-      inlineEl.style.visibility = 'hidden'
-
-      // Position portal at inline's location, then animate to center
+      // Position portal at source's location, then animate to center
       gsap.set(portalEl, {
         visibility: 'visible',
         top: rect.top,
@@ -120,9 +174,11 @@ export default function HomeContent({
         onStart: () => { overlay.style.pointerEvents = 'auto' },
       })
     } else {
-      // Animate portal back to inline position
-      if (portalEl && inlineEl) {
-        const rect = inlineEl.getBoundingClientRect()
+      // Animate portal back to source position
+      const rect = expandSource === 'pip'
+        ? lastPipRectRef.current
+        : inlineEl?.getBoundingClientRect()
+      if (portalEl && rect) {
         gsap.to(portalEl, {
           top: rect.top,
           left: rect.left,
@@ -134,8 +190,19 @@ export default function HomeContent({
           onComplete: () => {
             portalEl.style.visibility = 'hidden'
             gsap.set(portalEl, {clearProps: 'top,left,width,xPercent,yPercent'})
-            // Show inline again
-            inlineEl.style.visibility = 'visible'
+            // Show inline again (only if it was the source)
+            if (expandSource === 'inline' && inlineEl) {
+              inlineEl.style.visibility = 'visible'
+            }
+            // PiP collapse done — snap PiP visible immediately in DOM, then sync state
+            if (expandSource === 'pip') {
+              const pipEl = pipRef.current
+              if (pipEl) {
+                gsap.set(pipEl, {left: pipVisible ? 24 : -400})
+                pipEl.style.visibility = 'visible'
+              }
+              setPipHidden(false)
+            }
             // Clear preserved height
             const wrapper = showreelWrapperRef.current
             if (wrapper) wrapper.style.minHeight = ''
@@ -151,7 +218,7 @@ export default function HomeContent({
         onComplete: () => { overlay.style.pointerEvents = 'none' },
       })
     }
-  }, [showreelExpanded])
+  }, [showreelExpanded, expandSource])
 
   const handleClickMode = () => {
     if (mode === 'row') {
@@ -169,7 +236,7 @@ export default function HomeContent({
       <div ref={showreelWrapperRef} className='mt-2'>
         <div
           ref={showreelContainerRef}
-          onClick={() => setShowreelExpanded((v) => !v)}
+          onClick={() => { setExpandSource('inline'); setShowreelExpanded((v) => !v) }}
           className='group/showreel relative w-[350px] overflow-hidden rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer'
         >
           <MuxPlayer
@@ -454,6 +521,25 @@ export default function HomeContent({
             className='fixed inset-0 bg-black/50 z-[9998]'
             style={{opacity: 0, pointerEvents: 'none'}}
           />
+          {showreelPlaybackId && (
+            <div
+              ref={pipRef}
+              onClick={() => { lastPipRectRef.current = pipRef.current?.getBoundingClientRect() ?? null; setExpandSource('pip'); setPipHidden(true); setShowreelExpanded(true) }}
+              className='fixed z-[9997] overflow-hidden rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer group/pip hidden lg:block'
+              style={{bottom: 24, left: -400, width: 350, visibility: (showreelExpanded || pipHidden) ? 'hidden' : 'visible'}}
+            >
+              <MuxPlayer
+                theme='minimal'
+                playbackId={showreelPlaybackId}
+                streamType='on-demand'
+                autoPlay='muted'
+                loop
+                muted
+                style={{width: '100%', display: 'block', borderRadius: 0, '--controls': 'none', '--media-object-fit': 'cover', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none'} as any}
+              />
+              <div className='absolute inset-0 bg-black/10 group-hover/pip:bg-black/20 transition-colors duration-200 pointer-events-none rounded-lg' />
+            </div>
+          )}
           <div
             ref={portalShowreelRef}
             onClick={() => setShowreelExpanded(false)}
