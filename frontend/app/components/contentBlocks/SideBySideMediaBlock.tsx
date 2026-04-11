@@ -4,9 +4,10 @@ import MediaRenderer from './MediaRenderer'
 type SideBySideMediaBlockProps = {
   block: any
   mode: string
+  isActive?: boolean
 }
 
-export default function SideBySideMediaBlock({block, mode}: SideBySideMediaBlockProps) {
+export default function SideBySideMediaBlock({block, mode, isActive}: SideBySideMediaBlockProps) {
   const highlighted: 'left' | 'right' | 'neither' = block.highlighted ?? 'neither'
 
   return (
@@ -24,7 +25,7 @@ export default function SideBySideMediaBlock({block, mode}: SideBySideMediaBlock
           mode === 'col' && highlighted === 'neither' && 'md:w-[calc(50%-4px)]'
         )}
       >
-        <MediaRenderer media={block.leftMedia} />
+        <MediaRenderer media={block.leftMedia} isActive={isActive} />
       </div>
       <div
         className={cn(
@@ -34,7 +35,7 @@ export default function SideBySideMediaBlock({block, mode}: SideBySideMediaBlock
           mode === 'col' && highlighted === 'neither' && 'md:w-[calc(50%-4px)]'
         )}
       >
-        <MediaRenderer media={block.rightMedia} />
+        <MediaRenderer media={block.rightMedia} isActive={isActive} />
       </div>
     </div>
   )

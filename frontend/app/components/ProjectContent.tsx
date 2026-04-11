@@ -165,6 +165,7 @@ export default function ProjectContent({
                     key={block._key ?? blockIndex}
                     block={block}
                     mode={mode}
+                    isActive={isActive}
                   />
                 ))}
               </div>

@@ -17,17 +17,20 @@ const Blocks: BlocksType = {
 type ProjectContentBlockRendererProps = {
   block: any
   mode: string
+  isActive?: boolean
 }
 
 export default function ProjectContentBlockRenderer({
   block,
   mode,
+  isActive,
 }: ProjectContentBlockRendererProps) {
   if (typeof Blocks[block._type] !== 'undefined') {
     return React.createElement(Blocks[block._type], {
       key: block._key,
       block,
       mode,
+      isActive,
     })
   }
 

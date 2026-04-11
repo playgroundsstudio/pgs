@@ -1,3 +1,4 @@
+import {useEffect, useRef} from 'react'
 import Image from '@/app/components/SanityImage'
 import MuxPlayer from '@mux/mux-player-react'
 import '@mux/mux-player/themes/minimal'
@@ -20,9 +21,23 @@ type MediaItem = {
 
 type MediaRendererProps = {
   media: MediaItem | null | undefined
+  isActive?: boolean
 }
 
-export default function MediaRenderer({media}: MediaRendererProps) {
+export default function MediaRenderer({media, isActive = true}: MediaRendererProps) {
+  const playerRef = useRef<any>(null)
+
+  useEffect(() => {
+    const el = playerRef.current
+    if (!el) return
+    const mediaEl = el.media?.nativeEl ?? el
+    if (isActive) {
+      mediaEl.play?.()?.catch?.(() => {})
+    } else {
+      mediaEl.pause?.()
+    }
+  }, [isActive])
+
   if (!media) return null
 
   const aspectStyle =
@@ -34,6 +49,7 @@ export default function MediaRenderer({media}: MediaRendererProps) {
     return (
       <div className='w-full overflow-hidden' style={aspectStyle}>
         <MuxPlayer
+          ref={playerRef}
           theme='minimal'
           playbackId={media.video.asset.playbackId}
           streamType='on-demand'

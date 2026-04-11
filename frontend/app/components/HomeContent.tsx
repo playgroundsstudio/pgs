@@ -73,6 +73,10 @@ export default function HomeContent({
   const pipRef = useRef<HTMLDivElement>(null)
   const lastPipRectRef = useRef<DOMRect | null>(null)
   const [pipHidden, setPipHidden] = useState(false)
+  const [inlineInView, setInlineInView] = useState(false)
+  const inlinePlayerRef = useRef<any>(null)
+  const pipPlayerRef = useRef<any>(null)
+  const expandedPlayerRef = useRef<any>(null)
   const showreelWrapperRef = useRef<HTMLDivElement>(null)
   const portalShowreelRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
@@ -80,6 +84,41 @@ export default function HomeContent({
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => setMounted(true), [])
+
+  // IntersectionObserver for inline showreel
+  useEffect(() => {
+    const el = showreelContainerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setInlineInView(entry.isIntersecting),
+      {threshold: 0.1}
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [isExpanded])
+
+  // Playback control — only play the visible player
+  useEffect(() => {
+    const toggle = (ref: React.RefObject<any>, shouldPlay: boolean) => {
+      const el = ref.current
+      if (!el) return
+      // MuxPlayer wraps a media element
+      const media = el.media?.nativeEl ?? el
+      if (shouldPlay) {
+        media.play?.()?.catch?.(() => {})
+      } else {
+        media.pause?.()
+      }
+    }
+
+    const pipShouldPlay = pipVisible && !hasOpenProject && !showreelExpanded && !pipHidden
+    const expandedShouldPlay = showreelExpanded
+    const inlineShouldPlay = inlineInView && !showreelExpanded
+
+    toggle(inlinePlayerRef, inlineShouldPlay)
+    toggle(pipPlayerRef, pipShouldPlay)
+    toggle(expandedPlayerRef, expandedShouldPlay)
+  }, [inlineInView, pipVisible, hasOpenProject, showreelExpanded, pipHidden])
 
   // Desktop-only PiP: slide in on mount, respond to scroll
   useEffect(() => {
@@ -106,13 +145,18 @@ export default function HomeContent({
     }
   }, [])
 
+  // Hide PiP when projects open
+  useEffect(() => {
+    if (hasOpenProject) setPipVisible(false)
+  }, [hasOpenProject])
+
   // GSAP animation for PiP slide in/out
   useEffect(() => {
     const el = pipRef.current
     if (!el) return
     if (pipHidden) return
 
-    if (pipVisible) {
+    if (pipVisible && !hasOpenProject) {
       gsap.to(el, {
         left: 24,
         duration: 0.5,
@@ -240,6 +284,7 @@ export default function HomeContent({
           className='group/showreel relative w-[350px] overflow-hidden rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer'
         >
           <MuxPlayer
+            ref={inlinePlayerRef}
             theme='minimal'
             playbackId={showreelPlaybackId}
             streamType='on-demand'
@@ -328,7 +373,7 @@ export default function HomeContent({
     <div ref={scrollRef} className='relative h-full w-full overflow-auto'>
       <div
         className={cn(
-          'absolute top-4 right-4 z-40 flex items-center gap-3 px-4 py-2 rounded-full bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle transition-all duration-300 ease-out',
+          'absolute top-4 right-4 z-40 flex items-center gap-3 px-12 py-2 rounded-full bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle transition-all duration-300 ease-out',
           isActive && hasOpenProject ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0 pointer-events-none'
         )}
       >
@@ -529,6 +574,7 @@ export default function HomeContent({
               style={{bottom: 24, left: -400, width: 350, visibility: (showreelExpanded || pipHidden || hasOpenProject) ? 'hidden' : 'visible'}}
             >
               <MuxPlayer
+                ref={pipPlayerRef}
                 theme='minimal'
                 playbackId={showreelPlaybackId}
                 streamType='on-demand'
@@ -548,6 +594,7 @@ export default function HomeContent({
           >
             {showreelPlaybackId && (
               <MuxPlayer
+                ref={expandedPlayerRef}
                 theme='minimal'
                 playbackId={showreelPlaybackId}
                 streamType='on-demand'
