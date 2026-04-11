@@ -526,7 +526,7 @@ export default function HomeContent({
               ref={pipRef}
               onClick={() => { lastPipRectRef.current = pipRef.current?.getBoundingClientRect() ?? null; setExpandSource('pip'); setPipHidden(true); setShowreelExpanded(true) }}
               className='fixed z-[9997] overflow-hidden rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer group/pip hidden lg:block'
-              style={{bottom: 24, left: -400, width: 350, visibility: (showreelExpanded || pipHidden) ? 'hidden' : 'visible'}}
+              style={{bottom: 24, left: -400, width: 350, visibility: (showreelExpanded || pipHidden || hasOpenProject) ? 'hidden' : 'visible'}}
             >
               <MuxPlayer
                 theme='minimal'
