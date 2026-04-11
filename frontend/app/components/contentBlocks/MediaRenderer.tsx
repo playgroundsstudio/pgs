@@ -40,7 +40,7 @@ export default function MediaRenderer({media}: MediaRendererProps) {
           autoPlay='muted'
           loop
           muted
-          style={{width: '100%', height: '100%', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none', ...(aspectStyle || {aspectRatio: '16/9'})} as React.CSSProperties}
+          style={{width: '100%', height: '100%', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none', ...(aspectStyle || {aspectRatio: '16/9'})} as any}
         />
       </div>
     )
