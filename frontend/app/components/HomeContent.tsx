@@ -170,7 +170,7 @@ export default function HomeContent({
         <div
           ref={showreelContainerRef}
           onClick={() => setShowreelExpanded((v) => !v)}
-          className='group/showreel relative w-[350px] overflow-hidden rounded-[1cqi] shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer'
+          className='group/showreel relative w-[350px] overflow-hidden rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer'
         >
           <MuxPlayer
             theme='minimal'
@@ -179,9 +179,9 @@ export default function HomeContent({
             autoPlay='muted'
             loop
             muted
-            style={{width: '100%', display: 'block', '--controls': 'none', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none'} as any}
+            style={{width: '100%', display: 'block', borderRadius: 0, '--controls': 'none', '--media-object-fit': 'cover', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none'} as any}
           />
-          <div className='absolute inset-0 bg-black/0 group-hover/showreel:bg-black/10 transition-colors duration-200 pointer-events-none' />
+          <div className='absolute inset-0 bg-black/0 group-hover/showreel:bg-black/10 transition-colors duration-200 pointer-events-none rounded-lg' />
         </div>
       </div>
     </div>
@@ -457,7 +457,7 @@ export default function HomeContent({
           <div
             ref={portalShowreelRef}
             onClick={() => setShowreelExpanded(false)}
-            className='fixed z-[9999] overflow-hidden rounded-[1cqi] shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer'
+            className='fixed z-[9999] overflow-hidden rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer'
             style={{visibility: 'hidden'}}
           >
             {showreelPlaybackId && (
