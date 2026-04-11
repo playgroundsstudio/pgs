@@ -1,6 +1,7 @@
 'use client'
 import {useEffect, useRef, useState} from 'react'
 import type {Dispatch, SetStateAction} from 'react'
+import {createPortal} from 'react-dom'
 import gsap from 'gsap'
 import {cn} from '@/app/lib/cn'
 import type {AllProjectsQueryResult} from '@/sanity.types'
@@ -66,35 +67,48 @@ export default function HomeContent({
   const [hoveredProjectIndex, setHoveredProjectIndex] = useState<number | null>(null)
   const [showreelExpanded, setShowreelExpanded] = useState(false)
   const showreelContainerRef = useRef<HTMLDivElement>(null)
+  const showreelWrapperRef = useRef<HTMLDivElement>(null)
+  const portalShowreelRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
   const projectListRef = useRef<HTMLUListElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const container = showreelContainerRef.current
+    const inlineEl = showreelContainerRef.current
+    const portalEl = portalShowreelRef.current
     const overlay = overlayRef.current
-    if (!container || !overlay) return
+    if (!overlay) return
 
     if (showreelExpanded) {
-      const rect = container.getBoundingClientRect()
-      // Snapshot current position
-      gsap.set(container, {
-        position: 'fixed',
+      if (!inlineEl || !portalEl) return
+
+      // Measure inline position before hiding
+      const rect = inlineEl.getBoundingClientRect()
+
+      // Preserve wrapper height so layout doesn't collapse
+      const wrapper = showreelWrapperRef.current
+      if (wrapper) wrapper.style.minHeight = `${wrapper.offsetHeight}px`
+
+      // Hide inline (keeps space via wrapper minHeight)
+      inlineEl.style.visibility = 'hidden'
+
+      // Position portal at inline's location, then animate to center
+      gsap.set(portalEl, {
+        visibility: 'visible',
         top: rect.top,
         left: rect.left,
         width: rect.width,
-        zIndex: 9999,
       })
-      // Animate to center
-      gsap.to(container, {
+      gsap.to(portalEl, {
         top: '50%',
         left: '50%',
         xPercent: -50,
         yPercent: -50,
-        width: '90vw',
+        width: '80vw',
         duration: 0.5,
         ease: 'power3.out',
       })
+
       // Fade in overlay
       gsap.to(overlay, {
         opacity: 1,
@@ -103,19 +117,29 @@ export default function HomeContent({
         onStart: () => { overlay.style.pointerEvents = 'auto' },
       })
     } else {
-      // Animate back
-      gsap.to(container, {
-        top: '',
-        left: '',
-        xPercent: 0,
-        yPercent: 0,
-        width: 350,
-        duration: 0.4,
-        ease: 'power3.inOut',
-        onComplete: () => {
-          gsap.set(container, {clearProps: 'position,top,left,width,zIndex,xPercent,yPercent'})
-        },
-      })
+      // Animate portal back to inline position
+      if (portalEl && inlineEl) {
+        const rect = inlineEl.getBoundingClientRect()
+        gsap.to(portalEl, {
+          top: rect.top,
+          left: rect.left,
+          width: rect.width,
+          xPercent: 0,
+          yPercent: 0,
+          duration: 0.4,
+          ease: 'power3.inOut',
+          onComplete: () => {
+            portalEl.style.visibility = 'hidden'
+            gsap.set(portalEl, {clearProps: 'top,left,width,xPercent,yPercent'})
+            // Show inline again
+            inlineEl.style.visibility = 'visible'
+            // Clear preserved height
+            const wrapper = showreelWrapperRef.current
+            if (wrapper) wrapper.style.minHeight = ''
+          },
+        })
+      }
+
       // Fade out overlay
       gsap.to(overlay, {
         opacity: 0,
@@ -139,7 +163,7 @@ export default function HomeContent({
   const showreelContent = showreelPlaybackId ? (
     <div className='mb-14'>
       <h3 className='font-sans text-dark-2'>Showreel</h3>
-      <div className='mt-2'>
+      <div ref={showreelWrapperRef} className='mt-2'>
         <div
           ref={showreelContainerRef}
           onClick={() => setShowreelExpanded((v) => !v)}
@@ -152,7 +176,7 @@ export default function HomeContent({
             autoPlay='muted'
             loop
             muted
-            style={{width: '100%', display: 'block', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none'} as React.CSSProperties}
+            style={{width: '100%', display: 'block', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none'} as any}
           />
         </div>
       </div>
@@ -231,13 +255,6 @@ export default function HomeContent({
 
   return (
     <div ref={scrollRef} className='relative h-full w-full overflow-auto'>
-      {/* Showreel overlay backdrop */}
-      <div
-        ref={overlayRef}
-        onClick={() => setShowreelExpanded(false)}
-        className='fixed inset-0 bg-black/50 z-[9998]'
-        style={{opacity: 0, pointerEvents: 'none'}}
-      />
       <div
         className={cn(
           'absolute top-4 right-4 z-40 flex items-center gap-3 px-4 py-2 rounded-full bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle transition-all duration-300 ease-out',
@@ -272,7 +289,7 @@ export default function HomeContent({
           </div>
         )}
         {isExpanded ? (
-          <div className='relative z-10 flex flex-col w-full divide-y divide-dark-1 lg:divide-y-0 lg:flex-row lg:gap-[20px]'>
+          <div className='relative flex flex-col w-full divide-y divide-dark-1 lg:divide-y-0 lg:flex-row lg:gap-[20px]'>
             <div className='w-full shrink-0 pt-2 pb-[20px] lg:pb-0 lg:hidden'>
               {showreelContent}
             </div>
@@ -425,6 +442,35 @@ export default function HomeContent({
         )}
 
       </div>
+      {typeof window !== 'undefined' && createPortal(
+        <>
+          <div
+            ref={overlayRef}
+            onClick={() => setShowreelExpanded(false)}
+            className='fixed inset-0 bg-black/50 z-[9998]'
+            style={{opacity: 0, pointerEvents: 'none'}}
+          />
+          <div
+            ref={portalShowreelRef}
+            onClick={() => setShowreelExpanded(false)}
+            className='fixed z-[9999] overflow-hidden rounded-[1cqi] shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer'
+            style={{visibility: 'hidden'}}
+          >
+            {showreelPlaybackId && (
+              <MuxPlayer
+                theme='minimal'
+                playbackId={showreelPlaybackId}
+                streamType='on-demand'
+                autoPlay='muted'
+                loop
+                muted
+                style={{width: '100%', display: 'block', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none'} as any}
+              />
+            )}
+          </div>
+        </>,
+        document.body
+      )}
     </div>
   )
 }
