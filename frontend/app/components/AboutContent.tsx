@@ -65,7 +65,7 @@ export default function AboutContent({
         </button>
       </div>
 
-      <div className='pt-32 px-6'>
+      <div className='pt-32 px-6 max-w-[var(--slot-content-max-width)] mx-auto w-full'>
         <h1 className='text-2xl font-medium mb-8'>About</h1>
 
         <div className='max-w-2xl'>

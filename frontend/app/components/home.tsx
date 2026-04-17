@@ -65,7 +65,18 @@ export default function Home({
   // Force col mode on mobile
   const effectiveMode = isMobile ? 'col' : mode
 
-  const hasPadding = ( slots>1 && effectiveMode=='row' ) 
+  // Change body bg when home panel not active
+  useEffect(() => {
+    const body = document.body
+    if (active !== 0) {
+      body.style.backgroundColor = 'var(--disabled)'
+    } else {
+      body.style.backgroundColor = 'var(--enabled)'
+    }
+    return () => { body.style.backgroundColor = '' }
+  }, [active])
+
+  const hasPadding = ( slots>1 && effectiveMode=='row' )
   console.log(hasPadding)
 
   const idToSlug = useMemo(
@@ -258,14 +269,22 @@ export default function Home({
   useEffect(() => {
     if (slots <= 1) return
     function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'ArrowLeft') {
-        setActive((prev: number) => Math.max(0, prev - 1))
-      } else if (e.key === 'ArrowRight') {
-        setActive((prev: number) => Math.min(slots - 1, prev + 1))
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+        e.preventDefault()
+        e.stopPropagation()
+        if (e.key === 'ArrowLeft') {
+          setActive((prev: number) => Math.max(0, prev - 1))
+        } else {
+          setActive((prev: number) => Math.min(slots - 1, prev + 1))
+        }
+      } else if (e.key === 'Enter') {
+        setMode('col')
+      } else if (e.key === 'Escape') {
+        setMode('row')
       }
     }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    window.addEventListener('keydown', handleKeyDown, {capture: true})
+    return () => window.removeEventListener('keydown', handleKeyDown, {capture: true})
   }, [slots])
 
   useEffect(() => {
@@ -290,8 +309,7 @@ export default function Home({
       ref={scrollRef}
       className={cn(
         "flex gap-0 md:gap-0",
-        effectiveMode === 'row' && "flex overflow-x-auto",
-        effectiveMode === 'col' && "flex-col overflow-y-auto",
+        effectiveMode === 'row' ? "flex overflow-x-auto" : "flex-col overflow-y-auto",
         hasPadding ? "  py-0 " : "p-0",
 
         "h-screen transition-all relative"

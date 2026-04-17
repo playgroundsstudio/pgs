@@ -143,7 +143,7 @@
   --text-primary: rgba(0,0,0,0.8);
   --text-secondary: rgba(0,0,0,0.3);
   --label-color: #fff;
-  --hover-slot: rgba(0,0,0,0.05);
+
   --border-subtle: rgba(0,0,0,0.04);
   --border-form: rgba(0,0,0,0.1);
   --pill-bg: rgba(255,255,255,0.8);
@@ -151,6 +151,13 @@
   --divider: rgba(0,0,0,0.1);
   --button-solid: rgba(0,0,0,0.8);
   --button-solid-text: #fff;
+  --disabled: #FFFFF;
+  --disabled-slot: #ffff;
+  --enabled: rgba(255,255,255);
+  --disabled-slot: rgba(240,240,240,0.95);
+  --hover-slot: rgba(240,240,240,0.50);
+  --border-enabled: rgba(0,0,0,0.1);
+  --border-disabled: rgba(0,0,0,0.05);
 }
 
 .dark {
@@ -163,7 +170,7 @@
   --text-primary: rgba(255,255,255,0.9);
   --text-secondary: rgba(255,255,255,0.5);
   --label-color: #0b0b0b;
-  --hover-slot: rgba(255,255,255,0.05);
+
   --border-subtle: rgba(255,255,255,0.04);
   --border-form: rgba(255,255,255,0.1);
   --pill-bg: rgba(50,50,50,0.8);
@@ -171,6 +178,12 @@
   --divider: rgba(255,255,255,0.1);
   --button-solid: rgba(50,50,50,1);
   --button-solid-text: #fff;
+  --disabled: rgba(0,0,0,1);
+  --disabled-slot: rgba(30,30,30,0.92);
+  --hover-slot: rgba(20,20,20,0.5);
+  --enabled: #0b0b0b;
+  --border-enabled: rgba(255,255,255,0.1);
+  --border-disabled: rgba(0,0,0,0.3);
 }
 
 @theme {
@@ -224,6 +237,11 @@
   --color-pill: var(--pill-bg);
   --color-border-subtle: var(--border-subtle);
   --color-border-form: var(--border-form);
+  --color-disabled: var(--disabled);
+  --color-disabled-slot: var(--disabled-slot);
+  --color-enabled: var(--enabled);
+  --color-border-enabled: var(--border-enabled);
+  --color-border-disabled: var(--border-disabled);
   --color-divider: var(--divider);
   --color-button-solid: var(--button-solid);
   --color-button-solid-text: var(--button-solid-text);
@@ -234,6 +252,10 @@
 
 
   --default-transition-duration: 250ms;
+  --slot-padding: 5px;
+  --spacing-slotpadding: var(--slot-padding);
+  --slot-max-width: 2900px;
+  --slot-content-max-width: 1800px;
 }
 
 @layer base {

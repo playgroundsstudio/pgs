@@ -396,7 +396,7 @@ export default function HomeContent({
 
 
 
-      <div className='pt-32 px-2'>
+      <div className='pt-32 px-2 max-w-[var(--slot-content-max-width)] mx-auto w-full'>
         {isExpanded && (
           <div className='relative z-0 mb-16 flex h-[70vh] w-full items-center justify-center lg:h-auto'>
             <div className='relative z-0 w-full'>
@@ -444,7 +444,7 @@ export default function HomeContent({
                       key={project._id ?? i}
                       onClick={() => handleClick(project._id)}
                       onMouseEnter={() => setHoveredProjectIndex(i)}
-                      className={`group relative flex py-0 cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-hoverslot text-black' : ''}`}
+                      className={`group relative flex py-0 cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-hoverslot' : ''}`}
                     >
                       <div className='w-[40px] shrink-0'>
                         <p>{String(i + 1).padStart(2, '0')}</p>
@@ -519,7 +519,7 @@ export default function HomeContent({
                     key={project._id ?? i}
                     onClick={() => handleClick(project._id)}
                     onMouseEnter={() => setHoveredProjectIndex(i)}
-                    className={`group relative flex py-0 cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-hoverslot text-black' : ''}`}
+                    className={`group relative flex py-0 cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-hoverslot' : ''}`}
                   >
                     <div className='w-[40px] shrink-0'>
                       <p>{String(i + 1).padStart(2, '0')}</p>

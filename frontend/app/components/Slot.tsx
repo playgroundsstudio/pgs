@@ -51,7 +51,7 @@ export default function Slot({
         inline: 'center',
       })
     }
-  }, [active, length])
+  }, [active, length, mode])
 
   const handleClick = () => {
     if (active != index) {
@@ -82,22 +82,14 @@ export default function Slot({
       className={cn(
         isRounded ? 'rounded-0' : '',
         isVisable ? 'block' : 'hidden',
-        hasPadding && index === 0 && length > 0 &&  'pl-0 pr-0',
-        hasPadding && index != 0 && length > 0 &&  'pl-0 pr-0',
-        'relative h-full w-full min-w-[80vw] lg:min-w-[50vw] flex justify-center transition-[filter] duration-400 ease-out',
-        blurred && 'blur-[var(--overlay-blur)]'
+        hasPadding && index === 0 && length > 0 && 'pl-0 pr-0',
+        hasPadding && index != 0 && length > 0 && 'pl-0',
+        'relative h-full flex justify-center transition-[filter] duration-400 ease-out',
+        isRow ? 'w-full min-w-[80vw] lg:min-w-[50vw]' : 'w-full max-w-[var(--slot-max-width)] mx-auto',
+        blurred && 'blur-[var(--overlay-blur)]',
+        index > 0 && isRow && 'p-slotpadding'
       )}
     >
-      {!slotActive && (
-        <div
-          className='absolute inset-0 z-20 bg-disabled-page/20 hover:bg-disabled-page/30 transition-colors pointer-events-auto cursor-pointer flex items-center justify-center'
-          onClick={handleClick}
-        >
-          <div className='bg-black/20 backdrop-blur-[2px] text-white px-3 py-1 rounded-full'>
-            <p>Activate</p>
-          </div>
-        </div>
-      )}
       {showDebugUi && (
         <div className='absolute top-2 left-2 z-10 pointer-events-none text-[10px] text-white bg-black/70 rounded px-2 py-1'>
           <p>slot: {index}</p>
@@ -105,8 +97,14 @@ export default function Slot({
           <p>hover: {hoveredSlotIndex === index ? 'yes' : 'no'}</p>
         </div>
       )}
-      <div className={cn('relative z-10 h-full w-full', !isActive && 'opacity-100')}>
+      <div className={cn('relative z-10 h-full w-full', index > 0 && 'rounded-lg overflow-hidden border', index > 0 && (slotActive ? 'bg-enabled border-border-enabled' : 'bg-disabled-slot border-border-disabled [&_img]:opacity-80 cursor-pointer'))}>
          {children}
+         {index > 0 && !slotActive && (
+           <div
+             className='absolute inset-0 z-20 bg-disabled-slot hover:bg-hoverslot transition-colors pointer-events-auto cursor-pointer'
+             onClick={handleClick}
+           />
+         )}
       </div>
 
     </div>

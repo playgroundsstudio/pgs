@@ -72,7 +72,7 @@ export default function ProjectContent({
   return (
     <div
       className={cn(
-        'text-dark-1 h-full overflow-hidden hide-scrollbar ',
+        'text-dark-1 h-full overflow-hidden hide-scrollbar bg-transparent',
         isActive ? 'overflow-scroll' : 'overflow-hidden pointer-events-none'
       )}
     >
@@ -94,7 +94,7 @@ export default function ProjectContent({
           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <div className='px-2  flex flex-col gap-4'>
+      <div className='px-2 flex flex-col gap-4 max-w-[var(--slot-content-max-width)] mx-auto w-full'>
         {project ? (
           <>
             <div className={cn(
