@@ -45,8 +45,27 @@ export default function Home({
   const showDebugUi = false
   const [shareMenuOpen, setShareMenuOpen] = useState(false)
   const shareMenuRef = useRef<HTMLDivElement>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
-  const hasPadding = ( slots>1 && mode=='row' ) 
+  useEffect(() => {
+    const mql = window.matchMedia('(max-width: 1023px)')
+    setIsMobile(mql.matches)
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mql.addEventListener('change', handler)
+    return () => mql.removeEventListener('change', handler)
+  }, [])
+
+  // Reset mode to default when all projects close
+  useEffect(() => {
+    if (openProjectIds.length === 0) {
+      setMode('row')
+    }
+  }, [openProjectIds.length])
+
+  // Force col mode on mobile
+  const effectiveMode = isMobile ? 'col' : mode
+
+  const hasPadding = ( slots>1 && effectiveMode=='row' ) 
   console.log(hasPadding)
 
   const idToSlug = useMemo(
@@ -158,7 +177,7 @@ export default function Home({
     }
 
     const handleWheel = (event: WheelEvent) => {
-      if (mode !== 'row') {
+      if (effectiveMode !== 'row') {
         return
       }
 
@@ -183,7 +202,7 @@ export default function Home({
     return () => {
       el.removeEventListener('wheel', handleWheel)
     }
-  }, [mode, isHoveringActiveSlot])
+  }, [effectiveMode, isHoveringActiveSlot])
 
   function closeProjectTab(tabIndex: number) {
     if (tabIndex < 1) return
@@ -235,6 +254,20 @@ export default function Home({
     setShareMenuOpen((prev) => !prev)
   }
 
+  // Keyboard arrow navigation between open panels
+  useEffect(() => {
+    if (slots <= 1) return
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'ArrowLeft') {
+        setActive((prev: number) => Math.max(0, prev - 1))
+      } else if (e.key === 'ArrowRight') {
+        setActive((prev: number) => Math.min(slots - 1, prev + 1))
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [slots])
+
   useEffect(() => {
     if (!shareMenuOpen) return
     function handleClickOutside(e: globalThis.MouseEvent) {
@@ -244,40 +277,6 @@ export default function Home({
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [shareMenuOpen])
-
-  useEffect(() => {
-    const html = document.documentElement
-    const body = document.body
-    const previousBackgroundColor = html.style.backgroundColor
-    const previousBodyBackgroundColor = body.style.backgroundColor
-    const accentColor = getComputedStyle(html).getPropertyValue('--overlay').trim()
-
-    const surfaceColor = getComputedStyle(html).getPropertyValue('--surface').trim()
-
-    if (shareMenuOpen) {
-      // Set current color first so transition has a starting point
-      html.style.backgroundColor = surfaceColor
-      body.style.backgroundColor = surfaceColor
-      // Force reflow so the browser registers the starting value
-      void html.offsetHeight
-      html.style.backgroundColor = accentColor
-      body.style.backgroundColor = accentColor
-    } else {
-      html.style.backgroundColor = surfaceColor
-      body.style.backgroundColor = surfaceColor
-      // After transition completes, remove inline styles
-      const cleanup = setTimeout(() => {
-        html.style.backgroundColor = ''
-        body.style.backgroundColor = ''
-      }, 400)
-      return () => clearTimeout(cleanup)
-    }
-
-    return () => {
-      html.style.backgroundColor = previousBackgroundColor
-      body.style.backgroundColor = previousBodyBackgroundColor
-    }
   }, [shareMenuOpen])
 
   function handleCloseAllSlots(e: MouseEvent<HTMLButtonElement>) {
@@ -291,8 +290,8 @@ export default function Home({
       ref={scrollRef}
       className={cn(
         "flex gap-0 md:gap-0",
-        mode === 'row' && "flex overflow-x-auto",
-        mode === 'col' && "flex-col overflow-y-auto",
+        effectiveMode === 'row' && "flex overflow-x-auto",
+        effectiveMode === 'col' && "flex-col overflow-y-auto",
         hasPadding ? "  py-0 " : "p-0",
 
         "h-screen transition-all relative"
@@ -310,19 +309,19 @@ export default function Home({
         {Array.from({length:slots}).map((_, i) => (
           <Slot
             isActive={active === i}
-            key={i}
+            key={i === 0 ? '__home__' : openProjectIds[i - 1]}
             index={i}
             length={slots}
             setActive={setActive}
             active={active}
-            mode={mode}
+            mode={effectiveMode}
             hoveredSlotIndex={hoveredSlotIndex}
             setHoveredSlotIndex={setHoveredSlotIndex}
             showDebugUi={showDebugUi}
             hasPadding={hasPadding}
-            blurred={shareMenuOpen}
+            blurred={false}
           >
-                  
+
               { i < 1 ? (
                 <HomeContent
                   setActive={setActive}
@@ -333,13 +332,13 @@ export default function Home({
                   services={services}
                   siteTitle={siteTitle}
                   siteDescription={siteDescription}
-                  mode={mode}
+                  mode={effectiveMode}
                   setMode={setMode}
                   isActive={active === i}
                 />
               ) : openProjectIds[i - 1] === '__about__' ? (
                 <AboutContent
-                  mode={mode}
+                  mode={effectiveMode}
                   setMode={setMode}
                   setActive={setActive}
                   openProjectIds={openProjectIds}
@@ -349,7 +348,7 @@ export default function Home({
                 />
               ) : (
                 <ProjectContent
-                  mode={mode}
+                  mode={effectiveMode}
                   setMode={setMode}
                   setActive={setActive}
                   openProjectIds={openProjectIds}
@@ -363,6 +362,13 @@ export default function Home({
 
       ))}
 
+      <div
+        onClick={() => setShareMenuOpen(false)}
+        className={cn(
+          'fixed inset-0 bg-black/50 z-[49] transition-opacity duration-300',
+          shareMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+        )}
+      />
      <div ref={shareMenuRef} className={` ${slots > 1 ? "bottom-4":"bottom-[-400px]"} group/nav transition-all flex justify-center items-center gap-2 w-full fixed left-0 right-0 z-50 hide-scrollbar `}>
         <NavBar
           slots={slots}

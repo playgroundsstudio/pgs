@@ -205,7 +205,7 @@ export default function HomeContent({
         left: '50%',
         xPercent: -50,
         yPercent: -50,
-        width: '80vw',
+        width: '60vw',
         duration: 0.5,
         ease: 'power3.out',
       })
@@ -281,7 +281,7 @@ export default function HomeContent({
         <div
           ref={showreelContainerRef}
           onClick={() => { setExpandSource('inline'); setShowreelExpanded((v) => !v) }}
-          className='group/showreel relative w-[350px] overflow-hidden rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer'
+          className='group/showreel relative w-[250px] overflow-hidden rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer'
         >
           <MuxPlayer
             ref={inlinePlayerRef}
@@ -373,11 +373,11 @@ export default function HomeContent({
     <div ref={scrollRef} className='relative h-full w-full overflow-auto'>
       <div
         className={cn(
-          'absolute top-4 right-4 z-40 flex items-center gap-3 px-12 py-2 rounded-full bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle transition-all duration-300 ease-out',
+          'absolute top-4 right-4 z-40 flex items-center justify-center w-9 h-9 rounded-full bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle transition-all duration-300 ease-out',
           isActive && hasOpenProject ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0 pointer-events-none'
         )}
       >
-        <button onClick={handleClickMode} className='cursor-pointer hover:text-dark-2' aria-label={mode === 'row' ? 'Expand' : 'Minimise'}>
+        <button onClick={handleClickMode} className='cursor-pointer hover:text-dark-2 hidden lg:block' aria-label={mode === 'row' ? 'Expand' : 'Minimise'}>
           {mode === 'row' ? (
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
           ) : (
@@ -571,7 +571,7 @@ export default function HomeContent({
               ref={pipRef}
               onClick={() => { lastPipRectRef.current = pipRef.current?.getBoundingClientRect() ?? null; setExpandSource('pip'); setPipHidden(true); setShowreelExpanded(true) }}
               className='fixed z-[9997] overflow-hidden rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer group/pip hidden lg:block'
-              style={{bottom: 24, left: -400, width: 350, visibility: (showreelExpanded || pipHidden || hasOpenProject) ? 'hidden' : 'visible'}}
+              style={{bottom: 24, left: -400, width: 250, visibility: (showreelExpanded || pipHidden || hasOpenProject) ? 'hidden' : 'visible'}}
             >
               <MuxPlayer
                 ref={pipPlayerRef}
