@@ -94,17 +94,14 @@ export default function ProjectContent({
           <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
-      <div className='px-2 flex flex-col gap-4 max-w-[var(--slot-content-max-width)] mx-auto w-full'>
+      <div className='flex flex-col gap-4 max-w-[var(--slot-content-max-width)] mx-auto w-full'>
         {project ? (
           <>
-            <div className={cn(
-              'flex flex-col gap-4',
-              mode === 'col' && 'md:flex-row md:justify-between'
-            )}>
+            <div className='flex flex-col gap-4'>
               {project.coverImage?.asset?._ref && (
                 <div className={cn(
-                  '-mx-2 aspect-square overflow-hidden',
-                  mode === 'col' && 'md:mx-0 md:w-1/2 md:shrink-0 md:order-last'
+                  'aspect-square overflow-hidden',
+                  mode === 'col' && 'mt-slotmargin px-slotmargin md:w-[250px] md:mb-[250px]'
                 )}>
                   <Image
                     id={project.coverImage.asset._ref}
@@ -117,7 +114,7 @@ export default function ProjectContent({
                   />
                 </div>
               )}
-              <div className='flex flex-col pt-1 gap-4 max-w-[550px]'>
+              <div className={cn('flex flex-col pt-1 gap-4 max-w-[550px] px-slotmargin', mode === 'col' && 'md:mb-[250px]')}>
                 <div className='flex flex-col gap-0'>
                   <h3 className='font-sans text-dark-2'>Title</h3>
                   <h3 className='font-medium font-sans'>{project?.title ?? 'Project Title'}</h3>

@@ -14,7 +14,7 @@ export default function SideBySideMediaBlock({block, mode, isActive}: SideBySide
     <div
       className={cn(
         'flex flex-col gap-2',
-        mode === 'col' && 'md:flex-row md:justify-between'
+        mode === 'col' && 'md:flex-row md:justify-between px-slotmargin'
       )}
     >
       <div

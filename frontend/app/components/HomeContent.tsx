@@ -396,7 +396,7 @@ export default function HomeContent({
 
 
 
-      <div className='pt-32 px-2 max-w-[var(--slot-content-max-width)] mx-auto w-full'>
+      <div className='pt-32 max-w-[var(--slot-content-max-width)] mx-auto w-full px-slotmargin'>
         {isExpanded && (
           <div className='relative z-0 mb-16 flex h-[70vh] w-full items-center justify-center lg:h-auto'>
             <div className='relative z-0 w-full'>

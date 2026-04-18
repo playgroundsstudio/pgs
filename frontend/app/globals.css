@@ -154,8 +154,8 @@
   --disabled: #FFFFF;
   --disabled-slot: #ffff;
   --enabled: rgba(255,255,255);
-  --disabled-slot: rgba(240,240,240,0.95);
-  --hover-slot: rgba(240,240,240,0.50);
+  --disabled-slot: rgba(240,240,240,0.50);
+  --hover-slot: rgba(240,240,240,0.10);
   --border-enabled: rgba(0,0,0,0.1);
   --border-disabled: rgba(0,0,0,0.05);
 }
@@ -179,8 +179,8 @@
   --button-solid: rgba(50,50,50,1);
   --button-solid-text: #fff;
   --disabled: rgba(0,0,0,1);
-  --disabled-slot: rgba(30,30,30,0.92);
-  --hover-slot: rgba(20,20,20,0.5);
+  --disabled-slot: rgba(30,30,30,0.5);
+  --hover-slot: rgba(20,20,20,0.2);
   --enabled: #0b0b0b;
   --border-enabled: rgba(255,255,255,0.1);
   --border-disabled: rgba(0,0,0,0.3);
@@ -252,10 +252,15 @@
 
 
   --default-transition-duration: 250ms;
+  --margin: 20px;
+  --slot-margin: 8px;
+  --spacing-slotmargin: var(--slot-margin);
+  --spacing-margin: var(--margin);
   --slot-padding: 5px;
   --spacing-slotpadding: var(--slot-padding);
   --slot-max-width: 2900px;
-  --slot-content-max-width: 1800px;
+  --slot-content-max-width: 2900px;
+
 }
 
 @layer base {
