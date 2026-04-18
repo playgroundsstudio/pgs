@@ -426,7 +426,7 @@ export default function HomeContent({
 
                 <ul
                   ref={projectListRef}
-                  className='relative'
+                  className={cn('relative', !isActive && 'pointer-events-none opacity-[var(--disabled-text)]')}
                   onMouseLeave={() => setHoveredProjectIndex(null)}
                 >
                   {hoveredProjectIndex !== null && projectListRef.current && (() => {
@@ -501,7 +501,7 @@ export default function HomeContent({
               <h3 className='font-sans text-dark-2'>Projects</h3>
               <ul
                 ref={projectListRef}
-                className='relative'
+                className={cn('relative', !isActive && 'pointer-events-none opacity-[var(--disabled-text)]')}
                 onMouseLeave={() => setHoveredProjectIndex(null)}
               >
                 {hoveredProjectIndex !== null && projectListRef.current && (() => {

@@ -97,7 +97,7 @@ export default function Slot({
           <p>hover: {hoveredSlotIndex === index ? 'yes' : 'no'}</p>
         </div>
       )}
-      <div className={cn('relative z-10 h-full w-full', index > 0 && 'rounded-lg overflow-hidden border', index > 0 && (slotActive ? 'bg-enabled border-border-enabled' : 'bg-disabled-slot border-border-disabled [&_img]:opacity-80 cursor-pointer'))}>
+      <div className={cn('relative z-10 h-full w-full', !slotActive && 'cursor-pointer', index > 0 && 'rounded-lg overflow-hidden border', index > 0 && (slotActive ? 'bg-enabled border-border-enabled' : 'bg-disabled-slot border-border-disabled [&_img]:opacity-80'))}>
          {children}
          {index > 0 && !slotActive && (
            <div

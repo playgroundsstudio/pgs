@@ -261,6 +261,8 @@
   --slot-max-width: 2900px;
   --slot-content-max-width: 2900px;
 
+  --disabled-text:0.8;
+
 }
 
 @layer base {
