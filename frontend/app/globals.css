@@ -155,7 +155,7 @@
   --disabled-slot: #ffff;
   --enabled: rgba(255,255,255);
   --disabled-slot: rgba(240,240,240,0.50);
-  --hover-slot: rgba(240,240,240,0.10);
+  --hover-slot: rgba(0,0,0,0.06);
   --border-enabled: rgba(0,0,0,0.1);
   --border-disabled: rgba(0,0,0,0.05);
 }
@@ -180,7 +180,7 @@
   --button-solid-text: #fff;
   --disabled: rgba(0,0,0,1);
   --disabled-slot: rgba(30,30,30,0.5);
-  --hover-slot: rgba(20,20,20,0.2);
+  --hover-slot: rgba(255,255,255,0.08);
   --enabled: #0b0b0b;
   --border-enabled: rgba(255,255,255,0.1);
   --border-disabled: rgba(0,0,0,0.3);
@@ -252,6 +252,8 @@
 
 
   --default-transition-duration: 250ms;
+  --gutter: 10px;
+  --spacing-gutter: var(--gutter);
   --margin: 20px;
   --slot-margin: 8px;
   --spacing-slotmargin: var(--slot-margin);
