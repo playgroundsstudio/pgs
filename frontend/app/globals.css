@@ -101,11 +101,23 @@
   font-display: swap;
 }
 
+html{
+    font-size: 15px;
+}
+
+
 @layer base {
   html, body {
-    font-size: 13px;
+    font-size: 0.9rem;
     line-height: 17px;
     transition: background-color 400ms ease;
+  }
+
+  @media (min-width: 1440px) {
+    html, body {
+        font-size: 1.1rem;
+      line-height: 1.5rem;
+    }
   }
 
   h1,
@@ -136,7 +148,7 @@
 :root {
   --surface: #fff;
   --surface-secondary: #f6f6f8;
-  --surface2: rgba(0,0,0,0.8);
+  --surface2: red;
   --accent: #14b8a6;
   --overlay: rgba(200,200,200,1);
   --overlay-blur: 2px;
