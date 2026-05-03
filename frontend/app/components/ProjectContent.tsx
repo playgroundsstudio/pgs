@@ -97,11 +97,11 @@ export default function ProjectContent({
       <div className='flex flex-col gap-4 max-w-[var(--slot-content-max-width)] mx-auto w-full'>
         {project ? (
           <>
-            <div className='flex flex-col gap-4'>
+            <div className={cn('flex flex-col gap-4', mode === 'col' && 'md:flex-row md:items-start')}>
               {project.coverImage?.asset?._ref && (
                 <div className={cn(
-                  'aspect-square overflow-hidden',
-                  mode === 'col' && 'mt-slotmargin px-slotmargin md:w-[250px] md:mb-[250px]'
+                  'aspect-square overflow-hidden shrink-0',
+                  mode === 'col' && 'mt-slotmargin px-slotmargin md:w-[250px]'
                 )}>
                   <Image
                     id={project.coverImage.asset._ref}
@@ -114,7 +114,7 @@ export default function ProjectContent({
                   />
                 </div>
               )}
-              <div className={cn('flex flex-col pt-1 gap-4 max-w-[550px] px-slotmargin', mode === 'col' && 'md:mb-[250px]')}>
+              <div className={cn('flex flex-col pt-1 gap-4 max-w-[550px] px-slotmargin', mode === 'col' && 'md:pt-slotmargin')}>
                 <div className='flex flex-col gap-0'>
                   <h3 className='font-sans text-dark-2'>Title</h3>
                   <h3 className='font-medium font-sans'>{project?.title ?? 'Project Title'}</h3>

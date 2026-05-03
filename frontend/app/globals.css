@@ -104,7 +104,7 @@
 @layer base {
   html, body {
     font-size: 13px;
-    line-height: 20px;
+    line-height: 17px;
     transition: background-color 400ms ease;
   }
 
@@ -188,7 +188,7 @@
 
 @theme {
   --font-size-sm: 15px;
-  --font-size-sm--line-height: 20px;
+  --font-size-sm--line-height: 17px;
 
   --shadow-layer: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
 

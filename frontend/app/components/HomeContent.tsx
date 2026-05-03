@@ -68,6 +68,8 @@ export default function HomeContent({
   const [hoveredProjectIndex, setHoveredProjectIndex] = useState<number | null>(null)
   const [socialsHighlight, setSocialsHighlight] = useState<{top: number, height: number} | null>(null)
   const [contactHighlight, setContactHighlight] = useState<{top: number, height: number} | null>(null)
+  const [servicesHighlight, setServicesHighlight] = useState<{top: number, height: number} | null>(null)
+  const [actionsHighlight, setActionsHighlight] = useState<{top: number, height: number} | null>(null)
   const [showreelExpanded, setShowreelExpanded] = useState(false)
   const [expandSource, setExpandSource] = useState<'inline' | 'pip'>('inline')
   const [pipVisible, setPipVisible] = useState(false)
@@ -85,6 +87,8 @@ export default function HomeContent({
   const projectListRef = useRef<HTMLUListElement>(null)
   const socialsListRef = useRef<HTMLUListElement>(null)
   const contactListRef = useRef<HTMLUListElement>(null)
+  const servicesListRef = useRef<HTMLUListElement>(null)
+  const actionsListRef = useRef<HTMLUListElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => setMounted(true), [])
@@ -279,9 +283,9 @@ export default function HomeContent({
   const showreelPlaybackId = showreel?.asset?.playbackId
 
   const showreelContent = showreelPlaybackId ? (
-    <div className='mb-14'>
+    <div className='mb-[25.5px]'>
       <h3 className='font-sans text-dark-1'>Showreel</h3>
-      <div ref={showreelWrapperRef} className='mt-2'>
+      <div ref={showreelWrapperRef}>
         <div
           ref={showreelContainerRef}
           onClick={() => { setExpandSource('inline'); setShowreelExpanded((v) => !v) }}
@@ -305,54 +309,61 @@ export default function HomeContent({
 
   const sidebarMetaContent = (
     <>
-      <div className='mb-6 grid grid-cols-6 gap-[20px]'>
-        <h3 className='font-sans col-span-1'>Socials</h3>
-        <ul ref={socialsListRef} className='col-span-5 relative' onMouseLeave={() => setSocialsHighlight(null)}>
+      <div className='mb-[25.5px]'>
+        <h3 className='font-sans text-dark-2'>Socials</h3>
+        <ul ref={socialsListRef} className='relative' onMouseLeave={() => setSocialsHighlight(null)}>
           {socialsHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: socialsHighlight.top, height: socialsHighlight.height}} />}
-          <li className='group flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>
-            <div className='w-[100px] shrink-0 text-dark-2'><p className='truncate'>Instagram</p></div>
-
-            <div className='flex-1 min-w-0'><p className='truncate'>@play-grounds.studio</p></div>
+          <li className='group flex items-center py-0 cursor-pointer overflow-hidden text-white' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>
+            <div className='flex-1 min-w-0'><p className='truncate'>Instagram</p></div>
             <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
           </li>
-          <li className='group flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>
-            <div className='w-[100px] shrink-0 text-dark-2'><p className='truncate'>X</p></div>
-
-            <div className='flex-1 min-w-0'><p className='truncate'>play-grounds-studio</p></div>
+          <li className='group flex items-center py-0 cursor-pointer overflow-hidden text-white' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>
+            <div className='flex-1 min-w-0'><p className='truncate'>X</p></div>
             <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
           </li>
-          <li className='group flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>
-            <div className='w-[100px] shrink-0 text-dark-2'><p className='truncate'>Behance</p></div>
-
-            <div className='flex-1 min-w-0'><p className='truncate'>play-grounds-studio</p></div>
+          <li className='group flex items-center py-0 cursor-pointer overflow-hidden text-white' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>
+            <div className='flex-1 min-w-0'><p className='truncate'>Behance</p></div>
             <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
           </li>
-          <li className='group flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>
-            <div className='w-[100px] shrink-0 text-dark-2'><p className='truncate'>Are.na</p></div>
-
-            <div className='flex-1 min-w-0'><p className='truncate'>playgroundsstudio</p></div>
+          <li className='group flex items-center py-0 cursor-pointer overflow-hidden text-white' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>
+            <div className='flex-1 min-w-0'><p className='truncate'>Are.na</p></div>
             <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
           </li>
         </ul>
       </div>
 
-      <div className='mb-6 grid grid-cols-6 gap-[20px]'>
-        <h3 className='font-sans col-span-1'>Contact</h3>
-        <ul ref={contactListRef} className='col-span-5 relative' onMouseLeave={() => setContactHighlight(null)}>
+      <div className='mb-[25.5px]'>
+        <h3 className='font-sans text-dark-2'>Contact</h3>
+        <ul ref={contactListRef} className='relative' onMouseLeave={() => setContactHighlight(null)}>
           {contactHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: contactHighlight.top, height: contactHighlight.height}} />}
           <li className='group flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setContactHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => navigator.clipboard.writeText('+44 7778 4320 987')}>
-            <div className='w-[100px] shrink-0 text-dark-2'><p className='truncate'>Phone</p></div>
-
             <div className='flex-1 min-w-0'><p className='truncate'>+44 7778 4320 987</p></div>
             <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
           </li>
           <li className='group flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setContactHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => navigator.clipboard.writeText('info@play-grounds.studio')}>
-            <div className='w-[100px] shrink-0 text-dark-2'><p className='truncate'>Email</p></div>
-
             <div className='flex-1 min-w-0'><p className='truncate'>info@play-grounds.studio</p></div>
             <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
           </li>
         </ul>
+      </div>
+
+      <div className='mb-[25.5px]'>
+        <h3 className='font-sans text-dark-2'>Actions</h3>
+        <ul ref={actionsListRef} className='relative' onMouseLeave={() => setActionsHighlight(null)}>
+          {actionsHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: actionsHighlight.top, height: actionsHighlight.height}} />}
+          <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Kick off a project</li>
+          <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Say Hi</li>
+        </ul>
+      </div>
+
+      <div className='mb-[25.5px]'>
+        <h3 className='font-sans text-dark-2'>Newsletter</h3>
+        <p>Stay up to date with recent releases and upcoming opportunities.</p>
+        <input
+          type='email'
+          placeholder='Enter your email'
+          className='w-full bg-transparent border-none p-0 m-0 outline-none placeholder:text-dark-2 font-inherit text-inherit leading-inherit'
+        />
       </div>
 
     </>
@@ -396,7 +407,7 @@ export default function HomeContent({
         {isExpanded ? (
           <div className='relative flex flex-col w-full'>
             {/* Projects — full width */}
-            <div className='mb-14 w-full pb-[100px]'>
+            <div className='mb-[25.5px] w-full pb-[100px]'>
               <div className='grid grid-cols-14 gap-gutter sticky top-12 z-20 pt-2'>
                 <div className='col-span-1'><h3 className='font-sans text-dark-2'>#</h3></div>
                 <div className='col-span-3'><h3 className='font-sans text-dark-2'>Project</h3></div>
@@ -475,7 +486,23 @@ export default function HomeContent({
               <div className='col-span-4'>
                 {showreelContent}
               </div>
-              <div className='col-span-10'>
+              <div className='col-span-5'>
+                <div className='mb-[25.5px]'>
+                  <h3 className='font-sans text-dark-2'>Services</h3>
+                  <ul ref={servicesListRef} className='relative' onMouseLeave={() => setServicesHighlight(null)}>
+                    {servicesHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: servicesHighlight.top, height: servicesHighlight.height}} />}
+                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Graphic Design</li>
+                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Product Design</li>
+                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Web Design</li>
+                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Development</li>
+                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Motion</li>
+                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Brand Identity</li>
+                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Art Direction</li>
+                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Strategy</li>
+                  </ul>
+                </div>
+              </div>
+              <div className='col-span-5'>
                 {sidebarMetaContent}
               </div>
             </div>
@@ -483,7 +510,7 @@ export default function HomeContent({
         ) : (
           /* Collapsed state — projects only, full width */
           <div className='w-full flex flex-col gap-2'>
-            <div className='mb-14'>
+            <div className='mb-[25.5px]'>
               <h3 className='font-sans text-dark-2'>Projects</h3>
               <ul
                 ref={projectListRef}
