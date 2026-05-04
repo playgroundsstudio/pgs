@@ -175,7 +175,7 @@ html{
 .dark {
   --surface: #0b0b0b;
   --surface-secondary: #1b1d27;
-  --surface2: rgba(255,255,255,0.8);
+  --surface2: blue;
   --accent: #ff2bd6;
   --overlay:  rgba(20,20,20,1);
   --overlay-blur: 2px;

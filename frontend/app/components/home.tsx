@@ -710,7 +710,7 @@ function Tab({
       data-indextab={index}
       onClick={()=>{setActive(index)}}
       className={ cn(`group relative rounded-full flex flex-col justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-visible transition-all duration-200 cursor-pointer h-11 w-11`,
-        active === index && 'scale-[1.18] ring-1 ring-dark-1'
+        active === index && ''
       )}>
       {index > 0 && (
         <button
