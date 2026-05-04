@@ -10,7 +10,7 @@ import ProjectContent from '@/app/components/ProjectContent'
 import AboutContent from '@/app/components/AboutContent'
 import Slot from '@/app/components/Slot'
 import PgsLogoMark from '@/app/components/PgsLogoMark'
- 
+
 type LogoImage = {
   asset?: { _ref?: string }
   alt?: string
@@ -33,7 +33,7 @@ export default function Home({
   siteTitle: string
   siteDescription: string
 }) {
- 
+
   const scrollRef = useRef<HTMLDivElement>(null)
   const [mode ,setMode] = useState('row')
   const [openProjectIds, setOpenProjectIds] = useState<string[]>([])
@@ -315,7 +315,7 @@ export default function Home({
         "h-screen transition-all relative"
       )}
     >
-     
+
       {showDebugUi && (
         <div className='pointer-events-none overflow-hidden fixed top-2 right-2 z-50 text-[11px] text-green-600 bg-black/70 rounded-md px-2 py-1'>
           <p>active: {active}</p>
@@ -403,7 +403,7 @@ export default function Home({
           onShareHomePage={handleShareHomePage}
           onEnquire={handleEnquire}
         />
-    </div> 
+    </div>
 
     </div>
   )
@@ -438,7 +438,7 @@ function NavBar({
   onShareHomePage: () => void
   onEnquire: () => void
 }) {
-  const CLOSED_NAV_HEIGHT = 60
+  const CLOSED_NAV_HEIGHT = 48
   const containerRef = useRef<HTMLDivElement>(null)
   const tabsRef = useRef<HTMLDivElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -572,9 +572,10 @@ function NavBar({
   return (
     <div
       ref={containerRef}
-      className='relative h-[60px] bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-2 p-2'
+      className='relative bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-2 p-2'
       style={{
         borderRadius: '60px',
+        height: CLOSED_NAV_HEIGHT,
       }}
     >
       <div
@@ -679,7 +680,7 @@ function Tab({
   settings: SettingsQueryResult
   onClose: (tabIndex: number) => void
 }){
-  
+
   const ref= useRef<HTMLDivElement>(null)
   const settingsLogo = (settings as unknown as {logo?: LogoImage})?.logo
   const projectLogo = (project as unknown as {logo?: LogoImage})?.logo

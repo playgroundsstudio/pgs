@@ -4,6 +4,7 @@ import type {Dispatch, SetStateAction} from 'react'
 import {createPortal} from 'react-dom'
 import gsap from 'gsap'
 import {cn} from '@/app/lib/cn'
+import {useSlotActions} from '@/app/hooks/useSlotActions'
 import type {AllProjectsQueryResult} from '@/sanity.types'
 import HomeHeader from '@/app/components/HomeHeader'
 import PgsLogoMark from '@/app/components/PgsLogoMark'
@@ -52,16 +53,7 @@ export default function HomeContent({
     setActive(1)
   }
 
-  function handleClose(e: React.MouseEvent, projectId: string) {
-    e.stopPropagation()
-    const projectIndex = openProjectIds.indexOf(projectId)
-    setOpenProjectIds((prev) => prev.filter((id) => id !== projectId))
-    setActive((prev: number) => {
-      if (prev === projectIndex + 1) return Math.max(0, prev - 1)
-      if (prev > projectIndex + 1) return prev - 1
-      return prev
-    })
-  }
+  const {toggleMode, closeSlot} = useSlotActions({mode, setMode, setActive, openProjectIds, setOpenProjectIds})
 
   const [mounted, setMounted] = useState(false)
   const [expandedTagsId, setExpandedTagsId] = useState<string | null>(null)
@@ -273,13 +265,6 @@ export default function HomeContent({
     }
   }, [showreelExpanded, expandSource])
 
-  const handleClickMode = () => {
-    if (mode === 'row') {
-      setMode('col')
-    } else {
-      setMode('row')
-    }
-  }
 
   const showreelPlaybackId = showreel?.asset?.playbackId
 
@@ -377,7 +362,7 @@ export default function HomeContent({
           isActive && hasOpenProject ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0 pointer-events-none'
         )}
       >
-        <button onClick={handleClickMode} className='cursor-pointer hover:text-dark-2 hidden lg:block' aria-label={mode === 'row' ? 'Expand' : 'Minimise'}>
+        <button onClick={toggleMode} className='cursor-pointer hover:text-dark-2 hidden lg:block' aria-label={mode === 'row' ? 'Expand' : 'Minimise'}>
           {mode === 'row' ? (
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
           ) : (
