@@ -264,13 +264,13 @@ html {
   --font-sans: 'Unica77', 'Helvetica', 'Arial', sans-serif;
 
   --default-transition-duration: 250ms;
-  --gutter: 10px;
+  --gutter: 0.5rem;
   --spacing-gutter: var(--gutter);
   --margin: 20px;
-  --slot-margin: 8px;
+  --slot-margin: 0.5rem;
+  --slot-padding: 0.5rem;
   --spacing-slotmargin: var(--slot-margin);
   --spacing-margin: var(--margin);
-  --slot-padding: 5px;
   --spacing-slotpadding: var(--slot-padding);
   --slot-max-width: 2900px;
   --slot-content-max-width: 2900px;
