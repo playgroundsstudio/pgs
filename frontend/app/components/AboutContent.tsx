@@ -13,6 +13,26 @@ type AboutContentProps = {
   isActive: boolean
 }
 
+function PersonCard({initials, name, role, phone, email}: {initials: string, name: string, role: string, phone: string, email: string}) {
+  return (
+    <div className='flex flex-col'>
+      <p className='text-[clamp(18rem,35vw,30rem)] font-medium leading-[0.85] tracking-[-0.08em] mb-8'>{initials}</p>
+      <div className='mt-auto'>
+        <p>{name}</p>
+        <p className='opacity-50'>{role}</p>
+        <div className='flex gap-2'>
+          <p className='opacity-50'>P</p>
+          <p>{phone}</p>
+        </div>
+        <div className='flex gap-2'>
+          <p className='opacity-50'>E</p>
+          <p>{email}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function AboutContent({
   mode,
   setMode,
@@ -45,7 +65,7 @@ export default function AboutContent({
   return (
     <div
       ref={scrollRef}
-      className='relative h-full w-full overflow-auto bg-dark-1 text-labelcolor dark:bg-labelcolor dark:text-dark-1'
+      className='relative h-full w-full overflow-auto bg-black text-white'
     >
       <div
         className={cn(
@@ -65,23 +85,14 @@ export default function AboutContent({
         </button>
       </div>
 
-      <div className={cn('pt-32 max-w-[var(--slot-content-max-width)] mx-auto w-full', mode === 'col' ? 'px-6' : 'px-0')}>
-        <h1 className='text-2xl font-medium mb-8'>About</h1>
+      <div className={cn(' pt-slotmargin max-w-[var(--slot-content-max-width)] mx-auto w-full px-slotmargin')}>
 
-        <div className='max-w-2xl'>
-          <p className='mb-6 opacity-80'>
-            Play Grounds Studio is a multidisciplinary design practice working across architecture, interiors, and digital experiences.
-          </p>
-          <p className='mb-6 opacity-80'>
-            We believe in the power of thoughtful design to shape meaningful spaces and experiences.
-          </p>
+
+        <div className='grid grid-cols-1 gap-gutter mb-16'>
+          <PersonCard initials='JH' name='James Hartwell' role='Designer & Director' phone='+44 7778 432 098' email='james@play-grounds.studio' />
+          <PersonCard initials='RK' name='Riley Karl' role='Designer & Director' phone='+44 7778 543689' email='riley@play-grounds.studio' />
         </div>
 
-        <div className='mt-16 border-t border-current/20 pt-4'>
-          <h3 className='opacity-50 mb-2'>Contact</h3>
-          <p className='opacity-80'>info@play-grounds.studio</p>
-          <p className='opacity-80'>+44 7778 4320 987</p>
-        </div>
       </div>
     </div>
   )
