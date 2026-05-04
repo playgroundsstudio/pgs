@@ -7,6 +7,7 @@ type HomeHeaderProps = {
   title: string
   description: string
   hasOpenProject?: boolean
+  isExpanded?: boolean
   scrollRef?: RefObject<HTMLDivElement | null>
   onAboutClick?: () => void
 }
@@ -15,6 +16,7 @@ export default function HomeHeader({
   title,
   description,
   hasOpenProject = false,
+  isExpanded = true,
   scrollRef,
   onAboutClick,
 }: HomeHeaderProps) {
@@ -55,8 +57,8 @@ export default function HomeHeader({
       <div className={`px-2 ${scrolled ? '' : 'w-full lg:w-1/2 xl:w-1/3'}`}>
         <p className=''>
           {title}
-          {!hasOpenProject && !scrolled && description ? ` ${description}` : ''}
-          {!hasOpenProject && !scrolled && (
+          {isExpanded && !scrolled && description ? ` ${description}` : ''}
+          {isExpanded && !scrolled && (
             <button type='button' onClick={onAboutClick} className='inline-flex items-center justify-center h-[16px] px-[5px] ml-1 bg-dark-2 rounded-full align-middle leading-none cursor-pointer hover:bg-dark-1 transition-colors'>
               <span className='relative -top-[2px] text-surface text-[10px] tracking-[1px] leading-none'>...</span>
             </button>

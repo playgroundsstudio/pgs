@@ -390,6 +390,7 @@ export default function HomeContent({
         title={siteTitle}
         description={siteDescription}
         hasOpenProject={hasOpenProject}
+        isExpanded={isExpanded}
         onAboutClick={() => handleClick('__about__')}
       />
 
