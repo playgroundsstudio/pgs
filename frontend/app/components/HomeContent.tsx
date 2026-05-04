@@ -269,7 +269,7 @@ export default function HomeContent({
   const showreelPlaybackId = showreel?.asset?.playbackId
 
   const showreelContent = showreelPlaybackId ? (
-    <div className='mb-[2rem]'>
+    <div className='mb-sa'>
       <div ref={showreelWrapperRef}>
         <div
           ref={showreelContainerRef}
@@ -294,7 +294,7 @@ export default function HomeContent({
 
   const sidebarMetaContent = (
     <>
-      <div className='mb-[2rem]'>
+      <div className='mb-sa'>
         <h3 className='font-sans text-dark-2'>Socials</h3>
         <ul ref={socialsListRef} className='relative' onMouseLeave={() => setSocialsHighlight(null)}>
           {socialsHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: socialsHighlight.top, height: socialsHighlight.height}} />}
@@ -317,7 +317,7 @@ export default function HomeContent({
         </ul>
       </div>
 
-      <div className='mb-[2rem]'>
+      <div className='mb-sa'>
         <h3 className='font-sans text-dark-2'>Contact</h3>
         <ul ref={contactListRef} className='relative' onMouseLeave={() => setContactHighlight(null)}>
           {contactHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: contactHighlight.top, height: contactHighlight.height}} />}
@@ -332,7 +332,7 @@ export default function HomeContent({
         </ul>
       </div>
 
-      <div className='mb-[2rem]'>
+      <div className='mb-sa'>
         <h3 className='font-sans text-dark-2'>Actions</h3>
         <ul ref={actionsListRef} className='relative' onMouseLeave={() => setActionsHighlight(null)}>
           {actionsHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: actionsHighlight.top, height: actionsHighlight.height}} />}
@@ -341,7 +341,7 @@ export default function HomeContent({
         </ul>
       </div>
 
-      <div className='mb-[2rem]'>
+      <div className='mb-sa'>
         <h3 className='font-sans text-dark-2'>Newsletter</h3>
         <p>Stay up to date with recent releases and upcoming opportunities.</p>
         <input
@@ -473,7 +473,7 @@ export default function HomeContent({
                 {showreelContent}
               </div>
               <div className='col-span-5'>
-                <div className='mb-[2rem]'>
+                <div className='mb-sa'>
                   <h3 className='font-sans text-dark-2'>Services</h3>
                   <ul ref={servicesListRef} className='relative' onMouseLeave={() => setServicesHighlight(null)}>
                     {servicesHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: servicesHighlight.top, height: servicesHighlight.height}} />}
@@ -487,7 +487,7 @@ export default function HomeContent({
                     <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Strategy</li>
                   </ul>
                 </div>
-                <div className='mb-[2rem]'>
+                <div className='mb-sa'>
                   <h3 className='font-sans text-dark-2'>Industry</h3>
                   <ul className='relative' onMouseLeave={() => setIndustryHighlight(null)}>
                     {industryHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: industryHighlight.top, height: industryHighlight.height}} />}
@@ -510,7 +510,7 @@ export default function HomeContent({
         ) : (
           /* Collapsed state — projects only, full width */
           <div className='w-full flex flex-col gap-2'>
-            <div className='mb-[2rem]'>
+            <div className='mb-sa'>
               <h3 className='font-sans text-dark-2'>Projects</h3>
               <ul
                 ref={projectListRef}

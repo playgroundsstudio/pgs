@@ -264,6 +264,9 @@ html {
   --font-sans: 'Unica77', 'Helvetica', 'Arial', sans-serif;
 
   --default-transition-duration: 250ms;
+  --sa: 1.2rem;
+  --spacing-sa: var(--sa);
+
   --gutter: 0.5rem;
   --spacing-gutter: var(--gutter);
   --margin: 20px;

@@ -189,6 +189,19 @@ export default function Home({
     }
 
     const handleWheel = (event: WheelEvent) => {
+      if (effectiveMode === 'col') {
+        // In col mode, only navigate panels with horizontal scroll
+        if (Math.abs(event.deltaX) <= Math.abs(event.deltaY) || event.deltaX === 0) {
+          return
+        }
+        event.preventDefault()
+        if (wheelThrottledRef.current) return
+        wheelThrottledRef.current = true
+        setTimeout(() => { wheelThrottledRef.current = false }, 1000)
+        setActive((prev: number) => Math.max(0, Math.min(slots - 1, prev + Math.sign(event.deltaX))))
+        return
+      }
+
       if (effectiveMode !== 'row') {
         return
       }

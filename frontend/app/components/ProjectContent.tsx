@@ -95,12 +95,12 @@ export default function ProjectContent({
                   />
                 </div>
               )}
-              <div className={cn('flex flex-col pt-1 gap-4 max-w-[550px] px-slotmargin', mode === 'col' && 'md:pt-slotmargin md:pl-0')}>
+              <div className={cn('flex flex-col pt-1 gap-sa max-w-[550px] px-slotmargin', mode === 'col' && 'md:pt-slotmargin md:pl-0')}>
                 <div className='flex flex-col gap-0'>
                   <h3 className='font-sans text-dark-2'>Title</h3>
                   <h3 className='font-medium font-sans'>{project?.title ?? 'Project Title'}</h3>
                 </div>
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col gap-sa'>
                   <div className='flex flex-col gap-0'>
                     <h3 className='font-sans text-dark-2'>Description</h3>
                     <h3 className='font-medium font-sans'>
