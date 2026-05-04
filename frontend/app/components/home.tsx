@@ -35,6 +35,7 @@ export default function Home({
 }) {
 
   const scrollRef = useRef<HTMLDivElement>(null)
+  const wheelThrottledRef = useRef(false)
   const [mode ,setMode] = useState('row')
   const [openProjectIds, setOpenProjectIds] = useState<string[]>([])
   const [active, setActive ]=useState(0)
@@ -192,21 +193,22 @@ export default function Home({
         return
       }
 
-      if (isHoveringActiveSlot) {
+      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
+      if (delta === 0) {
         return
       }
 
-      const maxScrollLeft = el.scrollWidth - el.clientWidth
-      if (maxScrollLeft <= 0) {
-        return
-      }
-
-      if (event.deltaY === 0) {
+      // Allow vertical scroll through to inner content when on active slot
+      if (isHoveringActiveSlot && Math.abs(event.deltaY) >= Math.abs(event.deltaX)) {
         return
       }
 
       event.preventDefault()
-      el.scrollLeft += event.deltaY
+      if (wheelThrottledRef.current) return
+      wheelThrottledRef.current = true
+      setTimeout(() => { wheelThrottledRef.current = false }, 1000)
+
+      setActive((prev: number) => Math.max(0, Math.min(slots - 1, prev + Math.sign(delta))))
     }
 
     el.addEventListener('wheel', handleWheel, {passive: false})
@@ -605,18 +607,6 @@ function NavBar({
         ))}
         <div className='ml-auto' />
         <div className='w-px h-6 bg-divider mx-1 self-center shrink-0' />
-        <button
-          type='button'
-          onClick={onShareClick}
-          aria-label='Share current page'
-          className='cursor-pointer h-11 w-11 bg-button-solid rounded-full flex justify-center items-center shrink-0'
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='h-4 w-4 text-button-solid-text'>
-            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-            <polyline points="16 6 12 2 8 6" />
-            <line x1="12" y1="2" x2="12" y2="15" />
-          </svg>
-        </button>
         <button
           type='button'
           onClick={onCloseAll}

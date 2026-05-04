@@ -101,22 +101,23 @@
   font-display: swap;
 }
 
-html{
-    font-size: 12px;
+html {
+  font-size: 12px;
 }
 
-
 @layer base {
-  html, body {
+  html,
+  body {
     font-size: 1rem;
-    line-height: 1.15rem;
+    line-height: 1.12rem;
     transition: background-color 400ms ease;
   }
 
   @media (min-width: 1440px) {
-    html, body {
-        font-size: 1rem;
-      line-height: 1.1rem;
+    html,
+    body {
+      font-size: 1rem;
+      line-height: 1.12rem;
     }
   }
 
@@ -131,7 +132,8 @@ html{
     line-height: inherit;
   }
 
-  ul, ol {
+  ul,
+  ol {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -150,26 +152,26 @@ html{
   --surface-secondary: #f6f6f8;
   --surface2: red;
   --accent: #14b8a6;
-  --overlay: rgba(200,200,200,1);
+  --overlay: rgba(200, 200, 200, 1);
   --overlay-blur: 2px;
-  --text-primary: rgba(0,0,0,0.8);
-  --text-secondary: rgba(0,0,0,0.3);
+  --text-primary: rgba(0, 0, 0, 0.8);
+  --text-secondary: rgba(0, 0, 0, 0.3);
   --label-color: #fff;
 
-  --border-subtle: rgba(0,0,0,0.04);
-  --border-form: rgba(0,0,0,0.1);
-  --pill-bg: rgba(255,255,255,0.8);
+  --border-subtle: rgba(0, 0, 0, 0.04);
+  --border-form: rgba(0, 0, 0, 0.1);
+  --pill-bg: rgba(255, 255, 255, 0.8);
   --disabled-page: #2f2f2f;
-  --divider: rgba(0,0,0,0.1);
-  --button-solid: rgba(0,0,0,0.8);
+  --divider: rgba(0, 0, 0, 0.1);
+  --button-solid: rgba(0, 0, 0, 0.8);
   --button-solid-text: #fff;
   --disabled: #FFFFF;
   --disabled-slot: #ffff;
-  --enabled: rgba(255,255,255);
-  --disabled-slot: rgba(240,240,240,0.50);
-  --hover-slot: rgba(0,0,0,0.06);
-  --border-enabled: rgba(0,0,0,0.1);
-  --border-disabled: rgba(0,0,0,0.05);
+  --enabled: rgba(255, 255, 255);
+  --disabled-slot: rgba(240, 240, 240, 0.5);
+  --hover-slot: rgba(0, 0, 0, 0.06);
+  --border-enabled: rgba(0, 0, 0, 0.1);
+  --border-disabled: rgba(0, 0, 0, 0.05);
 }
 
 .dark {
@@ -177,25 +179,25 @@ html{
   --surface-secondary: #1b1d27;
   --surface2: blue;
   --accent: #ff2bd6;
-  --overlay:  rgba(20,20,20,1);
+  --overlay: rgba(20, 20, 20, 1);
   --overlay-blur: 2px;
-  --text-primary: rgba(255,255,255,0.9);
-  --text-secondary: rgba(255,255,255,0.5);
+  --text-primary: rgba(255, 255, 255, 0.9);
+  --text-secondary: rgba(255, 255, 255, 0.5);
   --label-color: #0b0b0b;
 
-  --border-subtle: rgba(255,255,255,0.04);
-  --border-form: rgba(255,255,255,0.1);
-  --pill-bg: rgba(50,50,50,0.8);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-form: rgba(255, 255, 255, 0.1);
+  --pill-bg: rgba(50, 50, 50, 0.8);
   --disabled-page: #d0d0d0;
-  --divider: rgba(255,255,255,0.1);
-  --button-solid: rgba(50,50,50,1);
+  --divider: rgba(255, 255, 255, 0.1);
+  --button-solid: rgba(50, 50, 50, 1);
   --button-solid-text: #fff;
-  --disabled: rgba(0,0,0,1);
-  --disabled-slot: rgba(30,30,30,0.5);
-  --hover-slot: rgba(255,255,255,0.08);
+  --disabled: rgba(0, 0, 0, 1);
+  --disabled-slot: rgba(30, 30, 30, 0.5);
+  --hover-slot: rgba(255, 255, 255, 0.08);
   --enabled: #0b0b0b;
-  --border-enabled: rgba(255,255,255,0.1);
-  --border-disabled: rgba(0,0,0,0.3);
+  --border-enabled: rgba(255, 255, 255, 0.1);
+  --border-disabled: rgba(0, 0, 0, 0.3);
 }
 
 @theme {
@@ -224,21 +226,21 @@ html{
 
   --border-color-default: transparent;
 
-   --color-stroke-one: #eeeef1;
+  --color-stroke-one: #eeeef1;
 
-   --color-dark-1: var(--text-primary);
-   --color-dark-2: var(--text-secondary);
+  --color-dark-1: var(--text-primary);
+  --color-dark-2: var(--text-secondary);
 
-   --color-tl1: rgba(200,200,200,1);
-   --color-tl2: rgba(200,200,200,0.5);
-   --color-labelcolor: var(--label-color);
+  --color-tl1: rgba(200, 200, 200, 1);
+  --color-tl2: rgba(200, 200, 200, 0.5);
+  --color-labelcolor: var(--label-color);
 
-   --color-tgreen: #7edeb5;
-   --color-tred: #f4a783;
-   --color-subtle: rgba(0,0,0,0.02);
-   --color-disabled-page: var(--disabled-page);
+  --color-tgreen: #7edeb5;
+  --color-tred: #f4a783;
+  --color-subtle: rgba(0, 0, 0, 0.02);
+  --color-disabled-page: var(--disabled-page);
 
-  --color-activeslot:rgba(0,0,0,0.2);
+  --color-activeslot: rgba(0, 0, 0, 0.2);
   --color-hoverslot: var(--hover-slot);
 
   --color-surface: var(--surface);
@@ -258,10 +260,8 @@ html{
   --color-button-solid: var(--button-solid);
   --color-button-solid-text: var(--button-solid-text);
 
-
   --font-display: 'Unica77', 'Helvetica', 'Arial', sans-serif;
   --font-sans: 'Unica77', 'Helvetica', 'Arial', sans-serif;
-
 
   --default-transition-duration: 250ms;
   --gutter: 10px;
@@ -275,8 +275,7 @@ html{
   --slot-max-width: 2900px;
   --slot-content-max-width: 2900px;
 
-  --disabled-text:0.8;
-
+  --disabled-text: 0.8;
 }
 
 @layer base {
