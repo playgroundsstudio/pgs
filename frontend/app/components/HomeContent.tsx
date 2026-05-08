@@ -393,7 +393,7 @@ export default function HomeContent({
         {isExpanded ? (
           <div className='relative flex flex-col w-full'>
             {/* Projects — full width */}
-            <div className='mb-[2rem] w-full pb-[100px] @container'>
+            <div className='mb-[2rem] w-full pb-[2rem] @container'>
               <div className='grid grid-cols-14 gap-gutter sticky top-12 z-20 pt-2'>
                 <div className='col-span-1'><h3 className='font-sans text-dark-2'>#</h3></div>
                 <div className='col-span-3 @max-[600px]:col-span-4 @max-[450px]:col-span-6 @max-[300px]:col-span-11'><h3 className='font-sans text-dark-2'>Project</h3></div>
@@ -468,11 +468,11 @@ export default function HomeContent({
               </ul>
             </div>
 
-            <div className='grid grid-cols-14 gap-gutter'>
-              <div className='col-span-4'>
+            <div className='flex flex-col lg:grid lg:grid-cols-14 gap-gutter'>
+              <div className='col-span-4 order-first flex justify-center mb-[2rem] lg:mb-0 lg:justify-start'>
                 {showreelContent}
               </div>
-              <div className='col-span-5'>
+              <div className='col-span-5 grid grid-cols-2 gap-gutter lg:grid-cols-1'>
                 <div className='mb-sa'>
                   <h3 className='font-sans text-dark-2'>Services</h3>
                   <ul ref={servicesListRef} className='relative' onMouseLeave={() => setServicesHighlight(null)}>

@@ -10,6 +10,7 @@ import ProjectContent from '@/app/components/ProjectContent'
 import AboutContent from '@/app/components/AboutContent'
 import Slot from '@/app/components/Slot'
 import PgsLogoMark from '@/app/components/PgsLogoMark'
+import IntroAnimation from '@/app/components/IntroAnimation'
 
 type LogoImage = {
   asset?: { _ref?: string }
@@ -47,6 +48,8 @@ export default function Home({
   const [shareMenuOpen, setShareMenuOpen] = useState(false)
   const shareMenuRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [introComplete, setIntroComplete] = useState(false)
+  const handleIntroComplete = useCallback(() => setIntroComplete(true), [])
 
   useEffect(() => {
     const mql = window.matchMedia('(max-width: 1023px)')
@@ -320,6 +323,8 @@ export default function Home({
   }
 
   return (
+    <>
+    {!introComplete && <IntroAnimation onComplete={handleIntroComplete} />}
     <div
       ref={scrollRef}
       className={cn(
@@ -327,7 +332,7 @@ export default function Home({
         effectiveMode === 'row' ? "flex overflow-x-auto" : "flex-col overflow-y-auto",
         hasPadding ? "  py-0 " : "p-0",
 
-        "h-screen transition-all relative"
+        "h-screen transition-[filter,opacity,padding,gap] duration-400 ease-out relative"
       )}
     >
 
@@ -421,6 +426,7 @@ export default function Home({
     </div>
 
     </div>
+    </>
   )
 }
 
