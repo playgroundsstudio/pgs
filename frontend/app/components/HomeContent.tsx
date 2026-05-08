@@ -343,7 +343,7 @@ export default function HomeContent({
         <ul ref={actionsListRef} className='relative' onMouseLeave={() => setActionsHighlight(null)}>
           {actionsHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: actionsHighlight.top, height: actionsHighlight.height}} />}
           <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => handleClick('__enquiry__')}>Kick off a project</li>
-          <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Say Hi</li>
+          {email && <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => window.open(`mailto:${email}?subject=Saying Hi`, '_blank')}>Say Hi</li>}
         </ul>
       </div>
 
