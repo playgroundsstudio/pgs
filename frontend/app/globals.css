@@ -108,18 +108,36 @@ html {
 @layer base {
   html,
   body {
-    font-size: 1rem;
-    line-height: 1.12rem;
+      font-size: 1.12rem;
+    line-height: 1.5rem;
     transition: background-color 400ms ease;
   }
 
-  @media (min-width: 1440px) {
+  @media (min-width: 768px) {
+      html,
+      body {
+        font-size: 1rem;
+        line-height: 1.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+          html,
+          body {
+            font-size: 1rem;
+            line-height: 1.18rem;
+          }
+        }
+
+
+  @media (min-width: 1750px) {
     html,
     body {
-      font-size: 1rem;
-      line-height: 1.12rem;
+        font-size: 1.15rem;
+      line-height: 1.35rem;
     }
   }
+
 
   h1,
   h2,
@@ -235,8 +253,8 @@ html {
   --color-tl2: rgba(200, 200, 200, 0.5);
   --color-labelcolor: var(--label-color);
 
-  --color-tgreen: #7edeb5;
-  --color-tred: #f4a783;
+  --color-tgreen: #44f287;
+  --color-tred: #f24461;
   --color-subtle: rgba(0, 0, 0, 0.02);
   --color-disabled-page: var(--disabled-page);
 

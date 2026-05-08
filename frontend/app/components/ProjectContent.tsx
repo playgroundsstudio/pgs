@@ -82,7 +82,7 @@ export default function ProjectContent({
               {project.coverImage?.asset?._ref && (
                 <div className={cn(
                   'aspect-square overflow-hidden shrink-0',
-                  mode === 'col' && 'md:mt-slotmargin md:pl-slotmargin md:w-[250px]'
+                  mode === 'col' && 'md:mt-slotmargin md:pl-slotmargin md:w-[200px]'
                 )}>
                   <Image
                     id={project.coverImage.asset._ref}

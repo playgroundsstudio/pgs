@@ -192,6 +192,9 @@ export default function Home({
     }
 
     const handleWheel = (event: WheelEvent) => {
+      // Only one slot — no panel navigation needed, allow normal scroll
+      if (slots <= 1) return
+
       if (effectiveMode === 'col') {
         // In col mode, only navigate panels with horizontal scroll
         if (Math.abs(event.deltaX) <= Math.abs(event.deltaY) || event.deltaX === 0) {
