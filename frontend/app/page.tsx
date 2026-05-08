@@ -55,8 +55,22 @@ export default async function Page() {
   const projects = homepageProjects.length > 0 ? homepageProjects : allProjects
   const showreel = (homepage as {showreel?: {asset?: {playbackId?: string}} | null} | null)?.showreel ?? null
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: siteTitle,
+    description: siteDescription,
+    email: email || undefined,
+    telephone: phone || undefined,
+    sameAs: socialProfiles.map((p) => p.url),
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{__html: JSON.stringify(jsonLd)}}
+      />
       <Home
         projects={projects}
         showreel={showreel}
