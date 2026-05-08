@@ -56,7 +56,7 @@ export default function MediaRenderer({media, isActive = true}: MediaRendererPro
           autoPlay='muted'
           loop
           muted
-          style={{width: '100%', height: '100%', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none', ...(aspectStyle || {aspectRatio: '16/9'})} as any}
+          style={{width: '100%', height: '100%', '--controls': 'none', '--media-object-fit': 'cover', ...(aspectStyle || {aspectRatio: '16/9'})} as any}
         />
       </div>
     )

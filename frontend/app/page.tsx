@@ -19,6 +19,10 @@ export default async function Page() {
   const about = (aboutPgs ?? null) as
     | {
         services?: Array<{title?: string | null}> | null
+        industries?: Array<{title?: string | null}> | null
+        socialProfiles?: Array<{title?: string | null; url?: string | null}> | null
+        email?: string | null
+        phone?: string | null
         title?: string | null
         description?: string | null
       }
@@ -28,6 +32,15 @@ export default async function Page() {
     about?.services
       ?.map((s: {title?: string | null}) => s.title)
       .filter((title: string | null | undefined): title is string => typeof title === 'string' && title.length > 0) ?? []
+  const industries =
+    about?.industries
+      ?.map((s: {title?: string | null}) => s.title)
+      .filter((title: string | null | undefined): title is string => typeof title === 'string' && title.length > 0) ?? []
+  const socialProfiles =
+    about?.socialProfiles
+      ?.filter((s): s is {title: string; url: string} => typeof s.title === 'string' && typeof s.url === 'string') ?? []
+  const email = about?.email ?? ''
+  const phone = about?.phone ?? ''
   const siteTitle = about?.title ?? ''
   const siteDescription = about?.description ?? ''
   const homepageProjects = Array.isArray((homepage as {projectList?: AllProjectsQueryResult} | null)?.projectList)
@@ -43,6 +56,10 @@ export default async function Page() {
         showreel={showreel}
         settings={settings}
         services={services}
+        industries={industries}
+        socialProfiles={socialProfiles}
+        email={email}
+        phone={phone}
         siteTitle={siteTitle}
         siteDescription={siteDescription}
       />

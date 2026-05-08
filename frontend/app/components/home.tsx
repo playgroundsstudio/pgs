@@ -8,6 +8,7 @@ import Image from '@/app/components/SanityImage'
 import HomeContent from '@/app/components/HomeContent'
 import ProjectContent from '@/app/components/ProjectContent'
 import AboutContent from '@/app/components/AboutContent'
+import EnquiryContent from '@/app/components/EnquiryContent'
 import Slot from '@/app/components/Slot'
 import PgsLogoMark from '@/app/components/PgsLogoMark'
 import IntroAnimation from '@/app/components/IntroAnimation'
@@ -24,6 +25,10 @@ export default function Home({
   showreel,
   settings,
   services,
+  industries,
+  socialProfiles,
+  email,
+  phone,
   siteTitle,
   siteDescription,
 }: {
@@ -31,6 +36,10 @@ export default function Home({
   showreel: {asset?: {playbackId?: string}} | null
   settings: SettingsQueryResult
   services: string[]
+  industries: string[]
+  socialProfiles: Array<{title: string; url: string}>
+  email: string
+  phone: string
   siteTitle: string
   siteDescription: string
 }) {
@@ -109,8 +118,9 @@ export default function Home({
     }
 
     const url = new URL(window.location.href)
+    const specialIds = ['__about__', '__enquiry__']
     const panelSlugs = openProjectIds
-      .map((projectId) => idToSlug.get(projectId))
+      .map((projectId) => specialIds.includes(projectId) ? projectId : idToSlug.get(projectId))
       .filter((slug): slug is string => typeof slug === 'string' && slug.length > 0)
 
     if (panelSlugs.length > 0) {
@@ -149,10 +159,15 @@ export default function Home({
         .map((slug) => slug.trim())
         .filter(Boolean)
 
+      const specialIds = ['__about__', '__enquiry__']
       panelSlugs.forEach((slug) => {
-        const projectId = slugToId.get(slug)
-        if (projectId && !nextOpenIds.includes(projectId)) {
-          nextOpenIds.push(projectId)
+        if (specialIds.includes(slug)) {
+          if (!nextOpenIds.includes(slug)) nextOpenIds.push(slug)
+        } else {
+          const projectId = slugToId.get(slug)
+          if (projectId && !nextOpenIds.includes(projectId)) {
+            nextOpenIds.push(projectId)
+          }
         }
       })
 
@@ -371,6 +386,10 @@ export default function Home({
                   openProjectIds={openProjectIds}
                   setOpenProjectIds={setOpenProjectIds}
                   services={services}
+                  industries={industries}
+                  socialProfiles={socialProfiles}
+                  email={email}
+                  phone={phone}
                   siteTitle={siteTitle}
                   siteDescription={siteDescription}
                   mode={effectiveMode}
@@ -384,6 +403,17 @@ export default function Home({
                   setActive={setActive}
                   openProjectIds={openProjectIds}
                   setOpenProjectIds={setOpenProjectIds}
+                  index={i}
+                  isActive={active === i}
+                />
+              ) : openProjectIds[i - 1] === '__enquiry__' ? (
+                <EnquiryContent
+                  mode={effectiveMode}
+                  setMode={setMode}
+                  setActive={setActive}
+                  openProjectIds={openProjectIds}
+                  setOpenProjectIds={setOpenProjectIds}
+                  services={services}
                   index={i}
                   isActive={active === i}
                 />

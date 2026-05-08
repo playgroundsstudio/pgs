@@ -166,6 +166,10 @@ export const aboutPgsQuery = defineQuery(`
   *[_type == "aboutPgs"][0]{
     title,
     description,
-    services[]{title}
+    services[]{title},
+    industries[]{title},
+    socialProfiles[]{title, url},
+    email,
+    phone
   }
 `)

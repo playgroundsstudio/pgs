@@ -18,6 +18,10 @@ type HomeContentProps = {
   openProjectIds: string[]
   setOpenProjectIds: Dispatch<SetStateAction<string[]>>
   services: string[]
+  industries: string[]
+  socialProfiles: Array<{title: string; url: string}>
+  email: string
+  phone: string
   siteTitle: string
   siteDescription: string
   mode: string
@@ -32,6 +36,10 @@ export default function HomeContent({
   openProjectIds,
   setOpenProjectIds,
   services,
+  industries,
+  socialProfiles,
+  email,
+  phone,
   siteTitle,
   siteDescription,
   mode,
@@ -294,49 +302,47 @@ export default function HomeContent({
 
   const sidebarMetaContent = (
     <>
-      <div className='mb-sa'>
-        <h3 className='font-sans text-dark-2'>Socials</h3>
-        <ul ref={socialsListRef} className='relative' onMouseLeave={() => setSocialsHighlight(null)}>
-          {socialsHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: socialsHighlight.top, height: socialsHighlight.height}} />}
-          <li className='group flex items-center py-0 cursor-pointer overflow-hidden text-dark-1' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>
-            <div className='flex-1 min-w-0'><p className='truncate'>Instagram</p></div>
-            <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-          </li>
-          <li className='group flex items-center py-0 cursor-pointer overflow-hidden text-dark-1' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>
-            <div className='flex-1 min-w-0'><p className='truncate'>X</p></div>
-            <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-          </li>
-          <li className='group flex items-center py-0 cursor-pointer overflow-hidden text-dark-1' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>
-            <div className='flex-1 min-w-0'><p className='truncate'>Behance</p></div>
-            <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-          </li>
-          <li className='group flex items-center py-0 cursor-pointer overflow-hidden text-dark-1' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>
-            <div className='flex-1 min-w-0'><p className='truncate'>Are.na</p></div>
-            <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-          </li>
-        </ul>
-      </div>
+      {socialProfiles.length > 0 && (
+        <div className='mb-sa'>
+          <h3 className='font-sans text-dark-2'>Socials</h3>
+          <ul ref={socialsListRef} className='relative' onMouseLeave={() => setSocialsHighlight(null)}>
+            {socialsHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: socialsHighlight.top, height: socialsHighlight.height}} />}
+            {socialProfiles.map((profile) => (
+              <li key={profile.url} className='group flex items-center py-0 cursor-pointer overflow-hidden text-dark-1' onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => window.open(profile.url, '_blank')}>
+                <div className='flex-1 min-w-0'><p className='truncate'>{profile.title}</p></div>
+                <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
-      <div className='mb-sa'>
-        <h3 className='font-sans text-dark-2'>Contact</h3>
-        <ul ref={contactListRef} className='relative' onMouseLeave={() => setContactHighlight(null)}>
-          {contactHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: contactHighlight.top, height: contactHighlight.height}} />}
-          <li className='group flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setContactHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => navigator.clipboard.writeText('+44 7778 4320 987')}>
-            <div className='flex-1 min-w-0'><p className='truncate'>+44 7778 4320 987</p></div>
-            <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
-          </li>
-          <li className='group flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setContactHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => navigator.clipboard.writeText('info@play-grounds.studio')}>
-            <div className='flex-1 min-w-0'><p className='truncate'>info@play-grounds.studio</p></div>
-            <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
-          </li>
-        </ul>
-      </div>
+      {(phone || email) && (
+        <div className='mb-sa'>
+          <h3 className='font-sans text-dark-2'>Contact</h3>
+          <ul ref={contactListRef} className='relative' onMouseLeave={() => setContactHighlight(null)}>
+            {contactHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: contactHighlight.top, height: contactHighlight.height}} />}
+            {phone && (
+              <li className='group flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setContactHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => navigator.clipboard.writeText(phone)}>
+                <div className='flex-1 min-w-0'><p className='truncate'>{phone}</p></div>
+                <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
+              </li>
+            )}
+            {email && (
+              <li className='group flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setContactHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => navigator.clipboard.writeText(email)}>
+                <div className='flex-1 min-w-0'><p className='truncate'>{email}</p></div>
+                <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
+              </li>
+            )}
+          </ul>
+        </div>
+      )}
 
       <div className='mb-sa'>
         <h3 className='font-sans text-dark-2'>Actions</h3>
         <ul ref={actionsListRef} className='relative' onMouseLeave={() => setActionsHighlight(null)}>
           {actionsHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: actionsHighlight.top, height: actionsHighlight.height}} />}
-          <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Kick off a project</li>
+          <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => handleClick('__enquiry__')}>Kick off a project</li>
           <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Say Hi</li>
         </ul>
       </div>
@@ -477,28 +483,18 @@ export default function HomeContent({
                   <h3 className='font-sans text-dark-2'>Services</h3>
                   <ul ref={servicesListRef} className='relative' onMouseLeave={() => setServicesHighlight(null)}>
                     {servicesHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: servicesHighlight.top, height: servicesHighlight.height}} />}
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Graphic Design</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Product Design</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Web Design</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Development</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Motion</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Brand Identity</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Art Direction</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Strategy</li>
+                    {services.map((item) => (
+                      <li key={item} className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>{item}</li>
+                    ))}
                   </ul>
                 </div>
                 <div className='mb-sa'>
                   <h3 className='font-sans text-dark-2'>Industry</h3>
                   <ul className='relative' onMouseLeave={() => setIndustryHighlight(null)}>
                     {industryHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: industryHighlight.top, height: industryHighlight.height}} />}
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setIndustryHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Art</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setIndustryHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Architecture</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setIndustryHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Technology</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setIndustryHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Health</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setIndustryHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Sport</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setIndustryHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Fashion</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setIndustryHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Beauty</li>
-                    <li className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setIndustryHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>Sustainability</li>
+                    {industries.map((item) => (
+                      <li key={item} className='flex items-center py-0 cursor-pointer overflow-hidden' onMouseEnter={e => setIndustryHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>{item}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
