@@ -140,6 +140,12 @@ export const settings = defineType({
       ],
     }),
     defineField({
+      name: 'introText',
+      title: 'Intro Animation Text',
+      description: 'Text displayed in the intro animation when users first visit the site.',
+      type: 'string',
+    }),
+    defineField({
       name: 'ogImage',
       title: 'Open Graph Image',
       type: 'image',

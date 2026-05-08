@@ -2,10 +2,11 @@
 import {useState, useRef, useLayoutEffect, useCallback} from 'react'
 import gsap from 'gsap'
 
-const INTRO_TEXT = 'Place holder intro animation text should be about this long'
+const DEFAULT_TEXT = 'Place holder intro animation text should be about this long'
 const SESSION_KEY = 'pgs-intro-seen'
 
-export default function IntroAnimation({onComplete}: {onComplete: () => void}) {
+export default function IntroAnimation({text, onComplete}: {text?: string; onComplete: () => void}) {
+  const introText = text || DEFAULT_TEXT
   const overlayRef = useRef<HTMLDivElement>(null)
   const textRef = useRef<HTMLSpanElement>(null)
   const [visible, setVisible] = useState(true)
@@ -16,7 +17,7 @@ export default function IntroAnimation({onComplete}: {onComplete: () => void}) {
     if (!overlay || !textEl) return
 
     // Wrap each word in a span
-    const words = INTRO_TEXT.split(' ')
+    const words = introText.split(' ')
     textEl.innerHTML = ''
     words.forEach((word, i) => {
       const span = document.createElement('span')
@@ -60,7 +61,7 @@ export default function IntroAnimation({onComplete}: {onComplete: () => void}) {
       duration: 0.8,
       ease: 'power2.inOut',
     })
-  }, [onComplete])
+  }, [introText, onComplete])
 
   useLayoutEffect(() => {
     // TODO: re-enable session check after debugging

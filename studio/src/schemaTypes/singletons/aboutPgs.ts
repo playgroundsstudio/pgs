@@ -112,6 +112,46 @@ export const aboutPgs = defineType({
         },
       ],
     }),
+    defineField({
+      name: 'directors',
+      title: 'Directors',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'name',
+              title: 'Name',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'jobTitle',
+              title: 'Title',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'email',
+              title: 'Email',
+              type: 'string',
+            }),
+            defineField({
+              name: 'svg',
+              title: 'SVG',
+              type: 'file',
+              options: {
+                accept: '.svg',
+              },
+            }),
+          ],
+          preview: {
+            select: {title: 'name', subtitle: 'jobTitle'},
+          },
+        },
+      ],
+    }),
   ],
   preview: {
     prepare() {

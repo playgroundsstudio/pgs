@@ -27,6 +27,7 @@ export default function Home({
   services,
   industries,
   socialProfiles,
+  directors,
   email,
   phone,
   siteTitle,
@@ -38,6 +39,7 @@ export default function Home({
   services: string[]
   industries: string[]
   socialProfiles: Array<{title: string; url: string}>
+  directors: Array<{name: string; jobTitle: string; email: string; svgUrl: string}>
   email: string
   phone: string
   siteTitle: string
@@ -342,7 +344,7 @@ export default function Home({
 
   return (
     <>
-    {!introComplete && <IntroAnimation onComplete={handleIntroComplete} />}
+    {!introComplete && <IntroAnimation text={(settings as any)?.introText} onComplete={handleIntroComplete} />}
     <div
       ref={scrollRef}
       className={cn(
@@ -403,6 +405,7 @@ export default function Home({
                   setActive={setActive}
                   openProjectIds={openProjectIds}
                   setOpenProjectIds={setOpenProjectIds}
+                  directors={directors}
                   index={i}
                   isActive={active === i}
                 />

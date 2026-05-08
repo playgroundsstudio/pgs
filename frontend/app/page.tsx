@@ -21,6 +21,7 @@ export default async function Page() {
         services?: Array<{title?: string | null}> | null
         industries?: Array<{title?: string | null}> | null
         socialProfiles?: Array<{title?: string | null; url?: string | null}> | null
+        directors?: Array<{name?: string | null; jobTitle?: string | null; email?: string | null; svgUrl?: string | null}> | null
         email?: string | null
         phone?: string | null
         title?: string | null
@@ -39,6 +40,11 @@ export default async function Page() {
   const socialProfiles =
     about?.socialProfiles
       ?.filter((s): s is {title: string; url: string} => typeof s.title === 'string' && typeof s.url === 'string') ?? []
+  const directors =
+    about?.directors
+      ?.filter((d): d is {name: string; jobTitle: string; email: string | null; svgUrl: string | null} =>
+        typeof d.name === 'string' && typeof d.jobTitle === 'string')
+      .map((d) => ({name: d.name, jobTitle: d.jobTitle, email: d.email ?? '', svgUrl: d.svgUrl ?? ''})) ?? []
   const email = about?.email ?? ''
   const phone = about?.phone ?? ''
   const siteTitle = about?.title ?? ''
@@ -58,6 +64,7 @@ export default async function Page() {
         services={services}
         industries={industries}
         socialProfiles={socialProfiles}
+        directors={directors}
         email={email}
         phone={phone}
         siteTitle={siteTitle}

@@ -1,8 +1,15 @@
 'use client'
-import {useRef} from 'react'
+import {useRef, useEffect, useState} from 'react'
 import type {Dispatch, SetStateAction} from 'react'
 import {cn} from '@/app/lib/cn'
 import {useSlotActions} from '@/app/hooks/useSlotActions'
+
+type Director = {
+  name: string
+  jobTitle: string
+  email: string
+  svgUrl: string
+}
 
 type AboutContentProps = {
   mode: string
@@ -10,26 +17,43 @@ type AboutContentProps = {
   setActive: Dispatch<SetStateAction<number>>
   openProjectIds: string[]
   setOpenProjectIds: Dispatch<SetStateAction<string[]>>
+  directors: Director[]
   index: number
   isActive: boolean
 }
 
-function PersonCard({initials, name, role, phone, email}: {initials: string, name: string, role: string, phone: string, email: string}) {
+function InlineSvg({url, className}: {url: string; className?: string}) {
+  const [svg, setSvg] = useState('')
+  useEffect(() => {
+    fetch(url)
+      .then((r) => r.text())
+      .then((text) => {
+        const cleaned = text.replace(/fill="[^"]*"/g, 'fill="currentColor"')
+        setSvg(cleaned)
+      })
+      .catch(() => {})
+  }, [url])
+  if (!svg) return null
+  return <div className={className} dangerouslySetInnerHTML={{__html: svg}} />
+}
+
+function DirectorCard({director}: {director: Director}) {
   return (
     <div className='flex flex-col'>
-      <p className='text-[clamp(18rem,35vw,30rem)] font-medium leading-[0.85] tracking-[-0.08em] mb-8'>{initials}</p>
+      {director.svgUrl && (
+        <InlineSvg url={director.svgUrl} className='w-[400px] h-auto mb-[1rem] text-dark-1 [&_svg]:w-full [&_svg]:h-auto' />
+      )}
       <div className='mt-auto'>
-        <p>{name}</p>
-        <p className='text-dark-2'>{role}</p>
-        <div className='flex gap-2'>
-          <p className='text-dark-2'>P</p>
-          <p>{phone}</p>
-        </div>
-        <div className='flex gap-2'>
-          <p className='text-dark-2'>E</p>
-          <p>{email}</p>
-        </div>
+        <p>{director.name}</p>
+        <p className='text-dark-2'>{director.jobTitle}</p>
+        {director.email && (
+          <div className='flex gap-2'>
+            <p className='text-dark-2'>E</p>
+            <p>{director.email}</p>
+          </div>
+        )}
       </div>
+      <div className='pb-[4rem]' />
     </div>
   )
 }
@@ -40,6 +64,7 @@ export default function AboutContent({
   setActive,
   openProjectIds,
   setOpenProjectIds,
+  directors,
   index,
   isActive,
 }: AboutContentProps) {
@@ -72,10 +97,13 @@ export default function AboutContent({
       <div className={cn(' pt-slotmargin max-w-[var(--slot-content-max-width)] mx-auto w-full px-slotmargin')}>
 
 
-        <div className='grid grid-cols-1 gap-gutter mb-16'>
-          <PersonCard initials='JH' name='James Hartwell' role='Designer & Director' phone='+44 7778 432 098' email='james@play-grounds.studio' />
-          <PersonCard initials='RK' name='Riley Karl' role='Designer & Director' phone='+44 7778 543689' email='riley@play-grounds.studio' />
-        </div>
+        {directors.length > 0 && (
+          <div className='grid grid-cols-1 gap-gutter mb-16'>
+            {directors.map((director) => (
+              <DirectorCard key={director.name} director={director} />
+            ))}
+          </div>
+        )}
 
       </div>
     </div>
