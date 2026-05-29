@@ -3,6 +3,7 @@ import {useRef, useEffect, useState} from 'react'
 import type {Dispatch, SetStateAction} from 'react'
 import {cn} from '@/app/lib/cn'
 import {useSlotActions} from '@/app/hooks/useSlotActions'
+import SlotPill from '@/app/components/SlotPill'
 
 type Director = {
   name: string
@@ -17,6 +18,8 @@ type AboutContentProps = {
   setActive: Dispatch<SetStateAction<number>>
   openProjectIds: string[]
   setOpenProjectIds: Dispatch<SetStateAction<string[]>>
+  siteTitle: string
+  description: string
   directors: Director[]
   index: number
   isActive: boolean
@@ -64,6 +67,8 @@ export default function AboutContent({
   setActive,
   openProjectIds,
   setOpenProjectIds,
+  siteTitle,
+  description,
   directors,
   index,
   isActive,
@@ -76,26 +81,10 @@ export default function AboutContent({
       ref={scrollRef}
       className='relative h-full w-full overflow-auto bg-surface2 text-dark-1'
     >
-      <div
-        className={cn(
-          'absolute top-4 right-4 z-40 flex items-center gap-3 px-4 py-2 rounded-full bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle transition-all duration-300 ease-out',
-          isActive ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0 pointer-events-none'
-        )}
-      >
-        <button onClick={toggleMode} className='cursor-pointer hover:text-dark-2 hidden lg:block' aria-label={mode === 'row' ? 'Expand' : 'Minimise'}>
-          {mode === 'row' ? (
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-          )}
-        </button>
-        <button onClick={() => closeSlot('__about__')} className='cursor-pointer hover:text-dark-2' aria-label='Close'>
-          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
-      </div>
+      <SlotPill mode={mode} isVisible={isActive} onToggleMode={toggleMode} onClose={() => closeSlot('__about__')} />
 
-      <div className={cn(' pt-slotmargin max-w-[var(--slot-content-max-width)] mx-auto w-full px-slotmargin')}>
-
+      <div className={cn('pt-slotmargin max-w-[var(--slot-content-max-width)] mx-auto w-full px-slotmargin')}>
+        {description && <p className='text-4xl leading-tight mb-16'>{siteTitle} {description}</p>}
 
         {directors.length > 0 && (
           <div className='grid grid-cols-1 gap-gutter mb-16'>

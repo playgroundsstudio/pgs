@@ -115,7 +115,7 @@ html {
   html,
   body {
     font-size: 1.12rem;
-    line-height: 1.43rem;
+    line-height: 1.4rem;
     transition: background-color 400ms ease;
   }
   /*
@@ -176,7 +176,7 @@ html {
   --accent: #14b8a6;
   --overlay: rgba(200, 200, 200, 1);
   --overlay-blur: 2px;
-  --text-primary: rgba(0, 0, 0, 0.8);
+  --text-primary: rgba(0, 0, 0, 0.7);
   --text-secondary: rgba(0, 0, 0, 0.3);
   --label-color: #fff;
 

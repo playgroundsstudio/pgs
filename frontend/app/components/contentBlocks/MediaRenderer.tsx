@@ -10,6 +10,7 @@ type MediaItem = {
     alt?: string
     hotspot?: {x: number; y: number}
     crop?: {top: number; bottom: number; left: number; right: number}
+    metadata?: {palette?: {dominant?: {background?: string}}}
   }
   video?: {
     asset?: {
@@ -64,17 +65,18 @@ export default function MediaRenderer({media, isActive = true}: MediaRendererPro
 
   if (media.image?.asset?._ref) {
     return (
-      <div className='w-full overflow-hidden' style={aspectStyle}>
-        <Image
-          id={media.image.asset._ref}
-          alt={media.image.alt || ''}
-          className='w-full h-full object-cover'
-          width={1200}
-          mode='cover'
-          hotspot={media.image.hotspot}
-          crop={media.image.crop}
-        />
-      </div>
+      <Image
+        id={media.image.asset._ref}
+        alt={media.image.alt || ''}
+        className='w-full h-full object-cover'
+        width={1200}
+        mode='cover'
+        hotspot={media.image.hotspot}
+        crop={media.image.crop}
+        palette={media.image.metadata?.palette}
+        containerClassName='w-full overflow-hidden'
+        containerStyle={aspectStyle}
+      />
     )
   }
 

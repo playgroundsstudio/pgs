@@ -150,18 +150,19 @@ export default async function TagPage(props: Props) {
         <h1 className='text-[100px] leading-[0.9] mb-8'>{title}</h1>
         <div className='grid grid-cols-8 gap-2'>
           {images.map((image) => (
-            <div key={image.key} className='w-full bg-subtle'>
-              <Image
-                id={image.asset?._ref || ''}
-                alt={image.alt || image.projectTitle}
-                className='w-full h-auto'
-                width={500}
-                height={500}
-                mode='contain'
-                hotspot={image.hotspot}
-                crop={image.crop}
-              />
-            </div>
+            <Image
+              key={image.key}
+              id={image.asset?._ref || ''}
+              alt={image.alt || image.projectTitle}
+              className='w-full h-auto'
+              width={500}
+              height={500}
+              mode='contain'
+              hotspot={image.hotspot}
+              crop={image.crop}
+              palette={(image as any).metadata?.palette}
+              containerClassName='w-full'
+            />
           ))}
         </div>
         <ContactInquiryBlock services={services} className='mt-16' />

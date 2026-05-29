@@ -1,6 +1,11 @@
 import {defineQuery} from 'next-sanity'
 
-export const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
+const imageMetadata = /* groq */ `"metadata": asset->metadata { palette }`
+
+export const settingsQuery = defineQuery(`*[_type == "settings"][0]{
+  ...,
+  logo { ..., ${imageMetadata} }
+}`)
 
 const projectFields = /* groq */ `
   _id,
@@ -9,17 +14,17 @@ const projectFields = /* groq */ `
   "slug": slug.current,
   excerpt,
   description,
-  logo,
+  logo { ..., ${imageMetadata} },
   contentBlocks[]{
     ...,
     _type == "sideBySideMedia" => {
       ...,
-      leftMedia { ..., video { ..., "asset": asset-> } },
-      rightMedia { ..., video { ..., "asset": asset-> } }
+      leftMedia { ..., image { ..., ${imageMetadata} }, video { ..., "asset": asset-> } },
+      rightMedia { ..., image { ..., ${imageMetadata} }, video { ..., "asset": asset-> } }
     },
     _type == "centerMedia" => {
       ...,
-      media { ..., video { ..., "asset": asset-> } }
+      media { ..., image { ..., ${imageMetadata} }, video { ..., "asset": asset-> } }
     },
     _type == "textCta" => {
       ...,
@@ -35,12 +40,12 @@ const projectFields = /* groq */ `
       }
     }
   },
-  coverImage,
+  coverImage { ..., ${imageMetadata} },
   location,
   status,
   "tags": tags[]->{ title, "slug": slug.current },
   "date": coalesce(date, _updatedAt),
-  "author": author->{firstName, lastName, picture},
+  "author": author->{firstName, lastName, picture { ..., ${imageMetadata} }},
 `
 
 const linkReference = /* groq */ `
@@ -70,6 +75,7 @@ export const getPageQuery = defineQuery(`
       ...,
       _type == "callToAction" => {
         ...,
+        image { ..., ${imageMetadata} },
         button {
           ...,
           ${linkFields}
@@ -156,7 +162,7 @@ export const tagPageQuery = defineQuery(`
       _id,
       "title": coalesce(title, "Untitled"),
       "slug": slug.current,
-      coverImage,
+      coverImage { ..., ${imageMetadata} },
       contentBlocks
     }
   }

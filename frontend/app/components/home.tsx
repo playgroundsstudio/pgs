@@ -21,6 +21,7 @@ type LogoImage = {
   alt?: string
   hotspot?: {x: number; y: number}
   crop?: {top: number; bottom: number; left: number; right: number}
+  metadata?: {palette?: {dominant?: {background?: string}}}
 }
 
 export default function Home({
@@ -97,7 +98,7 @@ export default function Home({
   console.log(hasPadding)
 
   // Use custom hooks
-  useKeyboardControls({slots, setActive, setMode})
+  useKeyboardControls({slots, active, setActive, mode, setMode, openProjectIds, setOpenProjectIds})
   const {closeProjectTab} = useNavigation({
     slots,
     effectiveMode,
@@ -227,6 +228,8 @@ export default function Home({
                 setActive={setActive}
                 openProjectIds={openProjectIds}
                 setOpenProjectIds={setOpenProjectIds}
+                siteTitle={siteTitle}
+                description={siteDescription}
                 directors={directors}
                 index={i}
                 isActive={active === i}
@@ -266,7 +269,7 @@ export default function Home({
         />
         <div
           ref={shareMenuRef}
-          className={` ${slots > 1 ? 'bottom-4' : 'bottom-[-400px]'} group/nav transition-all flex justify-center items-center gap-2 w-full fixed left-0 right-0 z-50 hide-scrollbar `}
+          className={` ${slots > 1 ? 'bottom-[calc(50vh-50px)]' : 'bottom-[-400px]'} group/nav transition-all flex justify-center items-center gap-2 w-full fixed left-0 right-0 z-50 hide-scrollbar `}
         >
           <NavBar
             slots={slots}
@@ -465,7 +468,7 @@ function NavBar({
   return (
     <div
       ref={containerRef}
-      className="relative bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-2 p-2"
+      className="relative  bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-2 p-2"
       style={{
         borderRadius: '60px',
         height: CLOSED_NAV_HEIGHT,
@@ -473,7 +476,7 @@ function NavBar({
     >
       <div
         className={cn(
-          'pointer-events-none absolute inset-0 z-0 bg-surface2 backdrop-blur-[40px] transition-opacity duration-300 ease-out',
+          'pointer-events-none absolute inset-0  z-0 bg-surface2 backdrop-blur-[40px] transition-opacity duration-300 ease-out',
           shareMenuOpen ? 'opacity-100' : 'opacity-0',
         )}
       />
@@ -640,6 +643,7 @@ function Tab({
             mode="contain"
             hotspot={settingsLogo.hotspot}
             crop={settingsLogo.crop}
+            fadeIn={false}
           />
         ) : projectLogo?.asset?._ref ? (
           <Image
@@ -651,6 +655,7 @@ function Tab({
             mode="contain"
             hotspot={projectLogo.hotspot}
             crop={projectLogo.crop}
+            fadeIn={false}
           />
         ) : projectFallbackImage?.asset?._ref ? (
           <Image
@@ -662,6 +667,7 @@ function Tab({
             mode="contain"
             hotspot={projectFallbackImage.hotspot}
             crop={projectFallbackImage.crop}
+            fadeIn={false}
           />
         ) : (
           <p>{index}</p>

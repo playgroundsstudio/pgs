@@ -63,6 +63,7 @@ export default function CTA({block}: CtaProps) {
               crop={image.crop}
               mode="cover"
               className="rounded-sm"
+              palette={(image as any).metadata?.palette}
             />
           )}
         </div>

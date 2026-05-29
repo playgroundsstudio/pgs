@@ -5,6 +5,7 @@ import {createPortal} from 'react-dom'
 import gsap from 'gsap'
 import {cn} from '@/app/lib/cn'
 import {useSlotActions} from '@/app/hooks/useSlotActions'
+import SlotPill from '@/app/components/SlotPill'
 import type {AllProjectsQueryResult} from '@/sanity.types'
 import HomeHeader from '@/app/components/HomeHeader'
 import PgsLogoMark from '@/app/components/PgsLogoMark'
@@ -362,20 +363,7 @@ export default function HomeContent({
 
   return (
     <div ref={scrollRef} className='relative h-full w-full overflow-auto'>
-      <div
-        className={cn(
-          'absolute top-4 right-4 z-40 flex items-center justify-center w-9 h-9 rounded-full bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle transition-all duration-300 ease-out',
-          isActive && hasOpenProject ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0 pointer-events-none'
-        )}
-      >
-        <button onClick={toggleMode} className='cursor-pointer hover:text-dark-2 hidden lg:block' aria-label={mode === 'row' ? 'Expand' : 'Minimise'}>
-          {mode === 'row' ? (
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
-          )}
-        </button>
-      </div>
+      <SlotPill mode={mode} isVisible={isActive && hasOpenProject} onToggleMode={toggleMode} />
       <HomeHeader
         scrollRef={scrollRef}
         title={siteTitle}
