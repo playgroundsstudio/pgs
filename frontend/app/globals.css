@@ -105,40 +105,44 @@ html {
   font-size: 12px;
 }
 
+@media (min-width: 1024px) {
+  html {
+    font-size: 12px;
+  }
+}
+
 @layer base {
   html,
   body {
-      font-size: 1.12rem;
-    line-height: 1.5rem;
+    font-size: 1.12rem;
+    line-height: 1.43rem;
     transition: background-color 400ms ease;
   }
-
+  /*
   @media (min-width: 768px) {
-      html,
-      body {
-        font-size: 1rem;
-        line-height: 1.5rem;
-      }
+    html,
+    body {
+      font-size: 1rem;
+      line-height: 1.5rem;
     }
+  }
 
-    @media (min-width: 1024px) {
-          html,
-          body {
-            font-size: 1rem;
-            line-height: 1.18rem;
-          }
-        }
-
+  @media (min-width: 1024px) {
+    html,
+    body {
+      font-size: 1rem;
+      line-height: 1.18rem;
+    }
+  }
 
   @media (min-width: 1750px) {
     html,
     body {
-        font-size: 1.15rem;
+      font-size: 1.15rem;
       line-height: 1.35rem;
     }
   }
-
-
+*/
   h1,
   h2,
   h3,

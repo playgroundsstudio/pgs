@@ -1751,13 +1751,21 @@ export type TagPageQueryResult = {
   }>
 } | null
 // Variable: aboutPgsQuery
-// Query: *[_type == "aboutPgs"][0]{    title,    description,    services[]{title}  }
+// Query: *[_type == "aboutPgs"][0]{    title,    description,    services[]{title},    industries[]{title},    socialProfiles[]{title, url},    directors[]{name, jobTitle, email, "svgUrl": svg.asset->url},    email,    phone  }
 export type AboutPgsQueryResult = {
   title: string | null
   description: string | null
   services: Array<{
     title: string
   }> | null
+  industries: null
+  socialProfiles: Array<{
+    title: string
+    url: string
+  }> | null
+  directors: null
+  email: string | null
+  phone: string | null
 } | null
 
 // Query TypeMap
@@ -1775,6 +1783,6 @@ declare module '@sanity/client' {
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
     '\n  *[_type == "tag" && defined(slug.current)]\n  {"slug": slug.current}\n': TagPagesSlugsResult
     '\n  *[_type == "tag" && slug.current == $slug][0]{\n    _id,\n    title,\n    pageTitle,\n    description,\n    "slug": slug.current,\n    "projects": *[_type == "project" && references(^._id)] | order(date desc, _updatedAt desc) {\n      _id,\n      "title": coalesce(title, "Untitled"),\n      "slug": slug.current,\n      coverImage,\n      contentBlocks\n    }\n  }\n': TagPageQueryResult
-    '\n  *[_type == "aboutPgs"][0]{\n    title,\n    description,\n    services[]{title}\n  }\n': AboutPgsQueryResult
+    '\n  *[_type == "aboutPgs"][0]{\n    title,\n    description,\n    services[]{title},\n    industries[]{title},\n    socialProfiles[]{title, url},\n    directors[]{name, jobTitle, email, "svgUrl": svg.asset->url},\n    email,\n    phone\n  }\n': AboutPgsQueryResult
   }
 }
