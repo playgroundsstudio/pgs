@@ -26,7 +26,7 @@ export default function ProjectList({
   return (
     <div className='@container'>
       {title && <h3 className='font-sans text-dark-2'>{title}</h3>}
-      <div className='grid grid-cols-14 gap-gutter sticky top-12 z-20 pt-2 border-b border-stroke'>
+      <div className='grid grid-cols-14 gap-gutter  z-20 pt-2 border-b border-stroke'>
         <div className='col-span-1'><h3 className='font-sans text-dark-2'>#</h3></div>
         <div className='col-span-3 @max-[600px]:col-span-4 @max-[450px]:col-span-6 @max-[300px]:col-span-11'><h3 className='font-sans text-dark-2'>Project</h3></div>
         <div className='col-span-3 @max-[600px]:col-span-5 @max-[300px]:hidden'><h3 className='font-sans text-dark-2'>Tags</h3></div>

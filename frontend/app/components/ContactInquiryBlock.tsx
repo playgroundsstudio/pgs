@@ -68,16 +68,16 @@ export default function ContactInquiryBlock({
         {submitted ? (
           <p className='text-dark-1 mt-2'>Thank you for your enquiry. We&apos;ll be in touch soon.</p>
         ) : (
-          <form onSubmit={handleSubmit} className='flex flex-col gap-px'>
-            <div className='relative h-[calc(var(--font-size-sm--line-height)*1.5)] flex items-center border-b-[1.5px] border-solid border-border-form'>
+          <form onSubmit={handleSubmit} className='flex flex-col'>
+            <div className='relative flex items-center py-[2px] border-b border-stroke border-t overflow-hidden'>
               <span className='text-dark-1 pointer-events-none absolute left-0'>Name</span>
               <input type='text' name='name' placeholder='John Doe' className='bg-transparent h-full w-full text-right outline-none placeholder:text-dark-2' />
             </div>
-            <div className='relative h-[calc(var(--font-size-sm--line-height)*1.5)] flex items-center border-b-[1.5px] border-solid border-border-form'>
+            <div className='relative flex items-center py-[2px] border-b border-stroke overflow-hidden'>
               <span className='text-dark-1 pointer-events-none absolute left-0'>Role</span>
               <input type='text' name='role' placeholder='Creative Director' className='bg-transparent h-full w-full text-right outline-none placeholder:text-dark-2' />
             </div>
-            <div className='relative h-[calc(var(--font-size-sm--line-height)*1.5)] flex items-center border-b-[1.5px] border-solid border-border-form'>
+            <div className='relative flex items-center py-[2px] border-b border-stroke overflow-hidden'>
               <span className='text-dark-1 pointer-events-none absolute left-0'>Services</span>
               <select name='service' className='bg-transparent h-full w-full text-right outline-none appearance-none cursor-pointer text-dark-2'>
                 <option value=''>Select a service</option>
@@ -86,18 +86,18 @@ export default function ContactInquiryBlock({
                 ))}
               </select>
             </div>
-            <div className='relative h-[calc(var(--font-size-sm--line-height)*1.5)] flex items-center border-b-[1.5px] border-solid border-border-form'>
+            <div className='relative flex items-center py-[2px] border-b border-stroke overflow-hidden'>
               <span className='text-dark-1 pointer-events-none absolute left-0'>Budget</span>
               <input type='text' name='budget' placeholder='£5,000 — £10,000' className='bg-transparent h-full w-full text-right outline-none placeholder:text-dark-2' />
             </div>
-            <div className='min-h-[120px] flex border-b-[1.5px] border-solid border-border-form py-2'>
+            <div className='min-h-[120px] flex border-b border-stroke py-2 overflow-hidden'>
               <textarea
                 name='message'
                 placeholder='message'
                 className='bg-transparent w-full min-h-[104px] text-left outline-none placeholder:text-dark-2 resize-none'
               />
             </div>
-            <div className='relative h-[calc(var(--font-size-sm--line-height)*1.5)] flex items-center border-b-[1.5px] border-solid border-border-form'>
+            <div className='relative flex items-center py-[2px] border-b border-stroke overflow-hidden'>
               <span className='text-dark-1 pointer-events-none absolute left-0'>Are you a social good company?</span>
               <select name='social-good' defaultValue='no' className='bg-transparent h-full w-full text-right outline-none appearance-none cursor-pointer text-dark-2'>
                 <option value='no'>No</option>
