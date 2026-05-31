@@ -9,6 +9,7 @@ import SlotPill from '@/app/components/SlotPill'
 import type {AllProjectsQueryResult} from '@/sanity.types'
 import HomeHeader from '@/app/components/HomeHeader'
 import PgsLogoMark from '@/app/components/PgsLogoMark'
+import ProjectList from '@/app/components/ProjectList'
 import MuxPlayer from '@mux/mux-player-react'
 import '@mux/mux-player/themes/minimal'
 
@@ -65,8 +66,6 @@ export default function HomeContent({
   const {toggleMode, closeSlot} = useSlotActions({mode, setMode, setActive, openProjectIds, setOpenProjectIds})
 
   const [mounted, setMounted] = useState(false)
-  const [expandedTagsId, setExpandedTagsId] = useState<string | null>(null)
-  const [hoveredProjectIndex, setHoveredProjectIndex] = useState<number | null>(null)
   const [socialsHighlight, setSocialsHighlight] = useState<{top: number, height: number} | null>(null)
   const [contactHighlight, setContactHighlight] = useState<{top: number, height: number} | null>(null)
   const [servicesHighlight, setServicesHighlight] = useState<{top: number, height: number} | null>(null)
@@ -86,7 +85,6 @@ export default function HomeContent({
   const showreelWrapperRef = useRef<HTMLDivElement>(null)
   const portalShowreelRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
-  const projectListRef = useRef<HTMLUListElement>(null)
   const socialsListRef = useRef<HTMLUListElement>(null)
   const contactListRef = useRef<HTMLUListElement>(null)
   const servicesListRef = useRef<HTMLUListElement>(null)
@@ -387,79 +385,13 @@ export default function HomeContent({
         {isExpanded ? (
           <div className='relative flex flex-col w-full'>
             {/* Projects — full width */}
-            <div className='mb-[2rem] w-full pb-[2rem] @container'>
-              <div className='grid grid-cols-14 gap-gutter sticky top-12 z-20 pt-2'>
-                <div className='col-span-1'><h3 className='font-sans text-dark-2'>#</h3></div>
-                <div className='col-span-3 @max-[600px]:col-span-4 @max-[450px]:col-span-6 @max-[300px]:col-span-11'><h3 className='font-sans text-dark-2'>Project</h3></div>
-                <div className='col-span-3 @max-[600px]:col-span-5 @max-[300px]:hidden'><h3 className='font-sans text-dark-2'>Tags</h3></div>
-                <div className='col-span-1 @max-[600px]:col-span-2 @max-[450px]:hidden'><h3 className='font-sans text-dark-2 text-center'>Year</h3></div>
-                <div className='col-span-4 @max-[600px]:hidden'><h3 className='font-sans text-dark-2 text-center'>Location</h3></div>
-                <div className='col-span-2 text-right'><h3 className='font-sans text-dark-2'>Status</h3></div>
-              </div>
-
-              <ul
-                ref={projectListRef}
-                className={cn('relative', !isActive && 'pointer-events-none opacity-[var(--disabled-text)]')}
-                onMouseLeave={() => setHoveredProjectIndex(null)}
-              >
-                {hoveredProjectIndex !== null && projectListRef.current && (() => {
-                  const li = projectListRef.current.children[hoveredProjectIndex + 1] as HTMLElement | undefined
-                  if (!li) return null
-                  return (
-                    <div
-                      className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out'
-                      style={{top: li.offsetTop, height: li.offsetHeight}}
-                    />
-                  )
-                })()}
-                {projects.map((project, i) => (
-                  <li
-                    key={project._id ?? i}
-                    onClick={() => handleClick(project._id)}
-                    onMouseEnter={() => setHoveredProjectIndex(i)}
-                    className={`group relative grid grid-cols-14 gap-gutter py-0 cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-hoverslot' : ''}`}
-                  >
-                    <div className='col-span-1'>
-                      <p>{String(i + 1).padStart(2, '0')}</p>
-                    </div>
-                    <div className='col-span-3 min-w-0 @max-[600px]:col-span-4 @max-[450px]:col-span-6 @max-[300px]:col-span-11'>
-                      <p className='truncate'>{project.title ?? 'Untitled'}</p>
-                    </div>
-                    <div className='col-span-3 min-w-0 @max-[600px]:col-span-5 @max-[300px]:hidden'>
-                      {(() => {
-                        const tags = (project as any).tags?.filter(Boolean) || []
-                        const isTagExpanded = expandedTagsId === project._id
-                        if (!tags.length) return <p className='truncate text-dark-2'>No tags</p>
-                        if (isTagExpanded) {
-                          return (
-                            <p className='truncate'>
-                              {tags.map(function(t: any) { return t.title }).join(', ')}
-                              <span className='ml-1 cursor-pointer hover:text-dark-2' onClick={function(e) { e.stopPropagation(); setExpandedTagsId(null) }}>X</span>
-                            </p>
-                          )
-                        }
-                        const first2 = tags.slice(0, 2)
-                        const remaining = tags.length - 2
-                        return (
-                          <p className='truncate'>
-                            {first2.map(function(t: any) { return t.title }).join(', ')}
-                            {remaining > 0 && <span className='ml-1 cursor-pointer hover:text-dark-2 hover:bg-subtle' onClick={function(e) { e.stopPropagation(); setExpandedTagsId(project._id) }}>{' +' + remaining}</span>}
-                          </p>
-                        )
-                      })()}
-                    </div>
-                    <div className='col-span-1 text-center @max-[600px]:col-span-2 @max-[450px]:hidden'>
-                      <p className='truncate'>{project.date ? new Date(project.date).getFullYear() : '—'}</p>
-                    </div>
-                    <div className='col-span-4 text-center min-w-0 @max-[600px]:hidden'>
-                      <p className='truncate'>{(project as any).location ?? 'London, UK'}</p>
-                    </div>
-                    <div className={`col-span-2 text-right ${(project as any).status === 'completed' ? 'border-tgreen group-hover:text-tgreen' : 'border-tred group-hover:text-tred'}`}>
-                      <p className='truncate'>{(project as any).status === 'completed' ? 'Completed' : 'In Progress'}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+            <div className='mb-[2rem] w-full pb-[2rem]'>
+              <ProjectList
+                projects={projects}
+                openProjectIds={openProjectIds}
+                onProjectClick={handleClick}
+                isActive={isActive}
+              />
             </div>
 
             <div className='flex flex-col lg:grid lg:grid-cols-14 gap-gutter'>
@@ -494,62 +426,13 @@ export default function HomeContent({
         ) : (
           /* Collapsed state — projects only, full width */
           <div className='w-full flex flex-col gap-2'>
-            <div className='mb-sa @container'>
-              <h3 className='font-sans text-dark-2'>Projects</h3>
-              <ul
-                ref={projectListRef}
-                className={cn('relative', !isActive && 'pointer-events-none opacity-[var(--disabled-text)]')}
-                onMouseLeave={() => setHoveredProjectIndex(null)}
-              >
-                {hoveredProjectIndex !== null && projectListRef.current && (() => {
-                  const li = projectListRef.current.children[hoveredProjectIndex + 1] as HTMLElement | undefined
-                  if (!li) return null
-                  return (
-                    <div
-                      className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out'
-                      style={{top: li.offsetTop, height: li.offsetHeight}}
-                    />
-                  )
-                })()}
-                {projects.map((project, i) => (
-                  <li
-                    key={project._id ?? i}
-                    onClick={() => handleClick(project._id)}
-                    onMouseEnter={() => setHoveredProjectIndex(i)}
-                    className={`group relative grid grid-cols-14 gap-gutter py-0 cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-hoverslot' : ''}`}
-                  >
-                    <div className='col-span-1'>
-                      <p>{String(i + 1).padStart(2, '0')}</p>
-                    </div>
-                    <div className='col-span-3 min-w-0 @max-[600px]:col-span-4 @max-[450px]:col-span-6 @max-[300px]:col-span-11'>
-                      <p className='truncate'>{project.title ?? 'Untitled'}</p>
-                    </div>
-                    <div className='col-span-3 min-w-0 @max-[600px]:col-span-5 @max-[300px]:hidden'>
-                      {(() => {
-                        const tags = (project as any).tags?.filter(Boolean) || []
-                        if (!tags.length) return <p className='truncate text-dark-2'>No tags</p>
-                        const first2 = tags.slice(0, 2)
-                        const remaining = tags.length - 2
-                        return (
-                          <p className='truncate'>
-                            {first2.map(function(t: any) { return t.title }).join(', ')}
-                            {remaining > 0 && <span className='ml-1 text-dark-2'>{' +' + remaining}</span>}
-                          </p>
-                        )
-                      })()}
-                    </div>
-                    <div className='col-span-1 text-center @max-[600px]:col-span-2 @max-[450px]:hidden'>
-                      <p className='truncate'>{project.date ? new Date(project.date).getFullYear() : '—'}</p>
-                    </div>
-                    <div className='col-span-4 text-center min-w-0 @max-[600px]:hidden'>
-                      <p className='truncate'>{(project as any).location ?? 'London, UK'}</p>
-                    </div>
-                    <div className={`col-span-2 text-right ${(project as any).status === 'completed' ? 'border-tgreen group-hover:text-tgreen' : 'border-tred group-hover:text-tred'}`}>
-                      <p className='truncate'>{(project as any).status === 'completed' ? 'Completed' : 'In Progress'}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+            <div className='mb-sa'>
+              <ProjectList
+                projects={projects}
+                openProjectIds={openProjectIds}
+                onProjectClick={handleClick}
+                isActive={isActive}
+              />
             </div>
           </div>
         )}

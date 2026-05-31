@@ -269,7 +269,7 @@ export default function Home({
         />
         <div
           ref={shareMenuRef}
-          className={` ${slots > 1 ? 'bottom-[calc(50vh-50px)]' : 'bottom-[-400px]'} group/nav transition-all flex justify-center items-center gap-2 w-full fixed left-0 right-0 z-50 hide-scrollbar `}
+          className={` ${slots > 1 ? 'bottom-20' : 'bottom-[-400px]'} group/nav transition-all flex justify-center items-center gap-2 w-full fixed left-0 right-0 z-50 hide-scrollbar `}
         >
           <NavBar
             slots={slots}

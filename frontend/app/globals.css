@@ -179,7 +179,7 @@ html {
   --text-primary: rgba(0, 0, 0, 0.7);
   --text-secondary: rgba(0, 0, 0, 0.3);
   --label-color: #fff;
-
+  --border-stroke: rgba(0, 0, 0, 0.035);
   --border-subtle: rgba(0, 0, 0, 0.04);
   --border-form: rgba(0, 0, 0, 0.1);
   --pill-bg: rgba(255, 255, 255, 0.8);
@@ -191,8 +191,8 @@ html {
   --disabled-slot: #ffff;
   --enabled: rgba(255, 255, 255);
   --disabled-slot: rgba(240, 240, 240, 0.5);
-  --hover-slot: rgba(0, 0, 0, 0.06);
-  --border-enabled: rgba(0, 0, 0, 0.1);
+  --hover-slot: rgba(0, 0, 0, 0.02);
+  --border-enabled: rgba(0, 0, 0, 0.035);
   --border-disabled: rgba(0, 0, 0, 0.05);
 }
 
@@ -206,7 +206,7 @@ html {
   --text-primary: rgba(255, 255, 255, 0.9);
   --text-secondary: rgba(255, 255, 255, 0.5);
   --label-color: #0b0b0b;
-
+  --border-stroke: rgba(255, 255, 255, 0.1);
   --border-subtle: rgba(255, 255, 255, 0.04);
   --border-form: rgba(255, 255, 255, 0.1);
   --pill-bg: rgba(50, 50, 50, 0.8);
@@ -264,7 +264,7 @@ html {
 
   --color-activeslot: rgba(0, 0, 0, 0.2);
   --color-hoverslot: var(--hover-slot);
-
+  --color-stroke: var(--border-stroke);
   --color-surface: var(--surface);
   --color-surface-secondary: var(--surface-secondary);
   --color-surface2: var(--surface2);
