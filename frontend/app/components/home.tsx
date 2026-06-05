@@ -164,7 +164,7 @@ export default function Home({
         ref={scrollRef}
         className={cn(
           'flex gap-0 md:gap-0',
-          effectiveMode === 'row' ? 'flex overflow-x-auto' : 'flex-col overflow-y-auto',
+          'flex overflow-x-auto',
           hasPadding ? '  py-0 ' : 'p-0',
 
           'h-screen transition-[filter,opacity,padding,gap] duration-400 ease-out relative',

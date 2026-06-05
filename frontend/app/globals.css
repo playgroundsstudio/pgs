@@ -175,10 +175,10 @@ html {
   --surface-secondary: #f6f6f8;
   --surface2: red;
   --accent: #14b8a6;
-  --disabled-page: rgba(230,230,230,1);
+  --disabled-page: rgba(250,250,250,1);
 
   /* Text */
-  --text-primary: rgba(0, 0, 0, 0.7);
+  --text-primary: rgba(0, 0, 0, 0.85);
   --text-secondary: rgba(0, 0, 0, 0.3);
   --label-color: #fff;
 
@@ -195,7 +195,7 @@ html {
   --disabled-slot: rgba(1,1,1, 0.072);
   --disabled-image: 0.6;
   --hover-slot: rgba(0, 0, 0, 0.02);
-  --hover-element: rgba(0, 0, 0, 0.04);
+  --hover-element: rgba(0, 0, 0, 0.015);
 
   /* Overlay */
   --overlay: rgba(200, 200, 200, 1);

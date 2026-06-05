@@ -36,22 +36,33 @@ export default function Slot({
   const numActive = Number(active)
   const slotActive = index === numActive
   const isRow = mode === 'row'
-  const isVisable = slotActive || isRow
-  const isRounded = isRow && length > 1
+  const isVisable = true
+  const isRounded = length > 1
 
   console.log('---', slotActive, isRow, isVisable)
 
+  const prevMode = useRef(mode)
+  const prevActive = useRef(active)
   useEffect(() => {
-    const el = document.querySelector(`[data-index="${active}"]`)
-
-    if (el) {
-      el.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center',
-      })
-    }
-  }, [active, length, mode])
+    prevMode.current = mode
+  }, [mode])
+  useEffect(() => {
+    if (!slotActive) return
+    const modeChanged = prevActive.current === active
+      ? prevMode.current !== mode
+      : false
+    prevActive.current = active
+    requestAnimationFrame(() => {
+      const el = document.querySelector(`[data-index="${active}"]`)
+      if (el) {
+        el.scrollIntoView({
+          behavior: modeChanged ? 'instant' : 'smooth',
+          block: 'nearest',
+          inline: 'center',
+        })
+      }
+    })
+  }, [active, length, mode, slotActive])
 
   const handleClick = () => {
     if (active != index) {
@@ -87,9 +98,9 @@ export default function Slot({
         'relative h-full flex justify-center transition-[filter] duration-400 ease-out',
         isRow
           ? 'w-full min-w-[80vw] lg:min-w-[50vw]'
-          : 'w-full max-w-[var(--slot-max-width)] mx-auto',
+          : 'w-full min-w-[90vw]',
         blurred && 'blur-[var(--overlay-blur)]',
-        index > 0 && isRow && 'p-slotpadding',
+        index > 0 && length > 1 && (isRow ? 'p-slotpadding' : 'py-slotpadding px-[calc(var(--slot-padding)/2)]'),
       )}
     >
       {showDebugUi && (
@@ -103,18 +114,16 @@ export default function Slot({
         className={cn(
           'relative z-10 h-full w-full',
           !slotActive && 'cursor-pointer',
-          index > 0 && isRow && 'rounded-lg overflow-hidden',
+          index > 0 && length > 1 && 'rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.08)]',
           index > 0 &&
-            isRow &&
-            (slotActive
-              ? 'bg-enabled'
-              : 'bg-disabled-slot'),
+            length > 1 &&
+            'bg-enabled',
         )}
       >
         {children}
         {index > 0 && !slotActive && (
           <div
-            className="absolute inset-0 z-20 bg-disabled-slot hover:bg-hoverslot transition-colors pointer-events-auto cursor-pointer"
+            className="absolute inset-0 z-20 hover:bg-hoverslot transition-colors pointer-events-auto cursor-pointer"
             onClick={handleClick}
           />
         )}

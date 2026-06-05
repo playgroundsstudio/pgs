@@ -64,7 +64,7 @@ export default function ProjectContent({
       <div className='flex flex-col gap-4 max-w-[var(--slot-content-max-width)] mx-auto w-full'>
         {project ? (
           <>
-            <div className={cn('flex flex-col gap-4', mode === 'col' && 'md:flex-row md:items-start md:gap-gutter md:h-[50vh]')}>
+            <div className='flex flex-col gap-0'>
               {project.coverImage?.asset?._ref && (
                 <Image
                   id={project.coverImage.asset._ref}
@@ -77,45 +77,53 @@ export default function ProjectContent({
                   palette={(project.coverImage as any).metadata?.palette}
                   isActive={isActive}
                   containerClassName={cn(
-                    'aspect-square overflow-hidden shrink-0',
-                    mode === 'col' && 'md:mt-slotmargin md:pl-slotmargin md:w-[200px]'
+                    'aspect-square overflow-hidden',
+                    mode === 'col' ? 'w-[150px] h-[150px] m-slotmargin' : 'w-full'
                   )}
                 />
               )}
-              <div className={cn('flex flex-col pt-1 gap-sa-2 max-w-[550px] px-slotmargin', mode === 'col' && 'md:pt-slotmargin md:pl-0')}>
+              <div className='flex flex-col pt-1 gap-0 px-slotmargin'>
                 <div className='flex flex-col gap-0'>
-                  <h3 className='font-medium font-sans'>{project?.title ?? 'Project Title'}</h3>
-                </div>
-                <div className='flex flex-col gap-sa-2'>
-                  <div className='flex flex-col gap-0'>
-                    <h3 className='font-medium font-sans'>
+                  <div className='flex gap-gutter'>
+                    <h3 className='font-medium font-sans flex-1'>{project?.title ?? 'Project Title'}</h3>
+                    <h3 className='font-medium font-sans flex-1'>
                       {project.description}
                     </h3>
                   </div>
-                  <div className='flex gap-2'>
-                    <div className='w-full flex flex-col gap-0'>
-                      <h3 className='font-sans text-dark-2'>Tags</h3>
-                      <h3 className='font-medium font-sans'>
-                        {tagItems.length ? (
-                          tagItems.map((tag, tagIndex) => (
-                            <span key={tag.slug}>
-                              <Link href={`/tags/${tag.slug}`} className='hover:text-dark-2'>
-                                {tag.title}
-                              </Link>
-                              {tagIndex < tagItems.length - 1 ? ', ' : ''}
-                            </span>
-                          ))
-                        ) : (
-                          'No tags'
-                        )}
-                      </h3>
-                    </div>
-                    <div className='w-full flex flex-col gap-0'>
-                      <h3 className='font-sans text-dark-2'>Date</h3>
-                      <h3 className='font-medium font-sans'>
-                        <DateComponent dateString={project.date} />
-                      </h3>
-                    </div>
+                  <div className='flex gap-gutter'>
+                    <h3 className='font-sans flex-1'>Tags</h3>
+                    <h3 className='font-medium font-sans flex-1'>
+                      {tagItems.length ? (
+                        tagItems.map((tag, tagIndex) => (
+                          <span key={tag.slug}>
+                            <Link href={`/tags/${tag.slug}`} className='hover:text-dark-2'>
+                              {tag.title}
+                            </Link>
+                            {tagIndex < tagItems.length - 1 ? ', ' : ''}
+                          </span>
+                        ))
+                      ) : (
+                        'No tags'
+                      )}
+                    </h3>
+                  </div>
+                  <div className='flex gap-gutter'>
+                    <h3 className='font-sans flex-1'>Date</h3>
+                    <h3 className='font-medium font-sans flex-1'>
+                      <DateComponent dateString={project.date} />
+                    </h3>
+                  </div>
+                  <div className='flex gap-gutter'>
+                    <h3 className='font-sans flex-1'>Link</h3>
+                    <h3 className='font-medium font-sans flex-1'>
+                      {(project as any).liveLink ? (
+                        <a href={(project as any).liveLink} target='_blank' rel='noopener noreferrer' className='hover:text-dark-2'>
+                          {(project as any).liveLink}
+                        </a>
+                      ) : (
+                        <span className='text-dark-2'>No link</span>
+                      )}
+                    </h3>
                   </div>
                   {project.excerpt && <p className='opacity-80'>{project.excerpt}</p>}
                 </div>

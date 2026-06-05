@@ -28,11 +28,11 @@ export default function ProjectList({
       {title && <h3 className='font-sans text-dark-2'>{title}</h3>}
       <div className='grid grid-cols-14 gap-gutter  z-20 pt-2 border-b border-stroke'>
         <div className='col-span-1'><h3 className='font-sans text-dark-2'>#</h3></div>
-        <div className='col-span-3 @max-[600px]:col-span-4 @max-[450px]:col-span-6 @max-[300px]:col-span-11'><h3 className='font-sans text-dark-2'>Project</h3></div>
-        <div className='col-span-3 @max-[600px]:col-span-5 @max-[300px]:hidden'><h3 className='font-sans text-dark-2'>Tags</h3></div>
-        <div className='col-span-1 @max-[600px]:col-span-2 @max-[450px]:hidden'><h3 className='font-sans text-dark-2 text-center'>Year</h3></div>
-        <div className='col-span-4 @max-[600px]:hidden'><h3 className='font-sans text-dark-2 text-center'>Location</h3></div>
-        <div className='col-span-2 text-right'><h3 className='font-sans text-dark-2'>Status</h3></div>
+        <div className='col-span-3 @max-[700px]:col-span-4 @max-[550px]:col-span-6 @max-[400px]:col-span-11'><h3 className='font-sans text-dark-2'>Project</h3></div>
+        <div className='col-span-3 @max-[700px]:col-span-5 @max-[400px]:hidden'><h3 className='font-sans text-dark-2'>Tags</h3></div>
+        <div className='col-span-1 @max-[700px]:hidden'><h3 className='font-sans text-dark-2 text-center'>Year</h3></div>
+        <div className='col-span-4 @max-[700px]:hidden'><h3 className='font-sans text-dark-2 text-center'>Location</h3></div>
+        <div className='col-span-2 @max-[700px]:col-span-3 text-right'><h3 className='font-sans text-dark-2'>Status</h3></div>
       </div>
 
       <ul
@@ -60,10 +60,10 @@ export default function ProjectList({
             <div className='col-span-1'>
               <p>{String(i + 1).padStart(2, '0')}</p>
             </div>
-            <div className='col-span-3 min-w-0 @max-[600px]:col-span-4 @max-[450px]:col-span-6 @max-[300px]:col-span-11'>
+            <div className='col-span-3 min-w-0 @max-[700px]:col-span-4 @max-[550px]:col-span-6 @max-[400px]:col-span-11'>
               <p className='truncate'>{project.title ?? 'Untitled'}</p>
             </div>
-            <div className='col-span-3 min-w-0 @max-[600px]:col-span-5 @max-[300px]:hidden'>
+            <div className='col-span-3 min-w-0 @max-[700px]:col-span-5 @max-[400px]:hidden'>
               {(() => {
                 const tags = (project as any).tags?.filter(Boolean) || []
                 const isTagExpanded = expandedTagsId === project._id
@@ -86,13 +86,13 @@ export default function ProjectList({
                 )
               })()}
             </div>
-            <div className='col-span-1 text-center @max-[600px]:col-span-2 @max-[450px]:hidden'>
+            <div className='col-span-1 text-center @max-[700px]:hidden'>
               <p className='truncate'>{project.date ? new Date(project.date).getFullYear() : '—'}</p>
             </div>
-            <div className='col-span-4 text-center min-w-0 @max-[600px]:hidden'>
+            <div className='col-span-4 text-center min-w-0 @max-[700px]:hidden'>
               <p className='truncate'>{(project as any).location ?? 'London, UK'}</p>
             </div>
-            <div className={`col-span-2 text-right ${(project as any).status === 'completed' ? 'border-tgreen group-hover:text-tgreen' : 'border-tred group-hover:text-tred'}`}>
+            <div className={`col-span-2 @max-[700px]:col-span-3 text-right ${(project as any).status === 'completed' ? 'border-tgreen group-hover:text-tgreen' : 'border-tred group-hover:text-tred'}`}>
               <p className='truncate'>{(project as any).status === 'completed' ? 'Completed' : 'In Progress'}</p>
             </div>
           </li>
