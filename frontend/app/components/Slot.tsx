@@ -103,12 +103,12 @@ export default function Slot({
         className={cn(
           'relative z-10 h-full w-full',
           !slotActive && 'cursor-pointer',
-          index > 0 && isRow && 'rounded-lg overflow-hidden border',
+          index > 0 && isRow && 'rounded-lg overflow-hidden',
           index > 0 &&
             isRow &&
             (slotActive
-              ? 'bg-enabled border-border-enabled'
-              : 'bg-disabled-slot border-border-disabled [&_img]:opacity-80'),
+              ? 'bg-enabled'
+              : 'bg-disabled-slot'),
         )}
       >
         {children}

@@ -10,9 +10,10 @@ type ImageProps = WrapperProps<'img'> & {
   palette?: {dominant?: {background?: string}}
   containerClassName?: string
   containerStyle?: React.CSSProperties
+  isActive?: boolean
 }
 
-const Image = ({style, onLoad, fadeIn = true, palette, containerClassName, containerStyle, ...props}: ImageProps) => {
+const Image = ({style, onLoad, fadeIn = true, palette, containerClassName, containerStyle, isActive = true, ...props}: ImageProps) => {
   const [loaded, setLoaded] = useState(false)
 
   const handleLoad = useCallback(
@@ -29,7 +30,11 @@ const Image = ({style, onLoad, fadeIn = true, palette, containerClassName, conta
     return (
       <SanityImage
         baseUrl={`https://cdn.sanity.io/images/${projectId}/${dataset}/`}
-        style={style as React.CSSProperties}
+        style={{
+          ...(style as React.CSSProperties),
+          opacity: isActive ? 1 : 'var(--disabled-image)' as any,
+          transition: 'opacity 0.3s ease-in-out',
+        }}
         onLoad={onLoad}
         {...props}
       />
@@ -41,7 +46,7 @@ const Image = ({style, onLoad, fadeIn = true, palette, containerClassName, conta
       baseUrl={`https://cdn.sanity.io/images/${projectId}/${dataset}/`}
       style={{
         ...(style as React.CSSProperties),
-        opacity: loaded ? 1 : 0,
+        opacity: loaded ? (isActive ? 1 : 'var(--disabled-image)' as any) : 0,
         transition: 'opacity 0.3s ease-in-out',
       }}
       onLoad={handleLoad}

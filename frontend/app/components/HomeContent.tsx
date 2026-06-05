@@ -323,7 +323,7 @@ export default function HomeContent({
           </div>
           <div className='md:flex-[2]'>
             <ul ref={socialsListRef} className='relative' onMouseLeave={() => setSocialsHighlight(null)}>
-              {socialsHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: socialsHighlight.top, height: socialsHighlight.height}} />}
+              {socialsHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: socialsHighlight.top, height: socialsHighlight.height}} />}
               {socialProfiles.map((profile, index) => (
                 <li key={profile.url} className={`group flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden text-dark-1 ${index === 0 ? 'border-t' : ''}`} onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => window.open(profile.url, '_blank')}>
                   <div className='flex-1 min-w-0'><p className='truncate'>{profile.title}</p></div>
@@ -343,7 +343,7 @@ export default function HomeContent({
           </div>
           <div className='md:flex-[2]'>
             <ul ref={contactListRef} className='relative' onMouseLeave={() => setContactHighlight(null)}>
-              {contactHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: contactHighlight.top, height: contactHighlight.height}} />}
+              {contactHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: contactHighlight.top, height: contactHighlight.height}} />}
               {phone && (
                 <li className={`group flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden ${!email ? 'border-t' : 'border-t'}`} onMouseEnter={e => setContactHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => navigator.clipboard.writeText(phone)}>
                   <div className='flex-1 min-w-0'><p className='truncate'>{phone}</p></div>
@@ -439,7 +439,7 @@ export default function HomeContent({
                   </div>
                   <div className='md:flex-[2]'>
                     <ul ref={servicesListRef} className='relative' onMouseLeave={() => setServicesHighlight(null)}>
-                      {servicesHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: servicesHighlight.top, height: servicesHighlight.height}} />}
+                      {servicesHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: servicesHighlight.top, height: servicesHighlight.height}} />}
                       {services.map((item, index) => (
                         <li key={item} className={`flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden ${index === 0 ? 'border-t' : ''}`} onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>{item}</li>
                       ))}
@@ -454,7 +454,7 @@ export default function HomeContent({
                   </div>
                   <div className='md:flex-[2]'>
                     <ul className='relative' onMouseLeave={() => setIndustryHighlight(null)}>
-                      {industryHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: industryHighlight.top, height: industryHighlight.height}} />}
+                      {industryHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: industryHighlight.top, height: industryHighlight.height}} />}
                       {industries.map((item, index) => (
                         <li key={item} className={`flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden ${index === 0 ? 'border-t' : ''}`} onMouseEnter={e => setIndustryHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>{item}</li>
                       ))}
@@ -469,7 +469,7 @@ export default function HomeContent({
                   </div>
                   <div className='md:flex-[2]'>
                     <ul ref={actionsListRef} className='relative' onMouseLeave={() => setActionsHighlight(null)}>
-                      {actionsHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: actionsHighlight.top, height: actionsHighlight.height}} />}
+                      {actionsHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: actionsHighlight.top, height: actionsHighlight.height}} />}
                       <li className='flex items-center py-[2px] border-b border-stroke border-t cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => handleClick('__enquiry__')}>Kick off a project</li>
                       {email && <li className='flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => window.open(`mailto:${email}?subject=Saying Hi`, '_blank')}>Say Hi</li>}
                     </ul>
@@ -486,7 +486,7 @@ export default function HomeContent({
                     <div className='mb-sa'>
                       <h3 className='font-sans text-dark-2 mb-4'>Socials</h3>
                       <ul ref={socialsListRef} className='relative' onMouseLeave={() => setSocialsHighlight(null)}>
-                        {socialsHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: socialsHighlight.top, height: socialsHighlight.height}} />}
+                        {socialsHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: socialsHighlight.top, height: socialsHighlight.height}} />}
                         {socialProfiles.map((profile, index) => (
                           <li key={profile.url} className={`group flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden text-dark-1 ${index === 0 ? 'border-t' : ''}`} onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => window.open(profile.url, '_blank')}>
                             <div className='flex-1 min-w-0'><p className='truncate'>{profile.title}</p></div>
@@ -501,7 +501,7 @@ export default function HomeContent({
                     <div>
                       <h3 className='font-sans text-dark-2 mb-4'>Contact</h3>
                       <ul ref={contactListRef} className='relative' onMouseLeave={() => setContactHighlight(null)}>
-                        {contactHighlight && <div className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out' style={{top: contactHighlight.top, height: contactHighlight.height}} />}
+                        {contactHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: contactHighlight.top, height: contactHighlight.height}} />}
                         {phone && (
                           <li className={`group flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden ${!email ? 'border-t' : 'border-t'}`} onMouseEnter={e => setContactHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => navigator.clipboard.writeText(phone)}>
                             <div className='flex-1 min-w-0'><p className='truncate'>{phone}</p></div>

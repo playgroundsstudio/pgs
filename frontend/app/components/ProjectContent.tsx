@@ -75,6 +75,7 @@ export default function ProjectContent({
                   hotspot={project.coverImage.hotspot}
                   crop={project.coverImage.crop}
                   palette={(project.coverImage as any).metadata?.palette}
+                  isActive={isActive}
                   containerClassName={cn(
                     'aspect-square overflow-hidden shrink-0',
                     mode === 'col' && 'md:mt-slotmargin md:pl-slotmargin md:w-[200px]'

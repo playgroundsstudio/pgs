@@ -85,7 +85,7 @@ export default function Home({
   useEffect(() => {
     const body = document.body
     if (active !== 0) {
-      body.style.backgroundColor = 'var(--disabled)'
+      body.style.backgroundColor = 'var(--disabled-page)'
     } else {
       body.style.backgroundColor = 'var(--enabled)'
     }
@@ -269,7 +269,7 @@ export default function Home({
         />
         <div
           ref={shareMenuRef}
-          className={` ${slots > 1 ? 'bottom-20' : 'bottom-[-400px]'} group/nav transition-all flex justify-center items-center gap-2 w-full fixed left-0 right-0 z-50 hide-scrollbar `}
+          className={` ${slots > 1 ? 'bottom-4' : 'bottom-[-400px]'} group/nav transition-all flex justify-center items-center gap-2 w-full fixed left-0 right-0 z-50 hide-scrollbar `}
         >
           <NavBar
             slots={slots}

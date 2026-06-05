@@ -76,6 +76,7 @@ export default function MediaRenderer({media, isActive = true}: MediaRendererPro
         palette={media.image.metadata?.palette}
         containerClassName='w-full overflow-hidden'
         containerStyle={aspectStyle}
+        isActive={isActive}
       />
     )
   }

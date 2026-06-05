@@ -45,7 +45,7 @@ export default function ProjectList({
           if (!li) return null
           return (
             <div
-              className='absolute left-0 w-full bg-hoverslot pointer-events-none transition-all duration-150 ease-out'
+              className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out'
               style={{top: li.offsetTop, height: li.offsetHeight}}
             />
           )
@@ -55,7 +55,7 @@ export default function ProjectList({
             key={project._id ?? i}
             onClick={() => onProjectClick(project._id)}
             onMouseEnter={() => setHoveredIndex(i)}
-            className={`group py-[2px] border-b border-stroke relative grid grid-cols-14 gap-gutter cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-hoverslot' : ''}`}
+            className={`group py-[2px] border-b border-stroke relative grid grid-cols-14 gap-gutter cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-hoverelement' : ''}`}
           >
             <div className='col-span-1'>
               <p>{String(i + 1).padStart(2, '0')}</p>

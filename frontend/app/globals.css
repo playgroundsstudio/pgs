@@ -170,56 +170,79 @@ html {
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
+  /* Surfaces */
   --surface: #fff;
   --surface-secondary: #f6f6f8;
   --surface2: red;
   --accent: #14b8a6;
-  --overlay: rgba(200, 200, 200, 1);
-  --overlay-blur: 2px;
+  --disabled-page: rgba(230,230,230,1);
+
+  /* Text */
   --text-primary: rgba(0, 0, 0, 0.7);
   --text-secondary: rgba(0, 0, 0, 0.3);
   --label-color: #fff;
+
+  /* Borders */
   --border-stroke: rgba(0, 0, 0, 0.035);
   --border-subtle: rgba(0, 0, 0, 0.04);
   --border-form: rgba(0, 0, 0, 0.1);
-  --pill-bg: rgba(255, 255, 255, 0.8);
-  --disabled-page: #2f2f2f;
-  --divider: rgba(0, 0, 0, 0.1);
-  --button-solid: rgba(0, 0, 0, 0.8);
-  --button-solid-text: #fff;
-  --disabled: #FFFFF;
-  --disabled-slot: #ffff;
-  --enabled: rgba(255, 255, 255);
-  --disabled-slot: rgba(240, 240, 240, 0.5);
-  --hover-slot: rgba(0, 0, 0, 0.02);
   --border-enabled: rgba(0, 0, 0, 0.035);
   --border-disabled: rgba(0, 0, 0, 0.05);
+  --divider: rgba(0, 0, 0, 0.1);
+
+  /* Slots */
+  --enabled: rgba(255, 255, 255);
+  --disabled-slot: rgba(1,1,1, 0.072);
+  --disabled-image: 0.6;
+  --hover-slot: rgba(0, 0, 0, 0.02);
+  --hover-element: rgba(0, 0, 0, 0.02);
+
+  /* Overlay */
+  --overlay: rgba(200, 200, 200, 1);
+  --overlay-blur: 2px;
+
+  /* UI Components */
+  --pill-bg: rgba(255, 255, 255, 0.9);
+  --button-solid: rgba(0, 0, 0, 0.8);
+  --button-solid-text: #fff;
 }
 
 .dark {
+  /* Surfaces */
   --surface: #0b0b0b;
   --surface-secondary: #1b1d27;
   --surface2: blue;
   --accent: #ff2bd6;
-  --overlay: rgba(20, 20, 20, 1);
-  --overlay-blur: 2px;
+  --disabled-page: black;
+
+  /* Text */
   --text-primary: rgba(255, 255, 255, 0.9);
   --text-secondary: rgba(255, 255, 255, 0.5);
   --label-color: #0b0b0b;
+
+  /* Borders */
   --border-stroke: rgba(255, 255, 255, 0.1);
   --border-subtle: rgba(255, 255, 255, 0.04);
   --border-form: rgba(255, 255, 255, 0.1);
-  --pill-bg: rgba(50, 50, 50, 0.8);
-  --disabled-page: #d0d0d0;
-  --divider: rgba(255, 255, 255, 0.1);
-  --button-solid: rgba(50, 50, 50, 1);
-  --button-solid-text: #fff;
-  --disabled: rgba(0, 0, 0, 1);
-  --disabled-slot: rgba(30, 30, 30, 0.5);
-  --hover-slot: rgba(255, 255, 255, 0.08);
-  --enabled: #0b0b0b;
   --border-enabled: rgba(255, 255, 255, 0.1);
   --border-disabled: rgba(0, 0, 0, 0.3);
+  --divider: rgba(255, 255, 255, 0.1);
+
+  /* Slots */
+  --enabled: rgba(22,22,22,1);
+  --disabled-slot: rgba(10, 10, 10, 0.5);
+  --disabled-image: 0.6;
+  --hover-slot: rgba(255, 255, 255, 0.08);
+  --hover-element: rgba(255, 255, 255, 0.06);
+
+  /* Overlay */
+  --overlay: rgba(20, 20, 20, 1);
+  --overlay-blur: 2px;
+
+  /* UI Components */
+  --pill-bg: rgba(50, 50, 50, 0.8);
+  --button-solid: rgba(50, 50, 50, 1);
+  --button-solid-text: #fff;
 }
 
 @theme {
@@ -228,12 +251,15 @@ html {
 
   --shadow-layer: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
 
+  /* Base palette */
   --color-framework: #000;
   --color-black: #0b0b0b;
   --color-white: #fff;
   --color-brand: #f50;
   --color-blue: #0052ff;
   --color-yellow: #cdea19;
+
+  /* Gray scale */
   --color-gray-50: #f6f6f8;
   --color-gray-100: #eeeef1;
   --color-gray-200: #e3e4e8;
@@ -246,39 +272,43 @@ html {
   --color-gray-900: #1b1d27;
   --color-gray-950: #13141b;
 
-  --border-color-default: transparent;
-
-  --color-stroke-one: #eeeef1;
-
-  --color-dark-1: var(--text-primary);
-  --color-dark-2: var(--text-secondary);
-
-  --color-tl1: rgba(200, 200, 200, 1);
-  --color-tl2: rgba(200, 200, 200, 0.5);
-  --color-labelcolor: var(--label-color);
-
-  --color-tgreen: #44f287;
-  --color-tred: #f24461;
-  --color-subtle: rgba(0, 0, 0, 0.02);
-  --color-disabled-page: var(--disabled-page);
-
-  --color-activeslot: rgba(0, 0, 0, 0.2);
-  --color-hoverslot: var(--hover-slot);
-  --color-stroke: var(--border-stroke);
+  /* Surfaces */
   --color-surface: var(--surface);
   --color-surface-secondary: var(--surface-secondary);
   --color-surface2: var(--surface2);
   --color-accent: var(--accent);
   --color-overlay: var(--overlay);
-  --color-pill: var(--pill-bg);
+  --color-subtle: rgba(0, 0, 0, 0.02);
+
+  /* Text */
+  --color-dark-1: var(--text-primary);
+  --color-dark-2: var(--text-secondary);
+  --color-labelcolor: var(--label-color);
+  --color-tgreen: #44f287;
+  --color-tred: #f24461;
+  --color-tl1: rgba(200, 200, 200, 1);
+  --color-tl2: rgba(200, 200, 200, 0.5);
+
+  /* Borders */
+  --border-color-default: transparent;
+  --color-stroke: var(--border-stroke);
+  --color-stroke-one: #eeeef1;
   --color-border-subtle: var(--border-subtle);
   --color-border-form: var(--border-form);
-  --color-disabled: var(--disabled);
-  --color-disabled-slot: var(--disabled-slot);
-  --color-enabled: var(--enabled);
   --color-border-enabled: var(--border-enabled);
   --color-border-disabled: var(--border-disabled);
   --color-divider: var(--divider);
+
+  /* Slots */
+  --color-enabled: var(--enabled);
+  --color-disabled-slot: var(--disabled-slot);
+  --color-disabled-page: var(--disabled-page);
+  --color-activeslot: rgba(0, 0, 0, 0.2);
+  --color-hoverslot: var(--hover-slot);
+  --color-hoverelement: var(--hover-element);
+
+  /* UI Components */
+  --color-pill: var(--pill-bg);
   --color-button-solid: var(--button-solid);
   --color-button-solid-text: var(--button-solid-text);
 
