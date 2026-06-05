@@ -114,7 +114,7 @@ export default function Slot({
         className={cn(
           'relative z-10 h-full w-full',
           !slotActive && 'cursor-pointer',
-          index > 0 && length > 1 && 'rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.08)]',
+          index > 0 && length > 1 && 'rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.08)] outline outline-1 outline-stroke',
           index > 0 &&
             length > 1 &&
             'bg-enabled',

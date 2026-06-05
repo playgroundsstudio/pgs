@@ -32,7 +32,7 @@ export default function ProjectList({
         <div className='col-span-3 @max-[700px]:col-span-5 @max-[400px]:hidden'><h3 className='font-sans text-dark-2'>Tags</h3></div>
         <div className='col-span-1 @max-[700px]:hidden'><h3 className='font-sans text-dark-2 text-center'>Year</h3></div>
         <div className='col-span-4 @max-[700px]:hidden'><h3 className='font-sans text-dark-2 text-center'>Location</h3></div>
-        <div className='col-span-2 @max-[700px]:col-span-3 text-right'><h3 className='font-sans text-dark-2'>Status</h3></div>
+        <div className='col-span-2 @max-[700px]:col-span-4 text-right'><h3 className='font-sans text-dark-2'>Status</h3></div>
       </div>
 
       <ul
@@ -92,7 +92,7 @@ export default function ProjectList({
             <div className='col-span-4 text-center min-w-0 @max-[700px]:hidden'>
               <p className='truncate'>{(project as any).location ?? 'London, UK'}</p>
             </div>
-            <div className={`col-span-2 @max-[700px]:col-span-3 text-right ${(project as any).status === 'completed' ? 'border-tgreen group-hover:text-tgreen' : 'border-tred group-hover:text-tred'}`}>
+            <div className={`col-span-2 @max-[700px]:col-span-4 text-right ${(project as any).status === 'completed' ? 'border-tgreen group-hover:text-tgreen' : 'border-tred group-hover:text-tred'}`}>
               <p className='truncate'>{(project as any).status === 'completed' ? 'Completed' : 'In Progress'}</p>
             </div>
           </li>
