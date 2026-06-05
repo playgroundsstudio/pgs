@@ -188,14 +188,14 @@ html {
   --border-form: rgba(0, 0, 0, 0.1);
   --border-enabled: rgba(0, 0, 0, 0.035);
   --border-disabled: rgba(0, 0, 0, 0.05);
-  --divider: rgba(0, 0, 0, 0.1);
+  --divider: rgba(0, 0, 0, 0.07);
 
   /* Slots */
   --enabled: rgba(255, 255, 255);
   --disabled-slot: rgba(1,1,1, 0.072);
   --disabled-image: 0.6;
   --hover-slot: rgba(0, 0, 0, 0.02);
-  --hover-element: rgba(0, 0, 0, 0.02);
+  --hover-element: rgba(0, 0, 0, 0.04);
 
   /* Overlay */
   --overlay: rgba(200, 200, 200, 1);
@@ -221,7 +221,7 @@ html {
   --label-color: #0b0b0b;
 
   /* Borders */
-  --border-stroke: rgba(255, 255, 255, 0.1);
+  --border-stroke: rgba(255, 255, 255, 0.06);
   --border-subtle: rgba(255, 255, 255, 0.04);
   --border-form: rgba(255, 255, 255, 0.1);
   --border-enabled: rgba(255, 255, 255, 0.1);
@@ -233,7 +233,7 @@ html {
   --disabled-slot: rgba(10, 10, 10, 0.5);
   --disabled-image: 0.6;
   --hover-slot: rgba(255, 255, 255, 0.08);
-  --hover-element: rgba(255, 255, 255, 0.06);
+  --hover-element: rgba(255, 255, 255, 0.04);
 
   /* Overlay */
   --overlay: rgba(20, 20, 20, 1);
