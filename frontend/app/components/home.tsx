@@ -213,6 +213,7 @@ export default function Home({
             showDebugUi={showDebugUi}
             hasPadding={hasPadding}
             blurred={false}
+            bgClass={i > 0 && openProjectIds[i - 1] === '__about__' ? 'bg-surface2' : undefined}
           >
             {i < 1 ? (
               <HomeContent

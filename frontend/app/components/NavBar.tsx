@@ -220,6 +220,7 @@ export default function NavBar({
             active={active}
             setActive={setActive}
             project={i > 0 ? projects.find((p) => p._id === openProjectIds[i - 1]) : undefined}
+            slotId={i > 0 ? openProjectIds[i - 1] : undefined}
             settings={settings}
             onClose={closeProjectTab}
           />
@@ -300,6 +301,7 @@ function Tab({
   active,
   setActive,
   project,
+  slotId,
   settings,
   onClose,
 }: {
@@ -307,6 +309,7 @@ function Tab({
   active: any
   setActive: any
   project?: AllProjectsQueryResult[number]
+  slotId?: string
   settings: SettingsQueryResult
   onClose: (tabIndex: number) => void
 }) {
@@ -425,6 +428,10 @@ function Tab({
             crop={projectFallbackImage.crop}
             fadeIn={false}
           />
+        ) : slotId === '__about__' ? (
+          <div className="h-full w-full rounded-full bg-surface2" />
+        ) : slotId === '__enquiry__' ? (
+          <div className="h-full w-full rounded-full bg-surface" />
         ) : (
           <p>{index}</p>
         )}

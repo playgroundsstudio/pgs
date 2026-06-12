@@ -17,6 +17,7 @@ type SlotProps = {
   hasPadding: boolean
   blurred?: boolean
   hoverClass?: string
+  bgClass?: string
 }
 
 export default function Slot({
@@ -33,6 +34,7 @@ export default function Slot({
   hasPadding,
   blurred,
   hoverClass,
+  bgClass,
 }: SlotProps) {
   const ref = useRef<HTMLDivElement>(null)
   const numActive = Number(active)
@@ -118,7 +120,7 @@ export default function Slot({
           !slotActive && 'cursor-pointer',
           length > 1 && 'rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.08)] outline outline-1 outline-stroke',
           length > 1 &&
-            'bg-enabled',
+            (bgClass || 'bg-enabled'),
         )}
       >
         {children}
