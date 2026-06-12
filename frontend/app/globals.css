@@ -246,6 +246,18 @@ html {
   --button-solid-text: #fff;
 }
 
+@media (min-width: 768px) {
+  :root {
+    --slot-padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --slot-padding: 3rem;
+  }
+}
+
 @theme {
   --font-size-sm: 15px;
   --font-size-sm--line-height: 17px;
@@ -326,7 +338,7 @@ html {
   --spacing-gutter: var(--gutter);
   --margin: 20px;
   --slot-margin: 0.5rem;
-  --slot-padding: 1.8rem;
+  --slot-padding: 0.5rem;
   --spacing-slotmargin: var(--slot-margin);
   --spacing-margin: var(--margin);
   --spacing-slotpadding: var(--slot-padding);

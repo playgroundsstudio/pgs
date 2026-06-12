@@ -44,7 +44,7 @@ function DirectorCard({director}: {director: Director}) {
   return (
     <div className='flex flex-col'>
       {director.svgUrl && (
-        <InlineSvg url={director.svgUrl} className='w-[400px] h-auto mb-[1rem] text-dark-1 [&_svg]:w-full [&_svg]:h-auto' />
+        <InlineSvg url={director.svgUrl} className='w-[200px] h-auto mb-[1rem] text-dark-1 [&_svg]:w-full [&_svg]:h-auto' />
       )}
       <div className='mt-auto'>
         <p>{director.name}</p>
@@ -77,14 +77,14 @@ export default function AboutContent({
   const {toggleMode, closeSlot} = useSlotActions({mode, setMode, setActive, openProjectIds, setOpenProjectIds})
 
   return (
-    <div
-      ref={scrollRef}
-      className='relative h-full w-full overflow-auto scrollbar-none bg-surface2 text-dark-1'
-    >
+    <div className='relative h-full w-full bg-surface2 text-dark-1'>
       <SlotPill mode={mode} isVisible={isActive} onToggleMode={toggleMode} onClose={() => closeSlot('__about__')} />
-
+      <div
+        ref={scrollRef}
+        className='absolute inset-0 overflow-auto scrollbar-none'
+      >
       <div className={cn('pt-slotmargin w-[calc(100%-105px)] px-slotmargin')}>
-        {description && <p className='text-4xl leading-tight mb-16'>{siteTitle} {description}</p>}
+        {description && <p className='text-2xl leading-snug mb-16'>{siteTitle} {description}</p>}
 
         {directors.length > 0 && (
           <div className='grid grid-cols-1 gap-gutter mb-16'>
@@ -94,6 +94,7 @@ export default function AboutContent({
           </div>
         )}
 
+      </div>
       </div>
     </div>
   )

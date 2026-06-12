@@ -26,6 +26,7 @@ type HomeContentProps = {
   phone: string
   siteTitle: string
   siteDescription: string
+  siteIntro: string
   mode: string
   setMode: (mode: string) => void
   isActive: boolean
@@ -44,6 +45,7 @@ export default function HomeContent({
   phone,
   siteTitle,
   siteDescription,
+  siteIntro,
   mode,
   setMode,
   isActive,
@@ -398,7 +400,7 @@ export default function HomeContent({
       <HomeHeader
         scrollRef={scrollRef}
         title={siteTitle}
-        description={siteDescription}
+        description={siteIntro || siteDescription}
         hasOpenProject={hasOpenProject}
         isExpanded={isExpanded}
         onAboutClick={() => handleClick('__about__')}

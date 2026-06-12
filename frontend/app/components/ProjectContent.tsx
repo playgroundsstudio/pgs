@@ -54,13 +54,14 @@ export default function ProjectContent({
   const {toggleMode, closeSlot} = useSlotActions({mode, setMode, setActive, openProjectIds, setOpenProjectIds})
 
   return (
-    <div
-      className={cn(
-        'text-dark-1 h-full overflow-hidden bg-transparent',
-        isActive ? 'overflow-scroll scrollbar-none' : 'overflow-hidden pointer-events-none'
-      )}
-    >
+    <div className='relative text-dark-1 h-full overflow-hidden bg-transparent'>
       {!standalone && <SlotPill mode={mode} isVisible={isActive} onToggleMode={toggleMode} onClose={() => closeSlot(openProjectIds[index - 1])} />}
+      <div
+        className={cn(
+          'absolute inset-0',
+          isActive ? 'overflow-scroll scrollbar-none' : 'overflow-hidden pointer-events-none'
+        )}
+      >
       <div className='flex flex-col gap-4 max-w-[var(--slot-content-max-width)] mx-auto w-full'>
         {project ? (
           <>
@@ -146,6 +147,7 @@ export default function ProjectContent({
           <p className='text-dark-2'>Project not found.</p>
         )}
         <div className='h-32' />
+      </div>
       </div>
     </div>
   )

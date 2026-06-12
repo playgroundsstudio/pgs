@@ -26,6 +26,7 @@ export default async function Page() {
         phone?: string | null
         title?: string | null
         description?: string | null
+        intro?: string | null
       }
     | null
 
@@ -49,6 +50,7 @@ export default async function Page() {
   const phone = about?.phone ?? ''
   const siteTitle = about?.title ?? ''
   const siteDescription = about?.description ?? ''
+  const siteIntro = about?.intro ?? ''
   const homepageProjects = Array.isArray((homepage as {projectList?: AllProjectsQueryResult} | null)?.projectList)
     ? ((homepage as {projectList?: AllProjectsQueryResult}).projectList ?? [])
     : []
@@ -83,6 +85,7 @@ export default async function Page() {
         phone={phone}
         siteTitle={siteTitle}
         siteDescription={siteDescription}
+        siteIntro={siteIntro}
       />
     </>
   )

@@ -19,6 +19,13 @@ export const aboutPgs = defineType({
       rows: 4,
     }),
     defineField({
+      name: 'intro',
+      title: 'Intro',
+      type: 'text',
+      rows: 3,
+      description: 'Short intro text displayed in the home page header',
+    }),
+    defineField({
       name: 'email',
       title: 'Email',
       type: 'string',
