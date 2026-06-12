@@ -288,6 +288,7 @@ export default function Home({
             hasPadding={hasPadding}
             blurred={false}
             hoverClass="hover:bg-hoverelement"
+            bgClass="bg-hoverslot"
           >
             <div
               ref={addMenuRef}
