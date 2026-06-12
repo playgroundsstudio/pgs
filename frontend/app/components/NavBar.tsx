@@ -46,7 +46,7 @@ export default function NavBar({
   onShareHomePage,
   onEnquire,
 }: NavBarProps) {
-  const CLOSED_NAV_HEIGHT = 48
+  const CLOSED_NAV_HEIGHT = 47
   const containerRef = useRef<HTMLDivElement>(null)
   const tabsRef = useRef<HTMLDivElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
@@ -79,8 +79,8 @@ export default function NavBar({
       updateHighlight()
       if (tabsRef.current && !shareMenuOpen) {
         setTabsSize({
-          width: tabsRef.current.scrollWidth + 16,
-          height: tabsRef.current.scrollHeight + 16,
+          width: tabsRef.current.scrollWidth + 12,
+          height: tabsRef.current.scrollHeight + 12,
         })
       }
     })
@@ -165,7 +165,7 @@ export default function NavBar({
       // 4. Width follows and restores the pill styling
       tl.to(containerRef.current, {
         width: restoreWidth,
-        padding: 8,
+        padding: 6,
         duration: 0.22,
         ease: 'power2.out',
       })
@@ -193,7 +193,7 @@ export default function NavBar({
   return (
     <div
       ref={containerRef}
-      className="group/navbar relative  bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-2 p-2"
+      className="group/navbar relative  bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-1.5 p-1.5"
       style={{
         borderRadius: '60px',
         height: CLOSED_NAV_HEIGHT,
@@ -230,7 +230,7 @@ export default function NavBar({
           type="button"
           onClick={onCloseAll}
           aria-label="Close all open pages"
-          className="cursor-pointer h-11 w-11 bg-button-solid text-button-solid-text rounded-full flex justify-center items-center shrink-0 hidden"
+          className="cursor-pointer h-[35px] w-[35px] bg-button-solid text-button-solid-text rounded-full flex justify-center items-center shrink-0 hidden"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -311,9 +311,40 @@ function Tab({
   onClose: (tabIndex: number) => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
+  const [isDark, setIsDark] = useState(false)
   const settingsLogo = (settings as unknown as {logo?: LogoImage})?.logo
   const projectLogo = (project as unknown as {logo?: LogoImage})?.logo
   const projectFallbackImage = project?.coverImage
+
+  useEffect(() => {
+    if (index === 0) return
+    const el = ref.current
+    if (!el) return
+    const img = el.querySelector('img') as HTMLImageElement | null
+    if (!img) return
+    function analyze() {
+      try {
+        const canvas = document.createElement('canvas')
+        canvas.width = 8
+        canvas.height = 8
+        const ctx = canvas.getContext('2d')
+        if (!ctx) return
+        ctx.drawImage(img!, 0, 0, 8, 8)
+        const data = ctx.getImageData(0, 0, 8, 8).data
+        let total = 0
+        for (let i = 0; i < data.length; i += 4) {
+          total += 0.299 * data[i] + 0.587 * data[i + 1] + 0.114 * data[i + 2]
+        }
+        const avg = total / (data.length / 4)
+        setIsDark(avg < 140)
+      } catch {}
+    }
+    if (img.complete) {
+      analyze()
+    } else {
+      img.addEventListener('load', analyze, {once: true})
+    }
+  }, [index, project])
 
   useEffect(() => {
     const el = document.querySelector(`[data-indextab="${active}"]`)
@@ -336,7 +367,7 @@ function Tab({
           setActive(index)
         }}
         className={cn(
-          `group relative rounded-full flex flex-col justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-visible transition-all duration-200 cursor-pointer h-11 w-11`,
+          `group relative rounded-full flex flex-col justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-visible transition-all duration-200 cursor-pointer h-[35px] w-[35px]`,
           active === index && '',
         )}
       >
@@ -348,7 +379,7 @@ function Tab({
               e.stopPropagation()
               onClose(index)
             }}
-            className="absolute inset-0 z-20 rounded-full bg-hoverslot backdrop-blur-[10px] text-dark-1 flex items-center justify-center cursor-pointer"
+            className={cn("absolute inset-0 z-20 rounded-full bg-hoverslot backdrop-blur-[10px] flex items-center justify-center cursor-pointer", isDark ? "text-white" : "text-black")}
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
               <line x1="18" y1="6" x2="6" y2="18" />

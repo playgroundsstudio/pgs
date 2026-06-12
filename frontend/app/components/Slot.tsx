@@ -16,6 +16,7 @@ type SlotProps = {
   showDebugUi: boolean
   hasPadding: boolean
   blurred?: boolean
+  hoverClass?: string
 }
 
 export default function Slot({
@@ -31,6 +32,7 @@ export default function Slot({
   showDebugUi,
   hasPadding,
   blurred,
+  hoverClass,
 }: SlotProps) {
   const ref = useRef<HTMLDivElement>(null)
   const numActive = Number(active)
@@ -93,14 +95,14 @@ export default function Slot({
       className={cn(
         isRounded ? 'rounded-0' : '',
         isVisable ? 'block' : 'hidden',
-        hasPadding && index === 0 && length > 0 && 'pl-0 pr-0',
+        hasPadding && index === 0 && length > 0 && '',
         hasPadding && index != 0 && length > 0 && 'pl-0',
         'relative h-full flex justify-center transition-[filter] duration-400 ease-out',
         isRow
           ? 'w-full min-w-[80vw] lg:min-w-[50vw]'
           : 'w-full min-w-[90vw]',
         blurred && 'blur-[var(--overlay-blur)]',
-        index > 0 && length > 1 && (isRow ? 'p-slotpadding' : 'py-slotpadding px-[calc(var(--slot-padding)/2)]'),
+        length > 1 && (isRow ? 'p-slotpadding' : index === 0 ? 'py-slotpadding pl-slotpadding pr-[calc(var(--slot-padding)/2)]' : 'py-slotpadding px-[calc(var(--slot-padding)/2)]'),
       )}
     >
       {showDebugUi && (
@@ -114,16 +116,15 @@ export default function Slot({
         className={cn(
           'relative z-10 h-full w-full',
           !slotActive && 'cursor-pointer',
-          index > 0 && length > 1 && 'rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.08)] outline outline-1 outline-stroke',
-          index > 0 &&
-            length > 1 &&
+          length > 1 && 'rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.08)] outline outline-1 outline-stroke',
+          length > 1 &&
             'bg-enabled',
         )}
       >
         {children}
-        {index > 0 && !slotActive && (
+        {!slotActive && length > 1 && (
           <div
-            className="absolute inset-0 z-20 hover:bg-hoverslot transition-colors pointer-events-auto cursor-pointer"
+            className={cn("absolute inset-0 z-20 transition-colors pointer-events-auto cursor-pointer", hoverClass || "hover:bg-hoverslot")}
             onClick={handleClick}
           />
         )}

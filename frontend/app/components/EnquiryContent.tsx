@@ -31,8 +31,8 @@ export default function EnquiryContent({
   return (
     <div
       className={cn(
-        'text-dark-1 h-full overflow-hidden hide-scrollbar bg-transparent',
-        isActive ? 'overflow-scroll' : 'overflow-hidden pointer-events-none'
+        'text-dark-1 h-full overflow-hidden bg-transparent',
+        isActive ? 'overflow-scroll scrollbar-none' : 'overflow-hidden pointer-events-none'
       )}
     >
       <SlotPill mode={mode} isVisible={isActive} onToggleMode={toggleMode} onClose={() => closeSlot('__enquiry__')} />

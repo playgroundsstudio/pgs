@@ -49,6 +49,8 @@ export default function Home({
   const showDebugUi = false
   const [shareMenuOpen, setShareMenuOpen] = useState(false)
   const shareMenuRef = useRef<HTMLDivElement>(null)
+  const [addMenuOpen, setAddMenuOpen] = useState(false)
+  const addMenuRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
   const [introComplete, setIntroComplete] = useState(false)
   const handleIntroComplete = useCallback(() => setIntroComplete(true), [])
@@ -71,18 +73,13 @@ export default function Home({
   // Force col mode on mobile
   const effectiveMode = isMobile ? 'col' : mode
 
-  // Change body bg when home panel not active
+  // Set body bg
   useEffect(() => {
-    const body = document.body
-    if (active !== 0) {
-      body.style.backgroundColor = 'var(--disabled-page)'
-    } else {
-      body.style.backgroundColor = 'var(--enabled)'
-    }
+    document.body.style.backgroundColor = 'var(--disabled-page)'
     return () => {
-      body.style.backgroundColor = ''
+      document.body.style.backgroundColor = ''
     }
-  }, [active])
+  }, [])
 
   const hasPadding = slots > 1 && effectiveMode == 'row'
   console.log(hasPadding)
@@ -149,6 +146,28 @@ export default function Home({
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [shareMenuOpen])
 
+  useEffect(() => {
+    if (!addMenuOpen) return
+    function handleClickOutside(e: globalThis.MouseEvent) {
+      if (addMenuRef.current && !addMenuRef.current.contains(e.target as Node)) {
+        setAddMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [addMenuOpen])
+
+  function handleAddProject(projectId: string) {
+    if (openProjectIds.includes(projectId)) {
+      const existingIndex = openProjectIds.indexOf(projectId)
+      setActive(existingIndex + 1)
+    } else {
+      setOpenProjectIds((prev) => [...prev, projectId])
+      setActive(openProjectIds.length + 1)
+    }
+    setAddMenuOpen(false)
+  }
+
   function handleCloseAllSlots(e: MouseEvent<HTMLButtonElement>) {
     e.stopPropagation()
     setOpenProjectIds([])
@@ -164,7 +183,7 @@ export default function Home({
         ref={scrollRef}
         className={cn(
           'flex gap-0 md:gap-0',
-          'flex overflow-x-auto',
+          'flex overflow-x-auto scrollbar-none',
           hasPadding ? '  py-0 ' : 'p-0',
 
           'h-screen transition-[filter,opacity,padding,gap] duration-400 ease-out relative',
@@ -249,6 +268,53 @@ export default function Home({
             )}
           </Slot>
         ))}
+
+        {openProjectIds.length > 0 && (
+          <Slot
+            isActive={active === slots}
+            key="__add__"
+            index={slots}
+            length={slots + 1}
+            setActive={setActive}
+            active={active}
+            mode={effectiveMode}
+            hoveredSlotIndex={hoveredSlotIndex}
+            setHoveredSlotIndex={setHoveredSlotIndex}
+            showDebugUi={showDebugUi}
+            hasPadding={hasPadding}
+            blurred={false}
+            hoverClass="hover:bg-hoverelement"
+          >
+            <div
+              ref={addMenuRef}
+              className='h-full w-full flex items-center justify-center cursor-pointer relative'
+              onClick={() => setAddMenuOpen((prev) => !prev)}
+            >
+              <div className="h-[32px] w-[32px] flex items-center justify-center rounded-full bg-hoverelement">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-2">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </div>
+              {addMenuOpen && (
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-pill backdrop-blur-xl rounded-lg shadow-lg p-2 min-w-[200px] max-h-[300px] overflow-y-auto">
+                  {projects.map((project) => (
+                    <button
+                      key={project._id}
+                      className={cn("w-full text-left px-3 py-2 rounded-md text-sm hover:bg-hoverelement transition-colors truncate", openProjectIds.includes(project._id) && "bg-hoverelement")}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleAddProject(project._id)
+                      }}
+                    >
+                      {project.title}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </Slot>
+        )}
 
         <div
           onClick={() => setShareMenuOpen(false)}

@@ -103,6 +103,7 @@
 
 html {
   font-size: 12px;
+  overflow: hidden;
 }
 
 @media (min-width: 1024px) {
@@ -325,7 +326,7 @@ html {
   --spacing-gutter: var(--gutter);
   --margin: 20px;
   --slot-margin: 0.5rem;
-  --slot-padding: 0.5rem;
+  --slot-padding: 1.8rem;
   --spacing-slotmargin: var(--slot-margin);
   --spacing-margin: var(--margin);
   --spacing-slotpadding: var(--slot-padding);
@@ -336,16 +337,6 @@ html {
 }
 
 @layer base {
-  * {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  *::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-  }
-
   /* Remove autofill styles */
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
@@ -387,4 +378,13 @@ html {
     transition: background-color 5000s ease-in-out 0s !important;
     box-shadow: 0 0 0 1000px #fff inset !important;
   }
+}
+
+/* Hide all scrollbars globally */
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
 }

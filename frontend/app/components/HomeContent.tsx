@@ -393,7 +393,7 @@ export default function HomeContent({
   )
 
   return (
-    <div ref={scrollRef} className='relative h-full w-full overflow-auto'>
+    <div ref={scrollRef} className='relative h-full w-full overflow-auto scrollbar-none'>
       <SlotPill mode={mode} isVisible={isActive && hasOpenProject} onToggleMode={toggleMode} />
       <HomeHeader
         scrollRef={scrollRef}

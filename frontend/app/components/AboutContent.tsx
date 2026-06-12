@@ -79,11 +79,11 @@ export default function AboutContent({
   return (
     <div
       ref={scrollRef}
-      className='relative h-full w-full overflow-auto bg-surface2 text-dark-1'
+      className='relative h-full w-full overflow-auto scrollbar-none bg-surface2 text-dark-1'
     >
       <SlotPill mode={mode} isVisible={isActive} onToggleMode={toggleMode} onClose={() => closeSlot('__about__')} />
 
-      <div className={cn('pt-slotmargin max-w-[var(--slot-content-max-width)] mx-auto w-full px-slotmargin')}>
+      <div className={cn('pt-slotmargin w-[calc(100%-105px)] px-slotmargin')}>
         {description && <p className='text-4xl leading-tight mb-16'>{siteTitle} {description}</p>}
 
         {directors.length > 0 && (
