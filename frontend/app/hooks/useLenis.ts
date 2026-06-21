@@ -14,10 +14,15 @@ export function useLenis(wrapperRef: RefObject<HTMLDivElement | null>, isActive 
       return
     }
 
+    const wrapper = wrapperRef.current
+    const content = wrapper.firstElementChild as HTMLElement | null
+
     const lenis = new Lenis({
-      wrapper: wrapperRef.current,
+      wrapper,
+      content: content ?? undefined,
       smoothWheel: true,
       lerp: 0.15,
+      autoResize: true,
     })
 
     lenisRef.current = lenis

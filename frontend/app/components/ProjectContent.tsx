@@ -88,7 +88,7 @@ export default function ProjectContent({
                   )}
                 />
               )}
-              <div className='flex flex-col pt-2 gap-0 px-slotmargin'>
+              <div className='flex flex-col pt-2 pb-20 gap-0 px-slotmargin'>
                 <div className='flex flex-col gap-0'>
                   <div className='flex gap-gutter'>
                     <h3 className='font-medium font-sans flex-1'>{project?.title ?? 'Project Title'}</h3>
