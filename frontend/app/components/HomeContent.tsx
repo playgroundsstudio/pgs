@@ -12,6 +12,7 @@ import PgsLogoMark from '@/app/components/PgsLogoMark'
 import ProjectList from '@/app/components/ProjectList'
 import MuxPlayer from '@mux/mux-player-react'
 import '@mux/mux-player/themes/minimal'
+import {useLenis} from '@/app/hooks/useLenis'
 
 type HomeContentProps = {
   setActive: Dispatch<SetStateAction<number>>
@@ -93,6 +94,7 @@ export default function HomeContent({
   const servicesListRef = useRef<HTMLUListElement>(null)
   const actionsListRef = useRef<HTMLUListElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  useLenis(scrollRef)
 
   useEffect(() => setMounted(true), [])
 
@@ -409,10 +411,10 @@ export default function HomeContent({
 
 
 
-      <div className='pt-32 max-w-[var(--slot-content-max-width)] mx-auto w-full px-slotmargin'>
+      <div className='pt-32 p-margin max-w-[var(--slot-content-max-width)] mx-auto w-full px-slotmargin'>
         {isExpanded && (
-          <div className='relative z-0 mb-16 flex h-[70vh] w-full items-center justify-center lg:h-auto'>
-            <div className='relative z-0 w-full'>
+          <div className='relative z-0 mb-16 flex w-full items-start justify-start lg:h-auto'>
+            <div className='relative z-0 w-full max-w-[550px]'>
               <PgsLogoMark className='w-full h-auto text-dark-1' />
             </div>
           </div>
@@ -448,7 +450,7 @@ export default function HomeContent({
                     </ul>
                   </div>
                 </div>
-                
+
                 <div className='mb-sa flex flex-col md:flex-row gap-gutter'>
                   <div className='flex-1'>
                     <h3 className='font-sans text-dark-2'>Industry</h3>

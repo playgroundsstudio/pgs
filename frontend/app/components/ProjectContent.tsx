@@ -1,4 +1,5 @@
 'use client'
+import {useRef} from 'react'
 import Link from 'next/link'
 import type {Dispatch, SetStateAction} from 'react'
 import {cn} from '@/app/lib/cn'
@@ -6,6 +7,7 @@ import {useSlotActions} from '@/app/hooks/useSlotActions'
 import type {AllProjectsQueryResult} from '@/sanity.types'
 import Image from '@/app/components/SanityImage'
 import SlotPill from '@/app/components/SlotPill'
+import {useLenis} from '@/app/hooks/useLenis'
 import DateComponent from '@/app/components/Date'
 import ProjectContentBlockRenderer from '@/app/components/contentBlocks/ProjectContentBlockRenderer'
 
@@ -52,11 +54,14 @@ export default function ProjectContent({
     .toLowerCase()
 
   const {toggleMode, closeSlot} = useSlotActions({mode, setMode, setActive, openProjectIds, setOpenProjectIds})
+  const scrollRef = useRef<HTMLDivElement>(null)
+  useLenis(scrollRef)
 
   return (
     <div className='relative text-dark-1 h-full overflow-hidden bg-transparent'>
       {!standalone && <SlotPill mode={mode} isVisible={isActive} onToggleMode={toggleMode} onClose={() => closeSlot(openProjectIds[index - 1])} />}
       <div
+        ref={scrollRef}
         className={cn(
           'absolute inset-0',
           isActive ? 'overflow-scroll scrollbar-none' : 'overflow-hidden pointer-events-none'
@@ -83,7 +88,7 @@ export default function ProjectContent({
                   )}
                 />
               )}
-              <div className='flex flex-col pt-1 gap-0 px-slotmargin'>
+              <div className='flex flex-col pt-2 gap-0 px-slotmargin'>
                 <div className='flex flex-col gap-0'>
                   <div className='flex gap-gutter'>
                     <h3 className='font-medium font-sans flex-1'>{project?.title ?? 'Project Title'}</h3>

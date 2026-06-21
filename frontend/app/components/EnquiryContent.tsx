@@ -1,8 +1,10 @@
 'use client'
+import {useRef} from 'react'
 import type {Dispatch, SetStateAction} from 'react'
 import {cn} from '@/app/lib/cn'
 import {useSlotActions} from '@/app/hooks/useSlotActions'
 import SlotPill from '@/app/components/SlotPill'
+import {useLenis} from '@/app/hooks/useLenis'
 import ContactInquiryBlock from '@/app/components/ContactInquiryBlock'
 
 type EnquiryContentProps = {
@@ -27,11 +29,14 @@ export default function EnquiryContent({
   isActive,
 }: EnquiryContentProps) {
   const {toggleMode, closeSlot} = useSlotActions({mode, setMode, setActive, openProjectIds, setOpenProjectIds})
+  const scrollRef = useRef<HTMLDivElement>(null)
+  useLenis(scrollRef)
 
   return (
     <div className='relative text-dark-1 h-full overflow-hidden bg-transparent'>
       <SlotPill mode={mode} isVisible={isActive} onToggleMode={toggleMode} onClose={() => closeSlot('__enquiry__')} />
       <div
+        ref={scrollRef}
         className={cn(
           'absolute inset-0',
           isActive ? 'overflow-scroll scrollbar-none' : 'overflow-hidden pointer-events-none'

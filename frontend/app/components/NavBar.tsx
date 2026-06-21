@@ -394,6 +394,7 @@ function Tab({
         )}
         {index === 0 && settingsLogo?.asset?._ref ? (
           <Image
+            draggable={false}
             id={settingsLogo.asset._ref}
             alt={settingsLogo?.alt || 'Site logo'}
             className="h-full w-full rounded-full"
@@ -405,7 +406,8 @@ function Tab({
             fadeIn={false}
           />
         ) : projectLogo?.asset?._ref ? (
-          <Image
+            <Image
+              draggable={false}
             id={projectLogo.asset._ref}
             alt={projectLogo?.alt || project?.title || ''}
             className="h-full w-full rounded-full"

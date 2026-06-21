@@ -4,100 +4,18 @@
 
 @font-face {
   font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-Thin.woff2') format('woff2');
-  font-weight: 100;
+  src: url('/fonts/unica/Unica77LLWeb-Regular.woff2') format('woff2'),
+       url('/fonts/unica/Unica77LLWeb-Regular.woff') format('woff');
+  font-weight: 100 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-ThinItalic.woff2') format('woff2');
-  font-weight: 100;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-Light.woff2') format('woff2');
-  font-weight: 300;
+  src: url('/fonts/unica/Unica77LLWeb-Medium.woff2') format('woff2'),
+       url('/fonts/unica/Unica77LLWeb-Medium.woff') format('woff');
+  font-weight: 500 950;
   font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-LightItalic.woff2') format('woff2');
-  font-weight: 300;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-Italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-Medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-MediumItalic.woff2') format('woff2');
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-BoldItalic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-Black.woff2') format('woff2');
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-BlackItalic.woff2') format('woff2');
-  font-weight: 900;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-ExtraBlack.woff2') format('woff2');
-  font-weight: 950;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Unica77';
-  src: url('/fonts/Unica77LLTrialWeb-ExtraBlackItalic.woff2') format('woff2');
-  font-weight: 950;
-  font-style: italic;
   font-display: swap;
 }
 
@@ -174,7 +92,7 @@ html {
   /* Surfaces */
   --surface: #fff;
   --surface-secondary: #f6f6f8;
-  --surface2: red;
+  --surface2: blue;
   --accent: #14b8a6;
   --disabled-page: rgba(250,250,250,1);
 
@@ -263,27 +181,6 @@ html {
   --font-size-sm--line-height: 17px;
 
   --shadow-layer: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
-
-  /* Base palette */
-  --color-framework: #000;
-  --color-black: #0b0b0b;
-  --color-white: #fff;
-  --color-brand: #f50;
-  --color-blue: #0052ff;
-  --color-yellow: #cdea19;
-
-  /* Gray scale */
-  --color-gray-50: #f6f6f8;
-  --color-gray-100: #eeeef1;
-  --color-gray-200: #e3e4e8;
-  --color-gray-300: #bbbdc9;
-  --color-gray-400: #9499ad;
-  --color-gray-500: #727892;
-  --color-gray-600: #515870;
-  --color-gray-700: #383d51;
-  --color-gray-800: #252837;
-  --color-gray-900: #1b1d27;
-  --color-gray-950: #13141b;
 
   /* Surfaces */
   --color-surface: var(--surface);

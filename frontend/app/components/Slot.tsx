@@ -18,6 +18,7 @@ type SlotProps = {
   blurred?: boolean
   hoverClass?: string
   bgClass?: string
+  halfWidth?: boolean
 }
 
 export default function Slot({
@@ -35,6 +36,7 @@ export default function Slot({
   blurred,
   hoverClass,
   bgClass,
+  halfWidth,
 }: SlotProps) {
   const ref = useRef<HTMLDivElement>(null)
   const numActive = Number(active)
@@ -101,7 +103,9 @@ export default function Slot({
         hasPadding && index != 0 && length > 0 && 'pl-0',
         'relative h-full flex justify-center transition-[filter] duration-400 ease-out',
         isRow
-          ? 'w-full min-w-[80vw] lg:min-w-[50vw]'
+          ? halfWidth
+            ? 'w-full min-w-[40vw] lg:min-w-[25vw]'
+            : 'w-full min-w-[80vw] lg:min-w-[50vw]'
           : 'w-full min-w-[90vw]',
         blurred && 'blur-[var(--overlay-blur)]',
         length > 1 && (isRow ? 'p-slotpadding' : index === 0 ? 'py-slotpadding pl-slotpadding pr-[calc(var(--slot-padding)/2)]' : 'py-slotpadding px-[calc(var(--slot-padding)/2)]'),
@@ -118,13 +122,13 @@ export default function Slot({
         className={cn(
           'relative z-10 h-full w-full',
           !slotActive && 'cursor-pointer',
-          length > 1 && 'rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.08)] ',
+          length > 1 && `rounded-lg overflow-hidden ${halfWidth ? '' : 'shadow-[0_0_20px_rgba(0,0,0,0.08)]'}`,
           length > 1 &&
             (bgClass || 'bg-enabled'),
         )}
       >
         {children}
-        {!slotActive && length > 1 && (
+        {!slotActive && !halfWidth && length > 1 && (
           <div
             className={cn("absolute inset-0 z-20 transition-colors pointer-events-auto cursor-pointer", hoverClass || "hover:bg-hoverslot")}
             onClick={handleClick}

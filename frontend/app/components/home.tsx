@@ -13,6 +13,7 @@ import IntroAnimation from '@/app/components/IntroAnimation'
 import {useKeyboardControls} from '@/app/hooks/useKeyboardControls'
 import {useNavigation} from '@/app/hooks/useNavigation'
 import {useUrlSync} from '@/app/utils/urlBuilder'
+import {useSwipeable} from '@/app/hooks/useSwipeable'
 
 export default function Home({
   projects,
@@ -88,6 +89,7 @@ export default function Home({
 
   // Use custom hooks
   useKeyboardControls({slots, active, setActive, mode, setMode, openProjectIds, setOpenProjectIds})
+  useSwipeable({ref: scrollRef, slots, setActive})
   const {closeProjectTab} = useNavigation({
     slots,
     effectiveMode,
@@ -185,21 +187,13 @@ export default function Home({
         ref={scrollRef}
         className={cn(
           'flex gap-0 md:gap-0',
-          'flex overflow-x-auto scrollbar-none',
+          'flex overflow-x-auto scrollbar-none touch-pan-y',
           hasPadding ? '  py-0 ' : 'p-0',
 
           'h-screen transition-[filter,opacity,padding,gap] duration-400 ease-out relative',
         )}
       >
-        {showDebugUi && (
-          <div className="pointer-events-none overflow-hidden fixed top-2 right-2 z-50 text-[11px] text-green-600 bg-black/70 rounded-md px-2 py-1">
-            <p>active: {active}</p>
-            <p>mode: {mode}</p>
-            <p>hoveringActive: {isHoveringActiveSlot ? 'yes' : 'no'}</p>
-            <p>scrollLeft: {Math.round(scrollRef.current?.scrollLeft ?? 0)}</p>
-          </div>
-        )}
-        {Array.from({length: slots}).map((_, i) => (
+                {Array.from({length: slots}).map((_, i) => (
           <Slot
             isActive={active === i}
             key={i === 0 ? '__home__' : openProjectIds[i - 1]}
@@ -244,6 +238,7 @@ export default function Home({
                 siteTitle={siteTitle}
                 description={siteDescription}
                 directors={directors}
+                showreel={showreel}
                 index={i}
                 isActive={active === i}
               />
@@ -287,15 +282,16 @@ export default function Home({
             showDebugUi={showDebugUi}
             hasPadding={hasPadding}
             blurred={false}
-            hoverClass="hover:bg-hoverelement"
-            bgClass="bg-hoverslot"
+            hoverClass="hover:bg-transparent"
+            bgClass="bg-transparent"
+            halfWidth
           >
             <div
               ref={addMenuRef}
               className='h-full w-full flex items-center justify-center cursor-pointer relative'
               onClick={() => setAddMenuOpen((prev) => !prev)}
             >
-              <div className="h-[32px] w-[32px] flex items-center justify-center rounded-full bg-hoverelement">
+              <div className="h-[32px] w-[32px] flex items-center justify-center rounded-full bg-surface shadow-[0_1px_6px_rgba(0,0,0,0.08)]">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-2">
                   <line x1="12" y1="5" x2="12" y2="19" />
                   <line x1="5" y1="12" x2="19" y2="12" />
