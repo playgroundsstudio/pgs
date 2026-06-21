@@ -111,6 +111,9 @@ export const allProjectsQuery = defineQuery(`
 export const homepageQuery = defineQuery(`
   *[_type == "homepage"][0]{
     "showreel": showreel { ..., "asset": asset-> },
+    servicesStatement,
+    industryStatement,
+    actionsStatement,
     "projectList": projectList[]->{
       ${projectFields}
     }

@@ -30,7 +30,7 @@ export default function ProjectList({
         <div className='col-span-1'><h3 className='font-sans text-dark-2'>#</h3></div>
         <div className='col-span-3 @max-[700px]:col-span-4 @max-[550px]:col-span-8'><h3 className='font-sans text-dark-2'>Project</h3></div>
         <div className='col-span-3 @max-[700px]:col-span-5 @max-[550px]:hidden'><h3 className='font-sans text-dark-2'>Tags</h3></div>
-        <div className='col-span-1 @max-[700px]:hidden'><h3 className='font-sans text-dark-2 text-center'>Year</h3></div>
+        <div className='col-span-1 @max-[700px]:hidden'><h3 className='font-sans text-dark-2 text-left'>Year</h3></div>
         <div className='col-span-4 @max-[700px]:hidden'><h3 className='font-sans text-dark-2 text-center'>Location</h3></div>
         <div className='col-span-2 @max-[700px]:col-span-4 @max-[550px]:col-span-5 text-right'><h3 className='font-sans text-dark-2'>Status</h3></div>
       </div>
@@ -86,7 +86,7 @@ export default function ProjectList({
                 )
               })()}
             </div>
-            <div className='col-span-1 text-center @max-[700px]:hidden'>
+            <div className='col-span-1 text-left @max-[700px]:hidden'>
               <p className='truncate'>{project.date ? new Date(project.date).getFullYear() : '—'}</p>
             </div>
             <div className='col-span-4 text-center min-w-0 @max-[700px]:hidden'>

@@ -100,7 +100,7 @@ export const aboutPgs = defineType({
     }),
     defineField({
       name: 'industries',
-      title: 'Industries',
+      title: 'Sectors',
       type: 'array',
       of: [
         {

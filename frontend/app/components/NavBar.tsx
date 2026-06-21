@@ -193,7 +193,7 @@ export default function NavBar({
   return (
     <div
       ref={containerRef}
-      className="group/navbar relative  bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-1.5 p-1.5"
+      className="group/navbar relative  bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-1.5 py-1.5 pr-[5px] pl-[7px]"
       style={{
         borderRadius: '60px',
         height: CLOSED_NAV_HEIGHT,
@@ -382,7 +382,7 @@ function Tab({
               e.stopPropagation()
               onClose(index)
             }}
-            className={cn("absolute inset-0 z-20 rounded-full bg-hoverslot backdrop-blur-[10px] flex items-center justify-center cursor-pointer", isDark ? "text-white" : "text-black")}
+            className={cn("absolute inset-2 z-20 rounded-full bg-hoverslot backdrop-blur-[10px] flex items-center justify-center cursor-pointer", isDark ? "text-white" : "text-black")}
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
               <line x1="18" y1="6" x2="6" y2="18" />

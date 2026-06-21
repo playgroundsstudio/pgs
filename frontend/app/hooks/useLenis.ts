@@ -2,15 +2,20 @@ import {useEffect, useRef} from 'react'
 import type {RefObject} from 'react'
 import Lenis from 'lenis'
 
-export function useLenis(wrapperRef: RefObject<HTMLDivElement | null>, contentRef?: RefObject<HTMLDivElement | null>) {
+export function useLenis(wrapperRef: RefObject<HTMLDivElement | null>, isActive = true) {
   const lenisRef = useRef<Lenis | null>(null)
 
   useEffect(() => {
-    if (!wrapperRef.current) return
+    if (!wrapperRef.current || !isActive) {
+      if (lenisRef.current) {
+        lenisRef.current.destroy()
+        lenisRef.current = null
+      }
+      return
+    }
 
     const lenis = new Lenis({
       wrapper: wrapperRef.current,
-      content: contentRef?.current ?? undefined,
       smoothWheel: true,
       lerp: 0.15,
     })
@@ -29,7 +34,7 @@ export function useLenis(wrapperRef: RefObject<HTMLDivElement | null>, contentRe
       lenis.destroy()
       lenisRef.current = null
     }
-  }, [wrapperRef, contentRef])
+  }, [wrapperRef, isActive])
 
   return lenisRef
 }

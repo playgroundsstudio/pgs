@@ -28,6 +28,9 @@ export default function Home({
   siteTitle,
   siteDescription,
   siteIntro,
+  servicesStatement,
+  industryStatement,
+  actionsStatement,
 }: {
   projects: AllProjectsQueryResult
   showreel: {asset?: {playbackId?: string}} | null
@@ -41,6 +44,9 @@ export default function Home({
   siteTitle: string
   siteDescription: string
   siteIntro: string
+  servicesStatement: string
+  industryStatement: string
+  actionsStatement: string
 }) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [mode, setMode] = useState('row')
@@ -224,6 +230,9 @@ export default function Home({
                 siteTitle={siteTitle}
                 siteDescription={siteDescription}
                 siteIntro={siteIntro}
+                servicesStatement={servicesStatement}
+                industryStatement={industryStatement}
+                actionsStatement={actionsStatement}
                 mode={effectiveMode}
                 setMode={setMode}
                 isActive={active === i}

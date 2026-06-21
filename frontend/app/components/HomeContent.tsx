@@ -28,6 +28,9 @@ type HomeContentProps = {
   siteTitle: string
   siteDescription: string
   siteIntro: string
+  servicesStatement: string
+  industryStatement: string
+  actionsStatement: string
   mode: string
   setMode: (mode: string) => void
   isActive: boolean
@@ -47,6 +50,9 @@ export default function HomeContent({
   siteTitle,
   siteDescription,
   siteIntro,
+  servicesStatement,
+  industryStatement,
+  actionsStatement,
   mode,
   setMode,
   isActive,
@@ -94,7 +100,7 @@ export default function HomeContent({
   const servicesListRef = useRef<HTMLUListElement>(null)
   const actionsListRef = useRef<HTMLUListElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
-  useLenis(scrollRef)
+  useLenis(scrollRef, isActive)
 
   useEffect(() => setMounted(true), [])
 
@@ -293,29 +299,6 @@ export default function HomeContent({
 
   const showreelPlaybackId = showreel?.asset?.playbackId
 
-  const showreelContent = showreelPlaybackId ? (
-    <div className='mb-sa ml-8'>
-      <div ref={showreelWrapperRef}>
-        <div
-          ref={showreelContainerRef}
-          onClick={() => { setExpandSource('inline'); setShowreelExpanded((v) => !v) }}
-          className='sticky bottom-6 left-6 w-[250px] overflow-hidden rounded-lg shadow-[0_15px_50px_rgba(0,0,0,0.25)] cursor-pointer group/pip z-[9996]'
-        >
-          <MuxPlayer
-            ref={inlinePlayerRef}
-            theme='minimal'
-            playbackId={showreelPlaybackId}
-            streamType='on-demand'
-            autoPlay='muted'
-            loop
-            muted
-            style={{width: '100%', display: 'block', borderRadius: 0, '--controls': 'none', '--media-object-fit': 'cover', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none'} as any}
-          />
-          <div className='absolute inset-0 bg-black/10 group-hover/pip:bg-black/20 transition-colors duration-200 pointer-events-none rounded-lg' />
-        </div>
-      </div>
-    </div>
-  ) : null
 
   const sidebarMetaContent = (
     <>
@@ -432,16 +415,13 @@ export default function HomeContent({
             </div>
 
             <div className='flex flex-col lg:grid lg:grid-cols-14 gap-gutter'>
-              <div className='col-span-4 order-first flex justify-center mb-[2rem] lg:mb-0 lg:justify-start'>
-                {showreelContent}
-              </div>
-              <div className='col-span-10'>
-                <div className='mb-sa flex flex-col md:flex-row gap-gutter'>
-                  <div className='flex-1'>
+              <div className='lg:col-start-8 lg:col-span-7'>
+                <div className='mb-sa flex flex-col lg:grid lg:grid-cols-7 gap-gutter'>
+                  <div className='lg:col-span-3'>
                     <h3 className='font-sans text-dark-2'>Services</h3>
-                    <p className='mb-4 text-dark-1 max-w-[275px]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    {servicesStatement && <p className='mb-4 text-dark-1 max-w-[275px]'>{servicesStatement}</p>}
                   </div>
-                  <div className='md:flex-[2]'>
+                  <div className='lg:col-start-4 lg:col-span-4'>
                     <ul ref={servicesListRef} className='relative' onMouseLeave={() => setServicesHighlight(null)}>
                       {servicesHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: servicesHighlight.top, height: servicesHighlight.height}} />}
                       {services.map((item, index) => (
@@ -451,12 +431,12 @@ export default function HomeContent({
                   </div>
                 </div>
 
-                <div className='mb-sa flex flex-col md:flex-row gap-gutter'>
-                  <div className='flex-1'>
-                    <h3 className='font-sans text-dark-2'>Industry</h3>
-                    <p className='mb-4 text-dark-1 max-w-[275px]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <div className='mb-sa flex flex-col lg:grid lg:grid-cols-7 gap-gutter'>
+                  <div className='lg:col-span-3'>
+                    <h3 className='font-sans text-dark-2'>Sectors</h3>
+                    {industryStatement && <p className='mb-4 text-dark-1 max-w-[275px]'>{industryStatement}</p>}
                   </div>
-                  <div className='md:flex-[2]'>
+                  <div className='lg:col-start-4 lg:col-span-4'>
                     <ul className='relative' onMouseLeave={() => setIndustryHighlight(null)}>
                       {industryHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: industryHighlight.top, height: industryHighlight.height}} />}
                       {industries.map((item, index) => (
@@ -466,12 +446,12 @@ export default function HomeContent({
                   </div>
                 </div>
 
-                <div className='mb-sa flex flex-col md:flex-row gap-gutter'>
-                  <div className='flex-1'>
+                <div className='mb-sa flex flex-col lg:grid lg:grid-cols-7 gap-gutter'>
+                  <div className='lg:col-span-3'>
                     <h3 className='font-sans text-dark-2'>Actions</h3>
-                    <p className='mb-4 text-dark-1 max-w-[275px]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    {actionsStatement && <p className='mb-4 text-dark-1 max-w-[275px]'>{actionsStatement}</p>}
                   </div>
-                  <div className='md:flex-[2]'>
+                  <div className='lg:col-start-4 lg:col-span-4'>
                     <ul ref={actionsListRef} className='relative' onMouseLeave={() => setActionsHighlight(null)}>
                       {actionsHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: actionsHighlight.top, height: actionsHighlight.height}} />}
                       <li className='flex items-center py-[2px] border-b border-stroke border-t cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => handleClick('__enquiry__')}>Kick off a project</li>

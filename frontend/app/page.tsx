@@ -56,6 +56,9 @@ export default async function Page() {
     : []
   const projects = homepageProjects.length > 0 ? homepageProjects : allProjects
   const showreel = (homepage as {showreel?: {asset?: {playbackId?: string}} | null} | null)?.showreel ?? null
+  const servicesStatement = (homepage as any)?.servicesStatement ?? ''
+  const industryStatement = (homepage as any)?.industryStatement ?? ''
+  const actionsStatement = (homepage as any)?.actionsStatement ?? ''
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -86,6 +89,9 @@ export default async function Page() {
         siteTitle={siteTitle}
         siteDescription={siteDescription}
         siteIntro={siteIntro}
+        servicesStatement={servicesStatement}
+        industryStatement={industryStatement}
+        actionsStatement={actionsStatement}
       />
     </>
   )

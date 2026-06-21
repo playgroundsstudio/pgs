@@ -14,6 +14,27 @@ export const homepage = defineType({
       description: 'A single showreel video displayed on the homepage.',
     }),
     defineField({
+      name: 'servicesStatement',
+      title: 'Services Statement',
+      type: 'text',
+      rows: 3,
+      description: 'A short statement displayed alongside the services list.',
+    }),
+    defineField({
+      name: 'industryStatement',
+      title: 'Sectors Statement',
+      type: 'text',
+      rows: 3,
+      description: 'A short statement displayed alongside the sectors list.',
+    }),
+    defineField({
+      name: 'actionsStatement',
+      title: 'Actions Statement',
+      type: 'text',
+      rows: 3,
+      description: 'A short statement displayed alongside the actions list.',
+    }),
+    defineField({
       name: 'projectList',
       title: 'Project List',
       type: 'array',

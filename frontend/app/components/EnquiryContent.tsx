@@ -30,7 +30,7 @@ export default function EnquiryContent({
 }: EnquiryContentProps) {
   const {toggleMode, closeSlot} = useSlotActions({mode, setMode, setActive, openProjectIds, setOpenProjectIds})
   const scrollRef = useRef<HTMLDivElement>(null)
-  useLenis(scrollRef)
+  useLenis(scrollRef, isActive)
 
   return (
     <div className='relative text-dark-1 h-full overflow-hidden bg-transparent'>

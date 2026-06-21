@@ -79,7 +79,7 @@ export default function AboutContent({
   isActive,
 }: AboutContentProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
-  useLenis(scrollRef)
+  useLenis(scrollRef, isActive)
   const {toggleMode, closeSlot} = useSlotActions({mode, setMode, setActive, openProjectIds, setOpenProjectIds})
 
   return (
@@ -91,8 +91,8 @@ export default function AboutContent({
       >
       <div className={cn('pt-slotmargin w-[calc(100%-100px)] px-slotmargin text-white')}>
         {description && <p className='text-2xl leading-snug mb-16'>{siteTitle} {description}</p>}
-        {showreel?.asset?.playbackId && (
-          <div className='mb-20 w-[250px] rounded-lg overflow-hidden'>
+          {/*{showreel?.asset?.playbackId && (
+          <div className='mb-20 w-full rounded-lg overflow-hidden'>
             <MuxPlayer
               theme='minimal'
               playbackId={showreel.asset.playbackId}
@@ -103,8 +103,8 @@ export default function AboutContent({
               style={{width: '100%', display: 'block', borderRadius: 0, '--controls': 'none', '--media-object-fit': 'cover'} as any}
             />
           </div>
-        )}
-          {directors.length > 0 && (
+        )}*/}
+        {directors.length > 0 && (
           <div className='grid grid-cols-1 gap-gutter mb-16'>
             {directors.map((director) => (
               <DirectorCard key={director.name} director={director} />
