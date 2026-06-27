@@ -43,6 +43,7 @@ const projectFields = /* groq */ `
   coverImage { ..., ${imageMetadata} },
   location,
   status,
+  credits[]{ title, people[]->{ firstName, lastName, url } },
   "tags": tags[]->{ title, "slug": slug.current },
   "date": coalesce(date, _updatedAt),
   "author": author->{firstName, lastName, picture { ..., ${imageMetadata} }},

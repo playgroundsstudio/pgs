@@ -11,7 +11,7 @@ export default function TextCtaBlock({block, mode}: TextCtaBlockProps) {
   return (
     <div
       className={cn(
-        'grid gap-2 grid-cols-1 px-slotmargin',
+        `grid ${mode === 'col' ? 'gap-2' : 'gap-0'} grid-cols-1 px-slotmargin`,
         mode === 'col' && 'md:grid-cols-2'
       )}
     >

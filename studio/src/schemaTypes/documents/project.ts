@@ -133,6 +133,34 @@ export const project = defineType({
       initialValue: 'inProgress',
     }),
     defineField({
+      name: 'credits',
+      title: 'Credits',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'title',
+              title: 'Credit Title',
+              type: 'string',
+              description: 'e.g. Director, Photography, Design',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'people',
+              title: 'People',
+              type: 'array',
+              of: [{type: 'reference', to: [{type: 'person'}]}],
+            }),
+          ],
+          preview: {
+            select: {title: 'title'},
+          },
+        },
+      ],
+    }),
+    defineField({
       name: 'tags',
       title: 'Tags',
       type: 'array',

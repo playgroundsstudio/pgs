@@ -55,7 +55,7 @@ export default function HomeHeader({
   return (
     <div className='sticky top-1 z-10 h-[var(--font-size-sm--line-height)] mt-1'>
       <div className={`px-2 ${scrolled ? '' : 'w-full lg:w-1/2 xl:w-1/3'}`}>
-        <p className=''>
+        <p className='max-w-[500px]'>
           {title}
           {isExpanded && !scrolled && description ? ` ${description}` : ''}
           {isExpanded && !scrolled && (

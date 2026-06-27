@@ -2,6 +2,7 @@
 
 import {useRef, useState} from 'react'
 import {cn} from '@/app/lib/cn'
+import {colClasses, gridCls} from '@/app/lib/projectGrid'
 import type {AllProjectsQueryResult} from '@/sanity.types'
 
 type ProjectListProps = {
@@ -26,13 +27,13 @@ export default function ProjectList({
   return (
     <div className='@container'>
       {title && <h3 className='font-sans text-dark-2'>{title}</h3>}
-      <div className='grid grid-cols-14 gap-gutter  z-20 pt-2 border-b border-stroke'>
-        <div className='col-span-1'><h3 className='font-sans text-dark-2'>#</h3></div>
-        <div className='col-span-3 @max-[700px]:col-span-4 @max-[550px]:col-span-8'><h3 className='font-sans text-dark-2'>Project</h3></div>
-        <div className='col-span-3 @max-[700px]:col-span-5 @max-[550px]:hidden'><h3 className='font-sans text-dark-2'>Tags</h3></div>
-        <div className='col-span-1 @max-[700px]:hidden'><h3 className='font-sans text-dark-2 text-left'>Year</h3></div>
-        <div className='col-span-4 @max-[700px]:hidden'><h3 className='font-sans text-dark-2 text-center'>Location</h3></div>
-        <div className='col-span-2 @max-[700px]:col-span-4 @max-[550px]:col-span-5 text-right'><h3 className='font-sans text-dark-2'>Status</h3></div>
+      <div className={`${gridCls} z-20 pt-2 border-b border-stroke`}>
+        <div className={colClasses('index')}><h3 className='font-sans text-dark-2'>#</h3></div>
+        <div className={colClasses('project')}><h3 className='font-sans text-dark-2'>Project</h3></div>
+        <div className={colClasses('tags')}><h3 className='font-sans text-dark-2'>Tags</h3></div>
+        <div className={colClasses('year', 'text-left')}><h3 className='font-sans text-dark-2'>Year</h3></div>
+        <div className={colClasses('location', 'text-left')}><h3 className='font-sans text-dark-2'>Location</h3></div>
+        <div className={colClasses('status', 'text-right')}><h3 className='font-sans text-dark-2'>Status</h3></div>
       </div>
 
       <ul
@@ -55,15 +56,15 @@ export default function ProjectList({
             key={project._id ?? i}
             onClick={() => onProjectClick(project._id)}
             onMouseEnter={() => setHoveredIndex(i)}
-            className={`group py-[2px] border-b border-stroke relative grid grid-cols-14 gap-gutter cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-hoverelement' : ''}`}
+            className={`group py-[2px] border-b border-stroke relative ${gridCls} cursor-pointer overflow-hidden ${openProjectIds.includes(project._id) ? 'bg-hoverelement' : ''}`}
           >
-            <div className='col-span-1'>
+            <div className={colClasses('index')}>
               <p>{String(i + 1).padStart(2, '0')}</p>
             </div>
-            <div className='col-span-3 min-w-0 @max-[700px]:col-span-4 @max-[550px]:col-span-8'>
+            <div className={colClasses('project', 'min-w-0')}>
               <p className='truncate'>{project.title ?? 'Untitled'}</p>
             </div>
-            <div className='col-span-3 min-w-0 @max-[700px]:col-span-5 @max-[550px]:hidden'>
+            <div className={colClasses('tags', 'min-w-0')}>
               {(() => {
                 const tags = (project as any).tags?.filter(Boolean) || []
                 const isTagExpanded = expandedTagsId === project._id
@@ -86,13 +87,13 @@ export default function ProjectList({
                 )
               })()}
             </div>
-            <div className='col-span-1 text-left @max-[700px]:hidden'>
+            <div className={colClasses('year', 'text-left')}>
               <p className='truncate'>{project.date ? new Date(project.date).getFullYear() : '—'}</p>
             </div>
-            <div className='col-span-4 text-center min-w-0 @max-[700px]:hidden'>
+            <div className={colClasses('location', 'text-left min-w-0')}>
               <p className='truncate'>{(project as any).location ?? 'London, UK'}</p>
             </div>
-            <div className={`col-span-2 @max-[700px]:col-span-4 @max-[550px]:col-span-5 text-right ${(project as any).status === 'completed' ? 'border-tgreen group-hover:text-tgreen' : 'border-tred group-hover:text-tred'}`}>
+            <div className={cn(colClasses('status', 'text-right'), (project as any).status === 'completed' ? 'border-tgreen group-hover:text-tgreen' : 'border-tred group-hover:text-tred')}>
               <p className='truncate'>{(project as any).status === 'completed' ? 'Completed' : 'In Progress'}</p>
             </div>
           </li>

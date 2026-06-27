@@ -37,6 +37,10 @@ export default function ProjectContent({
   const contentBlocks: any[] = Array.isArray((project as any)?.contentBlocks)
     ? (project as any).contentBlocks
     : []
+  const credits: Array<{title: string; people: Array<{firstName: string; lastName: string; url?: string}>}> =
+    Array.isArray((project as any)?.credits)
+      ? (project as any).credits.filter((c: any) => c.title && Array.isArray(c.people) && c.people.length > 0)
+      : []
   const spaceAfterMeasurement = 'mb-16'
   const tagItems = Array.isArray((project as any)?.tags)
     ? ((project as any).tags as Array<{title?: string | null; slug?: string | null}>)
@@ -59,7 +63,7 @@ export default function ProjectContent({
 
   return (
     <div className='relative text-dark-1 h-full overflow-hidden bg-transparent'>
-      {!standalone && <SlotPill mode={mode} isVisible={isActive} onToggleMode={toggleMode} onClose={() => closeSlot(openProjectIds[index - 1])} />}
+      {!standalone && <SlotPill mode={mode} isVisible={isActive} onToggleMode={toggleMode} onClose={() => closeSlot(openProjectIds[index - 1])} label={normalizedStatus !== 'completed' ? 'Coming Soon' : undefined} />}
       <div
         ref={scrollRef}
         className={cn(
@@ -67,7 +71,7 @@ export default function ProjectContent({
           isActive ? 'overflow-scroll scrollbar-none' : 'overflow-hidden pointer-events-none'
         )}
       >
-      <div className='flex flex-col gap-4 max-w-[var(--slot-content-max-width)] mx-auto w-full'>
+      <div className='flex flex-col gap-0 max-w-[var(--slot-content-max-width)] mx-auto w-full'>
         {project ? (
           <>
             <div className='flex flex-col gap-0'>
@@ -136,7 +140,7 @@ export default function ProjectContent({
               </div>
             </div>
             {contentBlocks.length > 0 && (
-              <div className='flex flex-col gap-2'>
+              <div className={`flex flex-col ${mode === 'col' ? 'gap-2' : 'gap-0'}`}>
                 {contentBlocks.map((block, blockIndex) => (
                   <ProjectContentBlockRenderer
                     key={block._key ?? blockIndex}
@@ -147,11 +151,38 @@ export default function ProjectContent({
                 ))}
               </div>
             )}
+            {credits.length > 0 && (
+              <div className='flex gap-gutter px-slotmargin pt-2 pb-20'>
+                <div className='flex-1'>
+                  <h3 className='font-sans'>Credits</h3>
+                </div>
+                <div className='flex flex-col gap-0 flex-1'>
+                  {credits.map((credit, creditIndex) => (
+                    <div key={creditIndex} className='flex gap-gutter'>
+                      <h3 className='font-sans flex-1'>{credit.title}</h3>
+                      <h3 className='font-medium font-sans flex-1'>
+                        {credit.people.map((person, personIndex) => (
+                          <div key={personIndex}>
+                            {person.url ? (
+                              <a href={person.url} target='_blank' rel='noopener noreferrer' className='hover:text-dark-2'>
+                                {`${person.firstName} ${person.lastName}`}
+                              </a>
+                            ) : (
+                              `${person.firstName} ${person.lastName}`
+                            )}
+                          </div>
+                        ))}
+                      </h3>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </>
         ) : (
           <p className='text-dark-2'>Project not found.</p>
         )}
-        <div className='h-32' />
+        {credits.length > 0 && <div className='min-h-[33.33vh]' />}
       </div>
       </div>
     </div>

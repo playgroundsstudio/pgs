@@ -7,6 +7,7 @@ import HomeContent from '@/app/components/HomeContent'
 import ProjectContent from '@/app/components/ProjectContent'
 import AboutContent from '@/app/components/AboutContent'
 import EnquiryContent from '@/app/components/EnquiryContent'
+import NewsletterContent from '@/app/components/NewsletterContent'
 import Slot from '@/app/components/Slot'
 import NavBar from '@/app/components/NavBar'
 import IntroAnimation from '@/app/components/IntroAnimation'
@@ -95,7 +96,7 @@ export default function Home({
 
   // Use custom hooks
   useKeyboardControls({slots, active, setActive, mode, setMode, openProjectIds, setOpenProjectIds})
-  useSwipeable({ref: scrollRef, slots, setActive})
+  useSwipeable({ref: scrollRef, slots, active, setActive})
   const {closeProjectTab} = useNavigation({
     slots,
     effectiveMode,
@@ -248,6 +249,16 @@ export default function Home({
                 description={siteDescription}
                 directors={directors}
                 showreel={showreel}
+                index={i}
+                isActive={active === i}
+              />
+            ) : openProjectIds[i - 1] === '__newsletter__' ? (
+              <NewsletterContent
+                mode={effectiveMode}
+                setMode={setMode}
+                setActive={setActive}
+                openProjectIds={openProjectIds}
+                setOpenProjectIds={setOpenProjectIds}
                 index={i}
                 isActive={active === i}
               />

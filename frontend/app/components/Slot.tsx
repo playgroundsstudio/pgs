@@ -108,7 +108,7 @@ export default function Slot({
             : 'w-full min-w-[80vw] lg:min-w-[50vw]'
           : 'w-full min-w-[90vw]',
         blurred && 'blur-[var(--overlay-blur)]',
-        length > 1 && (isRow ? 'p-slotpadding' : index === 0 ? 'py-slotpadding pl-slotpadding pr-[calc(var(--slot-padding)/2)]' : 'py-slotpadding px-[calc(var(--slot-padding)/2)]'),
+        length > 1 && (isRow ? 'p-slotpadding' : index === 0 ? 'py-slotpadding md:py-[10px] pl-slotpadding pr-[calc(var(--slot-padding)/2)]' : 'py-slotpadding md:py-[10px] px-[calc(var(--slot-padding)/2)]'),
       )}
     >
       {showDebugUi && (

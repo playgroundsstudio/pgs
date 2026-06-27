@@ -25,6 +25,11 @@ export const person = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'url',
+      title: 'URL',
+      type: 'url',
+    }),
+    defineField({
       name: 'picture',
       title: 'Picture',
       type: 'image',
@@ -51,7 +56,6 @@ export const person = defineType({
           imageDescriptionField: 'alt',
         },
       },
-      validation: (rule) => rule.required(),
     }),
   ],
   // List preview configuration. https://www.sanity.io/docs/previews-list-views

@@ -13,6 +13,9 @@ import ProjectList from '@/app/components/ProjectList'
 import MuxPlayer from '@mux/mux-player-react'
 import '@mux/mux-player/themes/minimal'
 import {useLenis} from '@/app/hooks/useLenis'
+import {gridClsCq, tagsAlignClassesCq} from '@/app/lib/projectGrid'
+import StatementAndListBlock from '@/app/components/StatementAndListBlock'
+import Footer from '@/app/components/Footer'
 
 type HomeContentProps = {
   setActive: Dispatch<SetStateAction<number>>
@@ -57,9 +60,6 @@ export default function HomeContent({
   setMode,
   isActive,
 }: HomeContentProps) {
-  const hasOpenProject = openProjectIds.length > 0
-  const isExpanded = !hasOpenProject || (hasOpenProject && mode === 'col')
-  console.log('HomeContent:', { isExpanded, hasOpenProject, mode, isActive })
   const spaceAfterMeasurement = 'mb-16'
 
   function handleClick(projectId: string) {
@@ -75,11 +75,6 @@ export default function HomeContent({
   const {toggleMode, closeSlot} = useSlotActions({mode, setMode, setActive, openProjectIds, setOpenProjectIds})
 
   const [mounted, setMounted] = useState(false)
-  const [socialsHighlight, setSocialsHighlight] = useState<{top: number, height: number} | null>(null)
-  const [contactHighlight, setContactHighlight] = useState<{top: number, height: number} | null>(null)
-  const [servicesHighlight, setServicesHighlight] = useState<{top: number, height: number} | null>(null)
-  const [industryHighlight, setIndustryHighlight] = useState<{top: number, height: number} | null>(null)
-  const [actionsHighlight, setActionsHighlight] = useState<{top: number, height: number} | null>(null)
   const [showreelExpanded, setShowreelExpanded] = useState(false)
   const [expandSource, setExpandSource] = useState<'inline' | 'pip'>('inline')
   const [pipVisible, setPipVisible] = useState(false)
@@ -88,34 +83,17 @@ export default function HomeContent({
   const lastPipRectRef = useRef<DOMRect | null>(null)
   const [pipHidden, setPipHidden] = useState(false)
   const [inlineInView, setInlineInView] = useState(false)
-  const [newsletterEmail, setNewsletterEmail] = useState('')
   const inlinePlayerRef = useRef<any>(null)
   const pipPlayerRef = useRef<any>(null)
   const expandedPlayerRef = useRef<any>(null)
   const showreelWrapperRef = useRef<HTMLDivElement>(null)
   const portalShowreelRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
-  const socialsListRef = useRef<HTMLUListElement>(null)
-  const contactListRef = useRef<HTMLUListElement>(null)
-  const servicesListRef = useRef<HTMLUListElement>(null)
-  const actionsListRef = useRef<HTMLUListElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   useLenis(scrollRef, isActive)
 
   useEffect(() => setMounted(true), [])
 
-  const isValidEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
-  }
-
-  const handleNewsletterSubmit = () => {
-    if (isValidEmail(newsletterEmail)) {
-      // Handle newsletter subscription
-      console.log('Newsletter subscription for:', newsletterEmail)
-      setNewsletterEmail('')
-    }
-  }
 
   // IntersectionObserver for inline showreel
   useEffect(() => {
@@ -127,7 +105,7 @@ export default function HomeContent({
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [isExpanded])
+  }, [])
 
   // Playback control — only play the visible player
   useEffect(() => {
@@ -143,14 +121,14 @@ export default function HomeContent({
       }
     }
 
-    const pipShouldPlay = pipVisible && !hasOpenProject && !showreelExpanded && !pipHidden
+    const pipShouldPlay = pipVisible && !showreelExpanded && !pipHidden
     const expandedShouldPlay = showreelExpanded
     const inlineShouldPlay = inlineInView && !showreelExpanded
 
     toggle(inlinePlayerRef, inlineShouldPlay)
     toggle(pipPlayerRef, pipShouldPlay)
     toggle(expandedPlayerRef, expandedShouldPlay)
-  }, [inlineInView, pipVisible, hasOpenProject, showreelExpanded, pipHidden])
+  }, [inlineInView, pipVisible, showreelExpanded, pipHidden])
 
   // Desktop-only PiP: slide in on mount, respond to scroll
   useEffect(() => {
@@ -177,10 +155,7 @@ export default function HomeContent({
     }
   }, [])
 
-  // Hide PiP when projects open
-  useEffect(() => {
-    if (hasOpenProject) setPipVisible(false)
-  }, [hasOpenProject])
+
 
   // GSAP animation for PiP slide in/out
   useEffect(() => {
@@ -188,7 +163,7 @@ export default function HomeContent({
     if (!el) return
     if (pipHidden) return
 
-    if (pipVisible && !hasOpenProject) {
+    if (pipVisible) {
       gsap.to(el, {
         left: 24,
         duration: 0.5,
@@ -300,110 +275,27 @@ export default function HomeContent({
   const showreelPlaybackId = showreel?.asset?.playbackId
 
 
-  const sidebarMetaContent = (
-    <>
-      {socialProfiles.length > 0 && (
-        <div className='mb-sa flex flex-col md:flex-row gap-gutter'>
-          <div className='flex-1'>
-            <h3 className='font-sans text-dark-2'>Socials</h3>
-            <p className='mb-4 text-dark-1 max-w-[275px]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          </div>
-          <div className='md:flex-[2]'>
-            <ul ref={socialsListRef} className='relative' onMouseLeave={() => setSocialsHighlight(null)}>
-              {socialsHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: socialsHighlight.top, height: socialsHighlight.height}} />}
-              {socialProfiles.map((profile, index) => (
-                <li key={profile.url} className={`group flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden text-dark-1 ${index === 0 ? 'border-t' : ''}`} onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => window.open(profile.url, '_blank')}>
-                  <div className='flex-1 min-w-0'><p className='truncate'>{profile.title}</p></div>
-                  <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      )}
-
-      {(phone || email) && (
-        <div className='mb-sa flex flex-col md:flex-row gap-gutter'>
-          <div className='flex-1'>
-            <h3 className='font-sans text-dark-2'>Contact</h3>
-            <p className='mb-4 text-dark-1 max-w-[275px]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-          </div>
-          <div className='md:flex-[2]'>
-            <ul ref={contactListRef} className='relative' onMouseLeave={() => setContactHighlight(null)}>
-              {contactHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: contactHighlight.top, height: contactHighlight.height}} />}
-              {phone && (
-                <li className={`group flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden ${!email ? 'border-t' : 'border-t'}`} onMouseEnter={e => setContactHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => navigator.clipboard.writeText(phone)}>
-                  <div className='flex-1 min-w-0'><p className='truncate'>{phone}</p></div>
-                  <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
-                </li>
-              )}
-              {email && (
-                <li className={`group flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden ${!phone ? 'border-t' : ''}`} onMouseEnter={e => setContactHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => navigator.clipboard.writeText(email)}>
-                  <div className='flex-1 min-w-0'><p className='truncate'>{email}</p></div>
-                  <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></div>
-                </li>
-              )}
-            </ul>
-          </div>
-        </div>
-      )}
-
-
-      <div className='mb-sa flex flex-col md:flex-row gap-gutter'>
-        <div className='flex-1'>
-          <h3 className='font-sans text-dark-2'>Newsletter</h3>
-          <p className='mb-4 text-dark-1 max-w-[275px]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-        </div>
-        <div className='md:flex-[2]'>
-          <div className='flex items-center py-[2px] border-b border-stroke border-t overflow-hidden'>
-            <input
-              type='email'
-              placeholder='Enter your email'
-              value={newsletterEmail}
-              onChange={(e) => setNewsletterEmail(e.target.value)}
-              className='w-full bg-transparent border-none p-0 m-0 outline-none placeholder:text-dark-2 font-inherit text-inherit leading-inherit'
-            />
-            {isValidEmail(newsletterEmail) && (
-              <button
-                type='button'
-                onClick={handleNewsletterSubmit}
-                className='ml-2 shrink-0 text-dark-2 hover:text-dark-1 transition-colors duration-200'
-              >
-                Submit
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-
-    </>
-  )
 
   return (
     <div ref={scrollRef} className='relative h-full w-full overflow-auto scrollbar-none'>
-      <SlotPill mode={mode} isVisible={isActive && hasOpenProject} onToggleMode={toggleMode} />
+      <SlotPill mode={mode} isVisible={isActive} onToggleMode={toggleMode} />
       <HomeHeader
         scrollRef={scrollRef}
         title={siteTitle}
         description={siteIntro || siteDescription}
-        hasOpenProject={hasOpenProject}
-        isExpanded={isExpanded}
         onAboutClick={() => handleClick('__about__')}
       />
 
 
 
 
-      <div className='pt-32 p-margin max-w-[var(--slot-content-max-width)] mx-auto w-full px-slotmargin'>
-        {isExpanded && (
-          <div className='relative z-0 mb-16 flex w-full items-start justify-start lg:h-auto'>
-            <div className='relative z-0 w-full max-w-[550px]'>
-              <PgsLogoMark className='w-full h-auto text-dark-1' />
-            </div>
+      <div className='pt-32 pb-0 px-slotmargin max-w-[var(--slot-content-max-width)] mx-auto w-full'>
+        <div className='relative z-0 mb-16 flex w-full items-start justify-start lg:h-auto'>
+          <div className='relative z-0 w-full max-w-[550px]'>
+            <PgsLogoMark className='w-full h-auto text-dark-1' />
           </div>
-        )}
-        {isExpanded ? (
-          <div className='relative flex flex-col w-full'>
+        </div>
+        <div className='relative flex flex-col w-full'>
             {/* Projects — full width */}
             <div className='w-full mb-sa'>
               <ProjectList
@@ -414,132 +306,32 @@ export default function HomeContent({
               />
             </div>
 
-            <div className='flex flex-col lg:grid lg:grid-cols-14 gap-gutter'>
-              <div className='lg:col-start-8 lg:col-span-7'>
-                <div className='mb-sa flex flex-col lg:grid lg:grid-cols-7 gap-gutter'>
-                  <div className='lg:col-span-3'>
-                    <h3 className='font-sans text-dark-2'>Services</h3>
-                    {servicesStatement && <p className='mb-4 text-dark-1 max-w-[275px]'>{servicesStatement}</p>}
-                  </div>
-                  <div className='lg:col-start-4 lg:col-span-4'>
-                    <ul ref={servicesListRef} className='relative' onMouseLeave={() => setServicesHighlight(null)}>
-                      {servicesHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: servicesHighlight.top, height: servicesHighlight.height}} />}
-                      {services.map((item, index) => (
-                        <li key={item} className={`flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden ${index === 0 ? 'border-t' : ''}`} onMouseEnter={e => setServicesHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className='mb-sa flex flex-col lg:grid lg:grid-cols-7 gap-gutter'>
-                  <div className='lg:col-span-3'>
-                    <h3 className='font-sans text-dark-2'>Sectors</h3>
-                    {industryStatement && <p className='mb-4 text-dark-1 max-w-[275px]'>{industryStatement}</p>}
-                  </div>
-                  <div className='lg:col-start-4 lg:col-span-4'>
-                    <ul className='relative' onMouseLeave={() => setIndustryHighlight(null)}>
-                      {industryHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: industryHighlight.top, height: industryHighlight.height}} />}
-                      {industries.map((item, index) => (
-                        <li key={item} className={`flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden ${index === 0 ? 'border-t' : ''}`} onMouseEnter={e => setIndustryHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className='mb-sa flex flex-col lg:grid lg:grid-cols-7 gap-gutter'>
-                  <div className='lg:col-span-3'>
-                    <h3 className='font-sans text-dark-2'>Actions</h3>
-                    {actionsStatement && <p className='mb-4 text-dark-1 max-w-[275px]'>{actionsStatement}</p>}
-                  </div>
-                  <div className='lg:col-start-4 lg:col-span-4'>
-                    <ul ref={actionsListRef} className='relative' onMouseLeave={() => setActionsHighlight(null)}>
-                      {actionsHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: actionsHighlight.top, height: actionsHighlight.height}} />}
-                      <li className='flex items-center py-[2px] border-b border-stroke border-t cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => handleClick('__enquiry__')}>Kick off a project</li>
-                      {email && <li className='flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden' onMouseEnter={e => setActionsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => window.open(`mailto:${email}?subject=Saying Hi`, '_blank')}>Say Hi</li>}
-                    </ul>
-                  </div>
-                </div>
+            <div className={`@container flex flex-col ${gridClsCq}`}>
+              <div className={tagsAlignClassesCq()}>
+                <StatementAndListBlock
+                  title='Services'
+                  statement={servicesStatement}
+                  items={services.map(s => ({label: s}))}
+                />
+                <StatementAndListBlock
+                  title='Sectors'
+                  statement={industryStatement}
+                  items={industries.map(s => ({label: s}))}
+                />
+                <StatementAndListBlock
+                  title='Actions'
+                  statement={actionsStatement}
+                  items={[
+                    {label: 'Kick off a project', onClick: () => handleClick('__enquiry__')},
+                    {label: 'Join the newsletter', onClick: () => handleClick('__newsletter__')},
+                    ...(email ? [{label: 'Say Hi', onClick: () => window.open(`mailto:${email}?subject=Saying Hi`, '_blank')}] : []),
+                  ]}
+                />
               </div>
             </div>
 
-            {/* Footer */}
-            <footer className='w-full pt-sa mt-sa min-h-[400px] flex items-end'>
-              <div className='flex flex-col md:flex-row gap-sa w-full'>
-                <div className='flex-1'>
-                  {socialProfiles.length > 0 && (
-                    <div className='mb-sa'>
-                      <h3 className='font-sans text-dark-2 mb-4'>Socials</h3>
-                      <ul ref={socialsListRef} className='relative' onMouseLeave={() => setSocialsHighlight(null)}>
-                        {socialsHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: socialsHighlight.top, height: socialsHighlight.height}} />}
-                        {socialProfiles.map((profile, index) => (
-                          <li key={profile.url} className={`group flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden text-dark-1 ${index === 0 ? 'border-t' : ''}`} onMouseEnter={e => setSocialsHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => window.open(profile.url, '_blank')}>
-                            <div className='flex-1 min-w-0'><p className='truncate'>{profile.title}</p></div>
-                            <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  {(phone || email) && (
-                    <div>
-                      <h3 className='font-sans text-dark-2 mb-4'>Contact</h3>
-                      <ul ref={contactListRef} className='relative' onMouseLeave={() => setContactHighlight(null)}>
-                        {contactHighlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: contactHighlight.top, height: contactHighlight.height}} />}
-                        {phone && (
-                          <li className={`group flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden ${!email ? 'border-t' : 'border-t'}`} onMouseEnter={e => setContactHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => navigator.clipboard.writeText(phone)}>
-                            <div className='flex-1 min-w-0'><p className='truncate'>{phone}</p></div>
-                            <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"/></svg></div>
-                          </li>
-                        )}
-                        {email && (
-                          <li className={`group flex items-center py-[2px] border-b border-stroke cursor-pointer overflow-hidden ${!phone ? 'border-t' : ''}`} onMouseEnter={e => setContactHighlight({top: e.currentTarget.offsetTop, height: e.currentTarget.offsetHeight})} onClick={() => navigator.clipboard.writeText(email)}>
-                            <div className='flex-1 min-w-0'><p className='truncate'>{email}</p></div>
-                            <div className='shrink-0 ml-1 w-4 h-4 flex items-center justify-center'><div className='w-2 h-2 bg-current group-hover:hidden' /><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className='hidden group-hover:block'><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2 2v1"/></svg></div>
-                          </li>
-                        )}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-
-                <div className='flex-1'>
-                  <h3 className='font-sans text-dark-2 mb-4'>Newsletter</h3>
-                  <div className='flex items-center py-[2px] border-b border-stroke border-t overflow-hidden'>
-                    <input
-                      type='email'
-                      placeholder='Enter your email'
-                      value={newsletterEmail}
-                      onChange={(e) => setNewsletterEmail(e.target.value)}
-                      className='w-full bg-transparent border-none p-0 m-0 outline-none placeholder:text-dark-2 font-inherit text-inherit leading-inherit'
-                    />
-                    {isValidEmail(newsletterEmail) && (
-                      <button
-                        type='button'
-                        onClick={handleNewsletterSubmit}
-                        className='ml-2 shrink-0 text-dark-2 hover:text-dark-1 transition-colors duration-200'
-                      >
-                        Submit
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </footer>
+            <Footer socialProfiles={socialProfiles} phone={phone} email={email} />
           </div>
-        ) : (
-          /* Collapsed state — projects only, full width */
-          <div className='w-full flex flex-col gap-2'>
-            <div className='mb-sa'>
-              <ProjectList
-                projects={projects}
-                openProjectIds={openProjectIds}
-                onProjectClick={handleClick}
-                isActive={isActive}
-              />
-            </div>
-          </div>
-        )}
 
       </div>
       {mounted && createPortal(
@@ -550,12 +342,12 @@ export default function HomeContent({
             className='fixed inset-0 bg-black/50 z-[9998]'
             style={{opacity: 0, pointerEvents: 'none'}}
           />
-          {showreelPlaybackId && (
+          {showreelPlaybackId && openProjectIds.length === 0 && (
             <div
               ref={pipRef}
               onClick={() => { lastPipRectRef.current = pipRef.current?.getBoundingClientRect() ?? null; setExpandSource('pip'); setPipHidden(true); setShowreelExpanded(true) }}
               className='fixed z-[9997] overflow-hidden rounded-lg shadow-[0_8px_30px_rgba(0,0,0,0.12)] cursor-pointer group/pip hidden lg:block'
-              style={{bottom: 24, left: -400, width: 250, visibility: (showreelExpanded || pipHidden || hasOpenProject) ? 'hidden' : 'visible'}}
+              style={{bottom: 24, left: -400, width: 250, visibility: (showreelExpanded || pipHidden) ? 'hidden' : 'visible'}}
             >
               <MuxPlayer
                 ref={pipPlayerRef}

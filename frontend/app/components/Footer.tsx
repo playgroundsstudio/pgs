@@ -1,27 +1,29 @@
-export default function Footer() {
+type FooterProps = {
+  socialProfiles: Array<{title: string; url: string}>
+  phone: string
+  email: string
+}
+
+export default function Footer({socialProfiles, phone, email}: FooterProps) {
   return (
-    <footer className="bg-gray-50 relative">
-      <div className="absolute inset-0 bg-[url(/images/tile-grid-black.png)] bg-size-[17px] opacity-20 bg-position-[0_1]" />
-      <div className="container relative">
-        <div className="flex flex-col items-center py-28 lg:flex-row">
-          <h3 className="mb-10 text-center font-mono tracking-tighter lg:mb-0 lg:w-1/2 lg:pr-4 lg:text-left">
-            Built with Sanity + Next.js.
-          </h3>
-          <div className="flex flex-col gap-3 items-center justify-center lg:w-1/2 lg:flex-row lg:pl-4">
-            <a
-              href="https://github.com/sanity-io/sanity-template-nextjs-clean"
-              className="rounded-full flex gap-2 font-mono whitespace-nowrap items-center bg-black hover:bg-blue focus:bg-blue py-3 px-6 text-white transition-colors duration-200"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View on GitHub
-            </a>
-            <a href="https://nextjs.org/docs" className="mx-3 hover:underline font-mono">
-              Read Next.js Documentation
-            </a>
-          </div>
+    <footer className='w-full pt-sa mt-sa pb-2 grid grid-cols-12 gap-gutter text-dark-2'>
+      {socialProfiles.length > 0 && (
+        <div className='col-span-5 col-start-1 flex items-baseline gap-2'>
+          {socialProfiles.map((profile, i) => (
+            <span key={profile.url}>
+              <a href={profile.url} target='_blank' rel='noopener noreferrer' className='hover:text-dark-1 transition-colors'>{profile.title}</a>
+              {i < socialProfiles.length - 1 && ','}
+            </span>
+          ))}
         </div>
-      </div>
+      )}
+      {(phone || email) && (
+        <div className='col-span-6 col-start-7 flex items-baseline gap-2'>
+          {phone && <span className='hover:text-dark-1 transition-colors cursor-pointer' onClick={() => navigator.clipboard.writeText(phone)}>{phone}</span>}
+          {phone && email && ','}
+          {email && <span className='hover:text-dark-1 transition-colors cursor-pointer' onClick={() => navigator.clipboard.writeText(email)}>{email}</span>}
+        </div>
+      )}
     </footer>
   )
 }

@@ -5,17 +5,23 @@ import {useDrag} from '@use-gesture/react'
 export function useSwipeable({
   ref,
   slots,
+  active,
   setActive,
 }: {
   ref: RefObject<HTMLDivElement | null>
   slots: number
+  active: number
   setActive: Dispatch<SetStateAction<number>>
 }) {
   const slotsRef = useRef(slots)
   slotsRef.current = slots
+  const activeRef = useRef(active)
+  activeRef.current = active
+  const lockUntilRef = useRef(0)
 
+  // Touch swipe
   useDrag(
-    ({swipe: [swipeX], direction: [dx], movement: [mx], cancel, event}) => {
+    ({swipe: [swipeX]}) => {
       if (slotsRef.current <= 1) return
       if (swipeX === -1) {
         setActive((prev) => Math.min(slotsRef.current - 1, prev + 1))
@@ -33,7 +39,7 @@ export function useSwipeable({
     },
   )
 
-  // Prevent native horizontal scroll on touch — let scrollIntoView handle it
+  // Prevent native horizontal scroll on touch
   useEffect(() => {
     const el = ref.current
     if (!el) return
@@ -62,4 +68,37 @@ export function useSwipeable({
       el.removeEventListener('touchmove', onTouchMove)
     }
   }, [ref])
+
+  // Trackpad horizontal scroll only to navigate slots
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
+    let throttled = false
+
+    function onWheel(e: WheelEvent) {
+      if (slotsRef.current <= 1) return
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return
+
+      if (Date.now() < lockUntilRef.current) {
+        e.preventDefault()
+        return
+      }
+
+      e.preventDefault()
+      if (throttled) return
+      throttled = true
+      lockUntilRef.current = Date.now() + 600
+      setTimeout(() => { throttled = false }, 800)
+
+      if (e.deltaX > 0) {
+        setActive((prev) => Math.min(slotsRef.current - 1, prev + 1))
+      } else {
+        setActive((prev) => Math.max(0, prev - 1))
+      }
+    }
+
+    el.addEventListener('wheel', onWheel, {passive: false})
+    return () => el.removeEventListener('wheel', onWheel)
+  }, [ref, setActive])
 }

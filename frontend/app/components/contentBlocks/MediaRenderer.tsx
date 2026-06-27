@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import Image from '@/app/components/SanityImage'
 import MuxPlayer from '@mux/mux-player-react'
 import '@mux/mux-player/themes/minimal'
@@ -27,17 +27,32 @@ type MediaRendererProps = {
 
 export default function MediaRenderer({media, isActive = true}: MediaRendererProps) {
   const playerRef = useRef<any>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [inView, setInView] = useState(false)
+
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      {threshold: 0.1}
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  const shouldPlay = isActive && inView
 
   useEffect(() => {
     const el = playerRef.current
     if (!el) return
     const mediaEl = el.media?.nativeEl ?? el
-    if (isActive) {
+    if (shouldPlay) {
       mediaEl.play?.()?.catch?.(() => {})
     } else {
       mediaEl.pause?.()
     }
-  }, [isActive])
+  }, [shouldPlay])
 
   if (!media) return null
 
@@ -48,7 +63,7 @@ export default function MediaRenderer({media, isActive = true}: MediaRendererPro
 
   if (media.mediaType === 'video' && media.video?.asset?.playbackId) {
     return (
-      <div className='w-full overflow-hidden' style={aspectStyle}>
+      <div ref={containerRef} className='w-full overflow-hidden' style={aspectStyle}>
         <MuxPlayer
           ref={playerRef}
           theme='minimal'

@@ -107,7 +107,7 @@ export default function ContactInquiryBlock({
             <button
               type='submit'
               disabled={submitting}
-              className='mt-[var(--font-size-sm--line-height)] w-full bg-dark-1 text-labelcolor h-10 hover:opacity-80 transition-opacity disabled:opacity-50'
+              className='mt-[var(--font-size-sm--line-height)] self-start px-4 bg-dark-1 text-labelcolor h-10 hover:opacity-80 transition-opacity disabled:opacity-50'
             >
               {submitting ? 'Sending...' : 'Submit'}
             </button>
