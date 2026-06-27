@@ -6,7 +6,7 @@ export const gridConfig = {
     tags:     {default: 3, md: 3, sm: 0,  hidden: {md: false, sm: true}},
     year:     {default: 2, md: 2, sm: 2,  hidden: {md: false,  sm: false}},
     location: {default: 2, md: 0, sm: 0,  hidden: {md: true,  sm: true}},
-    status:   {default: 2, md: 4, sm: 3,  hidden: {md: false, sm: false}},
+    status:   {default: 2, md: 2, sm: 3,  hidden: {md: false, sm: false}},
   },
 } as const
 

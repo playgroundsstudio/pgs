@@ -55,15 +55,15 @@ export default function MediaRenderer({media, isActive = true}: MediaRendererPro
     }
   }, [shouldPlay])
 
+  const playbackId = media?.video?.asset?.playbackId
+  const dominantColor = useMuxDominantColor(playbackId)
+
   if (!media) return null
 
   const aspectStyle =
     media.aspectRatio && media.aspectRatio !== 'free'
       ? {aspectRatio: media.aspectRatio}
       : undefined
-
-  const playbackId = media?.video?.asset?.playbackId
-  const dominantColor = useMuxDominantColor(playbackId)
 
   if (media.mediaType === 'video' && playbackId) {
     return (
