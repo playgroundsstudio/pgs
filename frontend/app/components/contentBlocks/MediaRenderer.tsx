@@ -2,6 +2,7 @@ import {useEffect, useRef, useState} from 'react'
 import Image from '@/app/components/SanityImage'
 import MuxPlayer from '@mux/mux-player-react'
 import '@mux/mux-player/themes/minimal'
+import {useMuxDominantColor} from '@/app/hooks/useMuxDominantColor'
 
 type MediaItem = {
   mediaType?: 'image' | 'video'
@@ -61,18 +62,33 @@ export default function MediaRenderer({media, isActive = true}: MediaRendererPro
       ? {aspectRatio: media.aspectRatio}
       : undefined
 
-  if (media.mediaType === 'video' && media.video?.asset?.playbackId) {
+  const playbackId = media?.video?.asset?.playbackId
+  const dominantColor = useMuxDominantColor(playbackId)
+
+  if (media.mediaType === 'video' && playbackId) {
     return (
-      <div ref={containerRef} className='w-full overflow-hidden' style={aspectStyle}>
+      <div
+        ref={containerRef}
+        className='w-full overflow-hidden'
+        style={{...aspectStyle, backgroundColor: dominantColor}}
+      >
         <MuxPlayer
           ref={playerRef}
           theme='minimal'
-          playbackId={media.video.asset.playbackId}
+          playbackId={playbackId}
           streamType='on-demand'
           autoPlay='muted'
           loop
           muted
-          style={{width: '100%', height: '100%', '--controls': 'none', '--media-object-fit': 'cover', ...(aspectStyle || {aspectRatio: '16/9'})} as any}
+          style={{
+            width: '100%',
+            height: '100%',
+            '--controls': 'none',
+            '--media-object-fit': 'cover',
+            ...(aspectStyle || {aspectRatio: '16/9'}),
+            opacity: isActive ? 1 : 'var(--disabled-image)',
+            transition: 'opacity 0.3s ease-in-out',
+          } as any}
         />
       </div>
     )

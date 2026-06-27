@@ -35,6 +35,20 @@ export const homepage = defineType({
       description: 'A short statement displayed alongside the actions list.',
     }),
     defineField({
+      name: 'enquiryTabImage',
+      title: 'Enquiry Tab Image',
+      type: 'image',
+      description: 'Thumbnail shown on the navigation tab for the enquiry form.',
+      options: {hotspot: true},
+    }),
+    defineField({
+      name: 'newsletterTabImage',
+      title: 'Newsletter Tab Image',
+      type: 'image',
+      description: 'Thumbnail shown on the navigation tab for the newsletter form.',
+      options: {hotspot: true},
+    }),
+    defineField({
       name: 'projectList',
       title: 'Project List',
       type: 'array',

@@ -115,6 +115,14 @@ export const homepageQuery = defineQuery(`
     servicesStatement,
     industryStatement,
     actionsStatement,
+    enquiryTabImage {
+      ...,
+      "metadata": asset->metadata { palette }
+    },
+    newsletterTabImage {
+      ...,
+      "metadata": asset->metadata { palette }
+    },
     "projectList": projectList[]->{
       ${projectFields}
     }

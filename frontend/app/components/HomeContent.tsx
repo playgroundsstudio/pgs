@@ -89,6 +89,8 @@ export default function HomeContent({
   const showreelWrapperRef = useRef<HTMLDivElement>(null)
   const portalShowreelRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
+  const footerRef = useRef<HTMLDivElement>(null)
+  const [footerInView, setFooterInView] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   useLenis(scrollRef, isActive)
 
@@ -102,6 +104,19 @@ export default function HomeContent({
     const observer = new IntersectionObserver(
       ([entry]) => setInlineInView(entry.isIntersecting),
       {threshold: 0.1}
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  // IntersectionObserver for footer
+  useEffect(() => {
+    const el = footerRef.current
+    if (!el) return
+    const root = scrollRef.current
+    const observer = new IntersectionObserver(
+      ([entry]) => setFooterInView(entry.isIntersecting),
+      {threshold: 0.1, root}
     )
     observer.observe(el)
     return () => observer.disconnect()
@@ -130,30 +145,18 @@ export default function HomeContent({
     toggle(expandedPlayerRef, expandedShouldPlay)
   }, [inlineInView, pipVisible, showreelExpanded, pipHidden])
 
-  // Desktop-only PiP: slide in on mount, respond to scroll
+  // Desktop-only PiP: slide in on mount, hide when a project is open or footer is in view
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 1024px)')
     if (!mq.matches) return
 
-    const timeout = setTimeout(() => setPipVisible(true), 500)
-
-    const el = scrollRef.current
-    if (!el) return
-
-    const onScroll = () => {
-      if (el.scrollTop > 0) {
-        setPipVisible(false)
-      } else {
-        setPipVisible(true)
-      }
+    if (openProjectIds.length > 0 || footerInView) {
+      setPipVisible(false)
+    } else {
+      const timeout = setTimeout(() => setPipVisible(true), 500)
+      return () => clearTimeout(timeout)
     }
-
-    el.addEventListener('scroll', onScroll, {passive: true})
-    return () => {
-      clearTimeout(timeout)
-      el.removeEventListener('scroll', onScroll)
-    }
-  }, [])
+  }, [openProjectIds, footerInView])
 
 
 
@@ -277,8 +280,9 @@ export default function HomeContent({
 
 
   return (
-    <div ref={scrollRef} className='relative h-full w-full overflow-auto scrollbar-none'>
-      <SlotPill mode={mode} isVisible={isActive} onToggleMode={toggleMode} />
+    <div className='relative h-full w-full'>
+      <SlotPill mode={mode} isVisible={isActive && openProjectIds.length > 0} onToggleMode={toggleMode} />
+    <div ref={scrollRef} className='h-full w-full overflow-auto scrollbar-none'>
       <HomeHeader
         scrollRef={scrollRef}
         title={siteTitle}
@@ -330,7 +334,9 @@ export default function HomeContent({
               </div>
             </div>
 
-            <Footer socialProfiles={socialProfiles} phone={phone} email={email} />
+            <div ref={footerRef}>
+              <Footer socialProfiles={socialProfiles} phone={phone} email={email} />
+            </div>
           </div>
 
       </div>
@@ -342,7 +348,7 @@ export default function HomeContent({
             className='fixed inset-0 bg-black/50 z-[9998]'
             style={{opacity: 0, pointerEvents: 'none'}}
           />
-          {showreelPlaybackId && openProjectIds.length === 0 && (
+          {showreelPlaybackId && (
             <div
               ref={pipRef}
               onClick={() => { lastPipRectRef.current = pipRef.current?.getBoundingClientRect() ?? null; setExpandSource('pip'); setPipHidden(true); setShowreelExpanded(true) }}
@@ -384,6 +390,7 @@ export default function HomeContent({
         </>,
         document.body
       )}
+    </div>
     </div>
   )
 }

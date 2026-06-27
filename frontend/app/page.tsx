@@ -59,6 +59,8 @@ export default async function Page() {
   const servicesStatement = (homepage as any)?.servicesStatement ?? ''
   const industryStatement = (homepage as any)?.industryStatement ?? ''
   const actionsStatement = (homepage as any)?.actionsStatement ?? ''
+  const enquiryTabImage = (homepage as any)?.enquiryTabImage ?? null
+  const newsletterTabImage = (homepage as any)?.newsletterTabImage ?? null
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -92,6 +94,8 @@ export default async function Page() {
         servicesStatement={servicesStatement}
         industryStatement={industryStatement}
         actionsStatement={actionsStatement}
+        enquiryTabImage={enquiryTabImage}
+        newsletterTabImage={newsletterTabImage}
       />
     </>
   )

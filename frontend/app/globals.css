@@ -115,13 +115,14 @@ html {
   --disabled-image: 0.6;
   --hover-slot: rgba(0, 0, 0, 0.02);
   --hover-element: rgba(0, 0, 0, 0.015);
+  --selected-tab-highlight: rgba(0, 0, 0, 0.05);
 
   /* Overlay */
   --overlay: rgba(200, 200, 200, 1);
   --overlay-blur: 2px;
 
   /* UI Components */
-  --pill-bg: rgba(255, 255, 255, 0.9);
+  --pill-bg: rgba(255, 255, 255, 0.8);
   --button-solid: rgba(0, 0, 0, 0.8);
   --button-solid-text: #fff;
 }
@@ -153,6 +154,7 @@ html {
   --disabled-image: 0.6;
   --hover-slot: rgba(255, 255, 255, 0.08);
   --hover-element: rgba(255, 255, 255, 0.04);
+  --selected-tab-highlight: rgba(255, 255, 255, 0.15);
 
   /* Overlay */
   --overlay: rgba(20, 20, 20, 1);
@@ -216,6 +218,7 @@ html {
   --color-activeslot: rgba(0, 0, 0, 0.2);
   --color-hoverslot: var(--hover-slot);
   --color-hoverelement: var(--hover-element);
+  --color-selected-tab-highlight: var(--selected-tab-highlight);
 
   /* UI Components */
   --color-pill: var(--pill-bg);

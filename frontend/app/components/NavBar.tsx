@@ -29,6 +29,8 @@ type NavBarProps = {
   onShareConfiguration: () => void
   onShareHomePage: () => void
   onEnquire: () => void
+  enquiryTabImage?: any
+  newsletterTabImage?: any
 }
 
 export default function NavBar({
@@ -45,6 +47,8 @@ export default function NavBar({
   onShareConfiguration,
   onShareHomePage,
   onEnquire,
+  enquiryTabImage,
+  newsletterTabImage,
 }: NavBarProps) {
   const CLOSED_NAV_HEIGHT = 47
   const containerRef = useRef<HTMLDivElement>(null)
@@ -207,7 +211,7 @@ export default function NavBar({
       />
       <div
         className={cn(
-          'absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-hoverslot transition-all duration-300 ease-out aspect-square',
+          'absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-selected-tab-highlight transition-all duration-300 ease-out aspect-square',
           shareMenuOpen && 'opacity-0 scale-0',
         )}
         style={{left: highlight.left - 4, width: highlight.width + 8}}
@@ -223,6 +227,8 @@ export default function NavBar({
             slotId={i > 0 ? openProjectIds[i - 1] : undefined}
             settings={settings}
             onClose={closeProjectTab}
+            enquiryTabImage={enquiryTabImage}
+            newsletterTabImage={newsletterTabImage}
           />
         ))}
         <div className="ml-auto" />
@@ -304,6 +310,8 @@ function Tab({
   slotId,
   settings,
   onClose,
+  enquiryTabImage,
+  newsletterTabImage,
 }: {
   index: number
   active: any
@@ -312,6 +320,8 @@ function Tab({
   slotId?: string
   settings: SettingsQueryResult
   onClose: (tabIndex: number) => void
+  enquiryTabImage?: any
+  newsletterTabImage?: any
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const [isDark, setIsDark] = useState(false)
@@ -382,14 +392,12 @@ function Tab({
               e.stopPropagation()
               onClose(index)
             }}
-            className={cn("absolute inset-2 z-20 rounded-full bg-hoverslot backdrop-blur-[10px] flex items-center justify-center cursor-pointer", isDark ? "text-white" : "text-black")}
+            className={cn("absolute inset-2 z-20 rounded-full bg-hoverslot backdrop-blur-[10px] flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200", isDark ? "text-white" : "text-black")}
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
-
-
           </button>
         )}
         {index === 0 && settingsLogo?.asset?._ref ? (
@@ -432,7 +440,35 @@ function Tab({
           />
         ) : slotId === '__about__' ? (
           <div className="h-full w-full rounded-full bg-surface2" />
+        ) : slotId === '__enquiry__' && enquiryTabImage?.asset?._ref ? (
+          <Image
+            draggable={false}
+            id={enquiryTabImage.asset._ref}
+            alt="Enquiry"
+            className="h-full w-full rounded-full"
+            width={80}
+            height={80}
+            mode="cover"
+            hotspot={enquiryTabImage.hotspot}
+            crop={enquiryTabImage.crop}
+            fadeIn={false}
+          />
         ) : slotId === '__enquiry__' ? (
+          <div className="h-full w-full rounded-full bg-surface" />
+        ) : slotId === '__newsletter__' && newsletterTabImage?.asset?._ref ? (
+          <Image
+            draggable={false}
+            id={newsletterTabImage.asset._ref}
+            alt="Newsletter"
+            className="h-full w-full rounded-full"
+            width={80}
+            height={80}
+            mode="cover"
+            hotspot={newsletterTabImage.hotspot}
+            crop={newsletterTabImage.crop}
+            fadeIn={false}
+          />
+        ) : slotId === '__newsletter__' ? (
           <div className="h-full w-full rounded-full bg-surface" />
         ) : (
           <p>{index}</p>

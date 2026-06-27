@@ -32,6 +32,8 @@ export default function Home({
   servicesStatement,
   industryStatement,
   actionsStatement,
+  enquiryTabImage,
+  newsletterTabImage,
 }: {
   projects: AllProjectsQueryResult
   showreel: {asset?: {playbackId?: string}} | null
@@ -48,6 +50,8 @@ export default function Home({
   servicesStatement: string
   industryStatement: string
   actionsStatement: string
+  enquiryTabImage: any
+  newsletterTabImage: any
 }) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [mode, setMode] = useState('row')
@@ -61,6 +65,8 @@ export default function Home({
   const shareMenuRef = useRef<HTMLDivElement>(null)
   const [addMenuOpen, setAddMenuOpen] = useState(false)
   const addMenuRef = useRef<HTMLDivElement>(null)
+  const addMenuListRef = useRef<HTMLDivElement>(null)
+  const [addMenuHoveredIndex, setAddMenuHoveredIndex] = useState<number | null>(null)
   const [isMobile, setIsMobile] = useState(false)
   const [introComplete, setIntroComplete] = useState(false)
   const handleIntroComplete = useCallback(() => setIntroComplete(true), [])
@@ -312,23 +318,39 @@ export default function Home({
               onClick={() => setAddMenuOpen((prev) => !prev)}
             >
               <div className="h-[32px] w-[32px] flex items-center justify-center rounded-full bg-surface shadow-[0_1px_6px_rgba(0,0,0,0.08)]">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-1">
                   <line x1="12" y1="5" x2="12" y2="19" />
                   <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>
               </div>
               {addMenuOpen && (
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-pill backdrop-blur-xl rounded-lg shadow-lg p-2 min-w-[200px] max-h-[300px] overflow-y-auto">
-                  {projects.map((project) => (
+                <div
+                  ref={addMenuListRef}
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 bg-pill backdrop-blur-xl rounded-lg shadow-lg min-w-[280px] max-h-[300px] overflow-y-auto overflow-x-hidden"
+                  onMouseLeave={() => setAddMenuHoveredIndex(null)}
+                >
+                  {addMenuHoveredIndex !== null && addMenuListRef.current && (() => {
+                    const el = addMenuListRef.current.children[addMenuHoveredIndex + 1] as HTMLElement | undefined
+                    if (!el) return null
+                    return (
+                      <div
+                        className="absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out z-0"
+                        style={{top: el.offsetTop, height: el.offsetHeight}}
+                      />
+                    )
+                  })()}
+                  {projects.map((project, i) => (
                     <button
                       key={project._id}
-                      className={cn("w-full text-left px-3 py-2 rounded-md text-sm hover:bg-hoverelement transition-colors truncate", openProjectIds.includes(project._id) && "bg-hoverelement")}
+                      className={cn("w-full text-left py-[2px] px-slotmargin border-b border-stroke flex items-center gap-gutter cursor-pointer relative z-10", openProjectIds.includes(project._id) && "bg-hoverelement")}
+                      onMouseEnter={() => setAddMenuHoveredIndex(i)}
                       onClick={(e) => {
                         e.stopPropagation()
                         handleAddProject(project._id)
                       }}
                     >
-                      {project.title}
+                      <span className="shrink-0 w-[50px]">{String(i + 1).padStart(2, '0')}</span>
+                      <span className="truncate">{project.title}</span>
                     </button>
                   ))}
                 </div>
@@ -362,6 +384,8 @@ export default function Home({
             onShareConfiguration={handleShareConfiguration}
             onShareHomePage={handleShareHomePage}
             onEnquire={handleEnquire}
+            enquiryTabImage={enquiryTabImage}
+            newsletterTabImage={newsletterTabImage}
           />
         </div>
       </div>
