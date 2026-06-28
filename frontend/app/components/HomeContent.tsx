@@ -281,7 +281,9 @@ export default function HomeContent({
 
   return (
     <div className='relative h-full w-full'>
-      <SlotPill mode={mode} isVisible={isActive && openProjectIds.length > 0} onToggleMode={toggleMode} />
+      <div className='hidden lg:block'>
+        <SlotPill mode={mode} isVisible={isActive && openProjectIds.length > 0} onToggleMode={toggleMode} />
+      </div>
     <div ref={scrollRef} className='h-full w-full overflow-auto scrollbar-none'>
       <HomeHeader
         scrollRef={scrollRef}

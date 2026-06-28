@@ -88,21 +88,21 @@ export default function ProjectContent({
                   isActive={isActive}
                   containerClassName={cn(
                     'aspect-square overflow-hidden',
-                    mode === 'col' ? 'w-[150px] h-[150px] m-slotmargin' : 'w-full'
+                    mode === 'col' ? 'w-full lg:w-[150px] lg:h-[150px] lg:m-slotmargin' : 'w-full'
                   )}
                 />
               )}
               <div className='flex flex-col pt-2 pb-20 gap-0 px-slotmargin'>
                 <div className='flex flex-col gap-0'>
                   <div className='flex gap-gutter'>
-                    <h3 className='font-medium font-sans flex-1'>{project?.title ?? 'Project Title'}</h3>
-                    <h3 className='font-medium font-sans flex-1'>
+                    <h3 className='font-medium font-sans w-1/3 lg:w-1/2'>{project?.title ?? 'Project Title'}</h3>
+                    <h3 className='font-medium font-sans w-2/3 lg:w-1/2'>
                       {project.description}
                     </h3>
                   </div>
                   <div className='flex gap-gutter'>
-                    <h3 className='font-sans flex-1'>Tags</h3>
-                    <h3 className='font-medium font-sans flex-1'>
+                    <h3 className='font-sans w-1/3 lg:w-1/2'>Tags</h3>
+                    <h3 className='font-medium font-sans w-2/3 lg:w-1/2'>
                       {tagItems.length ? (
                         tagItems.map((tag, tagIndex) => (
                           <span key={tag.slug}>
@@ -118,14 +118,14 @@ export default function ProjectContent({
                     </h3>
                   </div>
                   <div className='flex gap-gutter'>
-                    <h3 className='font-sans flex-1'>Date</h3>
-                    <h3 className='font-medium font-sans flex-1'>
+                    <h3 className='font-sans w-1/3 lg:w-1/2'>Date</h3>
+                    <h3 className='font-medium font-sans w-2/3 lg:w-1/2'>
                       <DateComponent dateString={project.date} />
                     </h3>
                   </div>
                   <div className='flex gap-gutter'>
-                    <h3 className='font-sans flex-1'>Link</h3>
-                    <h3 className='font-medium font-sans flex-1'>
+                    <h3 className='font-sans w-1/3 lg:w-1/2'>Link</h3>
+                    <h3 className='font-medium font-sans w-2/3 lg:w-1/2'>
                       {(project as any).liveLink ? (
                         <a href={(project as any).liveLink} target='_blank' rel='noopener noreferrer' className='hover:text-dark-2'>
                           {(project as any).liveLink}
@@ -140,7 +140,7 @@ export default function ProjectContent({
               </div>
             </div>
             {contentBlocks.length > 0 && (
-              <div className={`flex flex-col ${mode === 'col' ? 'gap-2' : 'gap-0'}`}>
+              <div className={`flex flex-col ${mode === 'col' ? 'lg:gap-2' : 'gap-0'}`}>
                 {contentBlocks.map((block, blockIndex) => (
                   <ProjectContentBlockRenderer
                     key={block._key ?? blockIndex}
@@ -153,14 +153,14 @@ export default function ProjectContent({
             )}
             {credits.length > 0 && (
               <div className='flex gap-gutter px-slotmargin pt-2 pb-20'>
-                <div className='flex-1'>
+                <div className='w-1/3 lg:w-1/2'>
                   <h3 className='font-sans'>Credits</h3>
                 </div>
-                <div className='flex flex-col gap-0 flex-1'>
+                <div className='flex flex-col gap-0 w-2/3 lg:w-1/2'>
                   {credits.map((credit, creditIndex) => (
                     <div key={creditIndex} className='flex gap-gutter'>
-                      <h3 className='font-sans flex-1'>{credit.title}</h3>
-                      <h3 className='font-medium font-sans flex-1'>
+                      <h3 className='font-sans w-1/3 lg:w-1/2'>{credit.title}</h3>
+                      <h3 className='font-medium font-sans w-2/3 lg:w-1/2'>
                         {credit.people.map((person, personIndex) => (
                           <div key={personIndex}>
                             {person.url ? (

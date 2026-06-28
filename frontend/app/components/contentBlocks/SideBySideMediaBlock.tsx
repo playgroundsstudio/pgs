@@ -13,8 +13,8 @@ export default function SideBySideMediaBlock({block, mode, isActive}: SideBySide
   return (
     <div
       className={cn(
-        `flex flex-col ${mode === 'col' ? 'gap-2' : 'gap-0'}`,
-        mode === 'col' && 'md:flex-row md:justify-between px-slotmargin'
+        `flex flex-col ${mode === 'col' ? 'lg:gap-2' : 'gap-0'}`,
+        mode === 'col' && 'md:flex-row md:justify-between lg:px-slotmargin'
       )}
     >
       <div

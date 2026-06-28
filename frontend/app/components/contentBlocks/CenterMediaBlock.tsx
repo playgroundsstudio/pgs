@@ -11,7 +11,7 @@ export default function CenterMediaBlock({block, mode, isActive}: CenterMediaBlo
   const width = block.width ?? '100'
 
   return (
-    <div className={cn('w-full', mode === 'col' && 'px-slotmargin flex justify-center')}>
+    <div className={cn('w-full', mode === 'col' && 'lg:px-slotmargin flex justify-center')}>
       <div className={cn(
         'w-full',
         mode === 'col' && width === '75' && 'md:w-[75%]',
