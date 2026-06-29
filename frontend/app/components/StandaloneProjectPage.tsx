@@ -7,7 +7,7 @@ export default function StandaloneProjectPage({project}: {project: AllProjectsQu
   const [mode, setMode] = useState('col')
 
   return (
-    <div className='h-screen w-full bg-surface'>
+    <div className='h-dvh w-full bg-surface'>
       <ProjectContent
         mode={mode}
         setMode={setMode}

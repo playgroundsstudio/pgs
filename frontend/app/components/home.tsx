@@ -203,7 +203,7 @@ export default function Home({
           'flex overflow-x-auto scrollbar-none touch-pan-y',
           hasPadding ? '  py-0 ' : 'p-0',
 
-          'h-screen transition-[filter,opacity,padding,gap] duration-400 ease-out relative',
+          'h-dvh transition-[filter,opacity,padding,gap] duration-400 ease-out relative',
         )}
       >
                 {Array.from({length: slots}).map((_, i) => (
@@ -368,7 +368,7 @@ export default function Home({
         />
         <div
           ref={shareMenuRef}
-          className={` ${slots > 1 ? 'bottom-4' : 'bottom-[-400px]'} group/nav transition-all flex justify-center items-center gap-2 w-full fixed left-0 right-0 z-50 hide-scrollbar `}
+          className={` ${slots > 1 ? 'bottom-6' : 'bottom-[-400px]'} group/nav transition-all flex justify-center items-center gap-2 w-full fixed left-0 right-0 z-50 hide-scrollbar `}
         >
           <NavBar
             slots={slots}
@@ -378,6 +378,8 @@ export default function Home({
             openProjectIds={openProjectIds}
             settings={settings}
             closeProjectTab={closeProjectTab}
+            addMenuOpen={addMenuOpen}
+            setAddMenuOpen={setAddMenuOpen}
             shareMenuOpen={shareMenuOpen}
             onShareClick={handleShareClick}
             onCloseAll={handleCloseAllSlots}

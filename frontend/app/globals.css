@@ -125,6 +125,8 @@ html {
   --pill-bg: rgba(255, 255, 255, 0.8);
   --button-solid: rgba(0, 0, 0, 0.8);
   --button-solid-text: #fff;
+  --button-bg: rgba(0, 0, 0, 0.5);
+  --button-text: #fff;
 }
 
 .dark {
@@ -164,6 +166,8 @@ html {
   --pill-bg: rgba(50, 50, 50, 0.8);
   --button-solid: rgba(50, 50, 50, 1);
   --button-solid-text: #fff;
+  --button-bg: rgba(0, 0, 0, 0.5);
+  --button-text: #fff;
 }
 
 @media (min-width: 768px) {
@@ -224,6 +228,8 @@ html {
   --color-pill: var(--pill-bg);
   --color-button-solid: var(--button-solid);
   --color-button-solid-text: var(--button-solid-text);
+  --color-button-bg: var(--button-bg);
+  --color-button-text: var(--button-text);
 
   --font-display: 'Unica77', 'Helvetica', 'Arial', sans-serif;
   --font-sans: 'Unica77', 'Helvetica', 'Arial', sans-serif;

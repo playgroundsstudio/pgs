@@ -46,7 +46,7 @@ export default function ProjectList({
           if (!li) return null
           return (
             <div
-              className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out'
+              className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out hidden lg:block'
               style={{top: li.offsetTop, height: li.offsetHeight}}
             />
           )

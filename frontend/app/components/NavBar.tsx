@@ -23,6 +23,8 @@ type NavBarProps = {
   openProjectIds: string[]
   settings: SettingsQueryResult
   closeProjectTab: (tabIndex: number) => void
+  addMenuOpen: boolean
+  setAddMenuOpen: (v: boolean) => void
   shareMenuOpen: boolean
   onShareClick: (e: MouseEvent<HTMLButtonElement>) => void
   onCloseAll: (e: MouseEvent<HTMLButtonElement>) => void
@@ -41,6 +43,8 @@ export default function NavBar({
   openProjectIds,
   settings,
   closeProjectTab,
+  addMenuOpen,
+  setAddMenuOpen,
   shareMenuOpen,
   onShareClick,
   onCloseAll,
@@ -197,7 +201,7 @@ export default function NavBar({
   return (
     <div
       ref={containerRef}
-      className="group/navbar relative  bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-1.5 py-1.5 pr-[5px] pl-[7px]"
+      className="group/navbar relative  bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-1.5 py-1.5 pr-[7px] pl-[7px]"
       style={{
         borderRadius: '60px',
         height: CLOSED_NAV_HEIGHT,
@@ -231,7 +235,24 @@ export default function NavBar({
             newsletterTabImage={newsletterTabImage}
           />
         ))}
-        <div className="ml-auto" />
+        {openProjectIds.length > 0 && (
+          <>
+            <div className="w-px h-6 bg-divider mx-1 self-center shrink-0" />
+            <div
+              data-indextab={slots}
+              onClick={() => {
+                setActive(slots)
+                setAddMenuOpen(true)
+              }}
+              className="relative rounded-full flex flex-col justify-center items-center cursor-pointer h-[35px] w-[35px] bg-surface shadow-[0_0_20px_rgba(0,0,0,0.08)]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-1">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+            </div>
+          </>
+        )}
         <div className="w-px h-6 bg-divider mx-1 self-center shrink-0 hidden" />
         <button
           type="button"
@@ -392,7 +413,7 @@ function Tab({
               e.stopPropagation()
               onClose(index)
             }}
-            className={cn("absolute inset-2 z-20 rounded-full bg-hoverslot backdrop-blur-[10px] flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200", isDark ? "text-white" : "text-black")}
+            className="absolute inset-2 z-20 rounded-full bg-button-bg backdrop-blur-[10px] flex items-center justify-center cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-button-text"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
               <line x1="18" y1="6" x2="6" y2="18" />

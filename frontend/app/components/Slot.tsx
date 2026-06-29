@@ -105,10 +105,10 @@ export default function Slot({
         isRow
           ? halfWidth
             ? 'w-full min-w-[40vw] lg:min-w-[25vw]'
-            : 'w-full min-w-[80vw] lg:min-w-[50vw]'
-          : 'w-full min-w-[90vw]',
+            : 'w-full min-w-[100vw] lg:min-w-[50vw]'
+          : 'w-full min-w-[calc(100vw+var(--slot-padding)*2)] lg:min-w-[90vw]',
         blurred && 'blur-[var(--overlay-blur)]',
-        length > 1 && (isRow ? 'p-slotpadding' : index === 0 ? 'py-slotpadding md:py-[10px] pl-slotpadding pr-[calc(var(--slot-padding)/2)]' : 'py-slotpadding md:py-[10px] px-[calc(var(--slot-padding)/2)]'),
+        length > 1 && (isRow ? `p-0 lg:py-slotpadding ${index === 0 ? 'lg:pl-slotpadding' : 'lg:pl-[calc(var(--slot-padding)/2)]'} lg:pr-[calc(var(--slot-padding)/2)]` : index === 0 ? 'px-slotpadding lg:px-0 lg:py-[10px] lg:pl-slotpadding lg:pr-[calc(var(--slot-padding)/2)]' : 'px-slotpadding lg:py-[10px] lg:px-[calc(var(--slot-padding)/2)]'),
       )}
     >
       {showDebugUi && (
@@ -122,7 +122,7 @@ export default function Slot({
         className={cn(
           'relative z-10 h-full w-full',
           !slotActive && 'cursor-pointer',
-          length > 1 && `rounded-lg overflow-hidden ${halfWidth ? '' : 'shadow-[0_0_20px_rgba(0,0,0,0.08)]'}`,
+          length > 1 && `rounded-none lg:rounded-lg overflow-hidden ${halfWidth ? '' : 'lg:shadow-[0_0_20px_rgba(0,0,0,0.08)]'}`,
           length > 1 &&
             (bgClass || 'bg-enabled'),
         )}

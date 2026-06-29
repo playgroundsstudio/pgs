@@ -60,7 +60,7 @@ export default function StatementAndListBlock({title, statement, items}: Stateme
       </div>
       <div className={listCls}>
         <ul ref={listRef} className='relative' onMouseLeave={() => setHighlight(null)}>
-          {highlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out' style={{top: highlight.top, height: highlight.height}} />}
+          {highlight && <div className='absolute left-0 w-full bg-hoverelement pointer-events-none transition-all duration-150 ease-out hidden lg:block' style={{top: highlight.top, height: highlight.height}} />}
           {items.map((item, index) => (
             <li
               key={item.label}
