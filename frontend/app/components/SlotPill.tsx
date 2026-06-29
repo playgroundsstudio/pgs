@@ -19,14 +19,14 @@ export default function SlotPill({mode, isVisible, onToggleMode, onClose, label}
       )}
     >
       {label && (
-        <div className='h-[32px] flex items-center px-4 py-2 rounded-full bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle font-normal text-[11px]'>
+        <div className='h-[36px] flex items-center px-4 py-2 rounded-full bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle font-normal text-[11px]'>
           {label}
         </div>
       )}
       <div
         className={cn(
           'flex items-center rounded-full bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] border border-border-subtle',
-          hasClose ? 'w-[32px] h-[32px] justify-center lg:w-auto lg:h-[32px] lg:min-w-[50px] lg:gap-4 lg:px-4 lg:py-2' : 'justify-center w-[32px] h-[32px]',
+          hasClose ? 'w-[36px] h-[36px] justify-center lg:w-auto lg:h-[36px] lg:min-w-[58px] lg:gap-4 lg:px-4 lg:py-2' : 'justify-center w-[36px] h-[36px]',
         )}
       >
         <button onClick={onToggleMode} className='cursor-pointer hover:text-dark-2 hidden lg:block' aria-label={mode === 'row' ? 'Expand' : 'Minimise'}>

@@ -218,7 +218,7 @@ export default function NavBar({
           'absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-selected-tab-highlight transition-all duration-300 ease-out aspect-square',
           shareMenuOpen && 'opacity-0 scale-0',
         )}
-        style={{left: highlight.left - 4, width: highlight.width + 8}}
+        style={{left: highlight.left - 3, width: highlight.width + 6}}
       />
       <div ref={tabsRef} className="relative z-10 flex items-center gap-2 origin-center">
         {Array.from({length: slots}).map((_, i) => (
@@ -246,7 +246,7 @@ export default function NavBar({
               }}
               className="relative rounded-full flex flex-col justify-center items-center cursor-pointer h-[35px] w-[35px] bg-surface shadow-[0_0_20px_rgba(0,0,0,0.08)]"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-1">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-1">
                 <line x1="12" y1="5" x2="12" y2="19" />
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
@@ -285,7 +285,7 @@ export default function NavBar({
           className="flex justify-center items-center flex-1 w-full"
           style={{opacity: 0}}
         >
-          <PgsLogoMark className="h-16 w-auto text-white dark:text-black" />
+          <PgsLogoMark className="w-[200px] lg:h-16 lg:w-auto text-white dark:text-black" />
         </div>
         <div ref={menuItemsRef} className="flex flex-col w-full">
           <button

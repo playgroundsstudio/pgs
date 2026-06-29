@@ -317,8 +317,8 @@ export default function Home({
               className='h-full w-full flex items-center justify-center cursor-pointer relative'
               onClick={() => setAddMenuOpen((prev) => !prev)}
             >
-              <div className="h-[32px] w-[32px] flex items-center justify-center rounded-full bg-surface shadow-[0_1px_6px_rgba(0,0,0,0.08)]">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-1">
+              <div className="h-[36px] w-[36px] flex items-center justify-center rounded-full bg-surface shadow-[0_1px_6px_rgba(0,0,0,0.08)]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-1">
                   <line x1="12" y1="5" x2="12" y2="19" />
                   <line x1="5" y1="12" x2="19" y2="12" />
                 </svg>

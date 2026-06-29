@@ -295,9 +295,9 @@ export default function HomeContent({
 
 
 
-      <div className='pt-32 pb-0 px-slotmargin max-w-[var(--slot-content-max-width)] mx-auto w-full'>
+      <div className='pt-[120px] lg:pt-32 pb-0 px-slotmargin max-w-[var(--slot-content-max-width)] mx-auto w-full'>
         <div className='relative z-0 mb-16 flex w-full items-start justify-start lg:h-auto'>
-          <div className='relative z-0 w-full max-w-[550px]'>
+          <div className='relative z-0 w-[200px] lg:w-full max-w-[475px]'>
             <PgsLogoMark className='w-full h-auto text-dark-1' />
           </div>
         </div>
