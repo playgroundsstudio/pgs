@@ -135,7 +135,7 @@ html {
   --surface-secondary: #1b1d27;
   --surface2: blue;
   --accent: #ff2bd6;
-  --disabled-page: black;
+  --disabled-page: black ;
 
   /* Text */
   --text-primary: rgba(255, 255, 255, 0.9);

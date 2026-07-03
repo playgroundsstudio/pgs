@@ -201,7 +201,7 @@ export default function NavBar({
   return (
     <div
       ref={containerRef}
-      className="group/navbar relative  bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-1.5 py-1.5 pr-[7px] pl-[7px]"
+      className="group/navbar relative max-w-[calc(100vw-32px)] bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-1.5 py-1.5 pr-[7px] pl-[7px]"
       style={{
         borderRadius: '60px',
         height: CLOSED_NAV_HEIGHT,
@@ -221,22 +221,38 @@ export default function NavBar({
         style={{left: highlight.left - 3, width: highlight.width + 6}}
       />
       <div ref={tabsRef} className="relative z-10 flex items-center gap-2 origin-center">
-        {Array.from({length: slots}).map((_, i) => (
-          <Tab
-            key={i}
-            index={i}
-            active={active}
-            setActive={setActive}
-            project={i > 0 ? projects.find((p) => p._id === openProjectIds[i - 1]) : undefined}
-            slotId={i > 0 ? openProjectIds[i - 1] : undefined}
-            settings={settings}
-            onClose={closeProjectTab}
-            enquiryTabImage={enquiryTabImage}
-            newsletterTabImage={newsletterTabImage}
-          />
-        ))}
+        <Tab
+          key={0}
+          index={0}
+          active={active}
+          setActive={setActive}
+          settings={settings}
+          onClose={closeProjectTab}
+          enquiryTabImage={enquiryTabImage}
+          newsletterTabImage={newsletterTabImage}
+        />
         {openProjectIds.length > 0 && (
           <>
+            <div className="w-px h-6 bg-divider mx-1 self-center shrink-0" />
+            <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
+              {Array.from({length: slots - 1}).map((_, j) => {
+                const i = j + 1
+                return (
+                  <Tab
+                    key={i}
+                    index={i}
+                    active={active}
+                    setActive={setActive}
+                    project={projects.find((p) => p._id === openProjectIds[i - 1])}
+                    slotId={openProjectIds[i - 1]}
+                    settings={settings}
+                    onClose={closeProjectTab}
+                    enquiryTabImage={enquiryTabImage}
+                    newsletterTabImage={newsletterTabImage}
+                  />
+                )
+              })}
+            </div>
             <div className="w-px h-6 bg-divider mx-1 self-center shrink-0" />
             <div
               data-indextab={slots}
@@ -244,7 +260,7 @@ export default function NavBar({
                 setActive(slots)
                 setAddMenuOpen(true)
               }}
-              className="relative rounded-full flex flex-col justify-center items-center cursor-pointer h-[35px] w-[35px] bg-surface shadow-[0_0_20px_rgba(0,0,0,0.08)]"
+              className="relative rounded-full flex flex-col justify-center items-center cursor-pointer h-[35px] w-[35px] shrink-0 bg-surface shadow-[0_0_20px_rgba(0,0,0,0.08)]"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-1">
                 <line x1="12" y1="5" x2="12" y2="19" />
@@ -393,7 +409,6 @@ function Tab({
 
   return (
     <>
-      {index === 1 && <div className="w-px h-6 bg-divider mx-1 self-center shrink-0" />}
       <div
         ref={ref}
         data-indextab={index}
@@ -401,7 +416,7 @@ function Tab({
           setActive(index)
         }}
         className={cn(
-          `group relative rounded-full flex flex-col justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-visible transition-all duration-200 cursor-pointer h-[35px] w-[35px]`,
+          `group relative rounded-full flex flex-col justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-visible transition-all duration-200 cursor-pointer h-[35px] w-[35px] shrink-0`,
           active === index && '',
         )}
       >

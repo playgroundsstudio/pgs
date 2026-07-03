@@ -91,8 +91,15 @@ export default function Home({
 
   // Set body bg
   useEffect(() => {
-    document.body.style.backgroundColor = 'var(--disabled-page)'
+    const update = () => {
+      const mobile = window.matchMedia('(max-width: 1023px)').matches
+      document.body.style.backgroundColor = mobile ? 'var(--surface)' : 'var(--disabled-page)'
+    }
+    update()
+    const mql = window.matchMedia('(max-width: 1023px)')
+    mql.addEventListener('change', update)
     return () => {
+      mql.removeEventListener('change', update)
       document.body.style.backgroundColor = ''
     }
   }, [])

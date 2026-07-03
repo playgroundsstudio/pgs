@@ -108,6 +108,7 @@ export default function Slot({
             : 'w-full min-w-[100vw] lg:min-w-[50vw]'
           : 'w-full min-w-[calc(100vw+var(--slot-padding)*2)] lg:min-w-[90vw]',
         blurred && 'blur-[var(--overlay-blur)]',
+        length === 1 && 'px-slotmargin lg:px-0',
         length > 1 && (isRow ? `p-0 lg:py-slotpadding ${index === 0 ? 'lg:pl-slotpadding' : 'lg:pl-[calc(var(--slot-padding)/2)]'} lg:pr-[calc(var(--slot-padding)/2)]` : index === 0 ? 'px-slotpadding lg:px-0 lg:py-[10px] lg:pl-slotpadding lg:pr-[calc(var(--slot-padding)/2)]' : 'px-slotpadding lg:py-[10px] lg:px-[calc(var(--slot-padding)/2)]'),
       )}
     >
