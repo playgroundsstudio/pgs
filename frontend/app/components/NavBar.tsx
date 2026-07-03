@@ -57,6 +57,7 @@ export default function NavBar({
   const CLOSED_NAV_HEIGHT = 47
   const containerRef = useRef<HTMLDivElement>(null)
   const tabsRef = useRef<HTMLDivElement>(null)
+  const mobileTabsRef = useRef<HTMLDivElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
   const logoRef = useRef<HTMLDivElement>(null)
   const menuItemsRef = useRef<HTMLDivElement>(null)
@@ -96,6 +97,42 @@ export default function NavBar({
     if (tabsRef.current) observer.observe(tabsRef.current)
     return () => observer.disconnect()
   }, [updateHighlight, shareMenuOpen])
+
+  // Touch-drag scrolling for mobile tabs pill
+  useEffect(() => {
+    const el = mobileTabsRef.current
+    if (!el) return
+    let isDown = false
+    let startX = 0
+    let scrollLeft = 0
+
+    const onPointerDown = (e: PointerEvent) => {
+      isDown = true
+      startX = e.clientX
+      scrollLeft = el.scrollLeft
+      el.setPointerCapture(e.pointerId)
+    }
+    const onPointerMove = (e: PointerEvent) => {
+      if (!isDown) return
+      e.preventDefault()
+      el.scrollLeft = scrollLeft - (e.clientX - startX)
+    }
+    const onPointerUp = (e: PointerEvent) => {
+      isDown = false
+      el.releasePointerCapture(e.pointerId)
+    }
+
+    el.addEventListener('pointerdown', onPointerDown)
+    el.addEventListener('pointermove', onPointerMove)
+    el.addEventListener('pointerup', onPointerUp)
+    el.addEventListener('pointercancel', onPointerUp)
+    return () => {
+      el.removeEventListener('pointerdown', onPointerDown)
+      el.removeEventListener('pointermove', onPointerMove)
+      el.removeEventListener('pointerup', onPointerUp)
+      el.removeEventListener('pointercancel', onPointerUp)
+    }
+  }, [])
 
   const prevShareMenuOpen = useRef(false)
   const savedTabsSize = useRef({width: 0, height: 0})
@@ -198,43 +235,102 @@ export default function NavBar({
     }
   }, [shareMenuOpen])
 
+  const pillCls = "relative bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex items-center gap-1.5 py-1.5 px-[7px]"
+
   return (
-    <div
-      ref={containerRef}
-      className="group/navbar relative max-w-[calc(100vw-32px)] bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] flex overflow-hidden items-center gap-1.5 py-1.5 pr-[7px] pl-[7px]"
-      style={{
-        borderRadius: '60px',
-        height: CLOSED_NAV_HEIGHT,
-      }}
-    >
-      <div
-        className={cn(
-          'pointer-events-none absolute inset-0  z-0 bg-surface2 backdrop-blur-[40px] transition-opacity duration-300 ease-out',
-          shareMenuOpen ? 'opacity-100' : 'opacity-0',
-        )}
-      />
-      <div
-        className={cn(
-          'absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-selected-tab-highlight transition-all duration-300 ease-out aspect-square',
-          shareMenuOpen && 'opacity-0 scale-0',
-        )}
-        style={{left: highlight.left - 3, width: highlight.width + 6}}
-      />
-      <div ref={tabsRef} className="relative z-10 flex items-center gap-2 origin-center">
-        <Tab
-          key={0}
-          index={0}
-          active={active}
-          setActive={setActive}
-          settings={settings}
-          onClose={closeProjectTab}
-          enquiryTabImage={enquiryTabImage}
-          newsletterTabImage={newsletterTabImage}
-        />
+    <>
+      {/* Mobile: three separate pills */}
+      <div className="lg:hidden flex items-center gap-2 max-w-[calc(100vw-32px)]">
+        {/* Home pill */}
+        <div className={cn(pillCls, 'shrink-0 w-[47px] h-[47px] justify-center')} style={{borderRadius: '60px'}}>
+          <Tab
+            key={0}
+            index={0}
+            active={active}
+            setActive={setActive}
+            settings={settings}
+            onClose={closeProjectTab}
+            enquiryTabImage={enquiryTabImage}
+            newsletterTabImage={newsletterTabImage}
+          />
+        </div>
         {openProjectIds.length > 0 && (
           <>
-            <div className="w-px h-6 bg-divider mx-1 self-center shrink-0" />
-            <div className="flex items-center gap-2 overflow-x-auto scrollbar-none">
+            {/* Page tabs pill — scrollable, with add button */}
+            <div ref={mobileTabsRef} className={cn(pillCls, 'min-w-0 overflow-x-auto scrollbar-none touch-pan-x !p-0')} style={{borderRadius: '60px', height: CLOSED_NAV_HEIGHT}}>
+              <div className="flex items-center gap-2 px-[6px]">
+                {Array.from({length: slots - 1}).map((_, j) => {
+                  const i = j + 1
+                  return (
+                    <Tab
+                      key={i}
+                      index={i}
+                      active={active}
+                      setActive={setActive}
+                      project={projects.find((p) => p._id === openProjectIds[i - 1])}
+                      slotId={openProjectIds[i - 1]}
+                      settings={settings}
+                      onClose={closeProjectTab}
+                      enquiryTabImage={enquiryTabImage}
+                      newsletterTabImage={newsletterTabImage}
+                    />
+                  )
+                })}
+                <div
+                  data-indextab={slots}
+                  onClick={() => {
+                    setActive(slots)
+                    setAddMenuOpen(true)
+                  }}
+                  className="relative rounded-full flex flex-col justify-center items-center cursor-pointer h-[35px] w-[35px] shrink-0 bg-surface shadow-[0_0_20px_rgba(0,0,0,0.08)]"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-1">
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Desktop: single unified pill */}
+      <div
+        ref={containerRef}
+        className="group/navbar hidden lg:flex relative bg-pill backdrop-blur-[80px] shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-hidden items-center gap-1.5 py-1.5 pr-[7px] pl-[7px]"
+        style={{
+          borderRadius: '60px',
+          height: CLOSED_NAV_HEIGHT,
+        }}
+      >
+        <div
+          className={cn(
+            'pointer-events-none absolute inset-0  z-0 bg-surface2 backdrop-blur-[40px] transition-opacity duration-300 ease-out',
+            shareMenuOpen ? 'opacity-100' : 'opacity-0',
+          )}
+        />
+        <div
+          className={cn(
+            'absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-selected-tab-highlight transition-all duration-300 ease-out aspect-square',
+            shareMenuOpen && 'opacity-0 scale-0',
+          )}
+          style={{left: highlight.left - 3, width: highlight.width + 6}}
+        />
+        <div ref={tabsRef} className="relative z-10 flex items-center gap-2 origin-center">
+          <Tab
+            key={0}
+            index={0}
+            active={active}
+            setActive={setActive}
+            settings={settings}
+            onClose={closeProjectTab}
+            enquiryTabImage={enquiryTabImage}
+            newsletterTabImage={newsletterTabImage}
+          />
+          {openProjectIds.length > 0 && (
+            <>
+              <div className="w-px h-6 bg-divider mx-1 self-center shrink-0" />
               {Array.from({length: slots - 1}).map((_, j) => {
                 const i = j + 1
                 return (
@@ -252,90 +348,69 @@ export default function NavBar({
                   />
                 )
               })}
-            </div>
-            <div className="w-px h-6 bg-divider mx-1 self-center shrink-0" />
-            <div
-              data-indextab={slots}
-              onClick={() => {
-                setActive(slots)
-                setAddMenuOpen(true)
-              }}
-              className="relative rounded-full flex flex-col justify-center items-center cursor-pointer h-[35px] w-[35px] shrink-0 bg-surface shadow-[0_0_20px_rgba(0,0,0,0.08)]"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-1">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-            </div>
-          </>
-        )}
-        <div className="w-px h-6 bg-divider mx-1 self-center shrink-0 hidden" />
-        <button
-          type="button"
-          onClick={onCloseAll}
-          aria-label="Close all open pages"
-          className="cursor-pointer h-[35px] w-[35px] bg-button-solid text-button-solid-text rounded-full flex justify-center items-center shrink-0 hidden"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="h-4 w-4 text-button-solid-text"
-          >
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
-      </div>
-      <div
-        ref={menuRef}
-        className="absolute inset-0 z-10 flex flex-col w-full justify-start h-full pb-4"
-        style={{pointerEvents: shareMenuOpen ? 'auto' : 'none'}}
-      >
+              <div className="w-px h-6 bg-divider mx-1 self-center shrink-0" />
+              <div
+                data-indextab={slots}
+                onClick={() => {
+                  setActive(slots)
+                  setAddMenuOpen(true)
+                }}
+                className="relative rounded-full flex flex-col justify-center items-center cursor-pointer h-[35px] w-[35px] shrink-0 bg-surface shadow-[0_0_20px_rgba(0,0,0,0.08)]"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-dark-1">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </div>
+            </>
+          )}
+        </div>
         <div
-          ref={logoRef}
-          className="flex justify-center items-center flex-1 w-full"
-          style={{opacity: 0}}
+          ref={menuRef}
+          className="absolute inset-0 z-10 flex flex-col w-full justify-start h-full pb-4"
+          style={{pointerEvents: shareMenuOpen ? 'auto' : 'none'}}
         >
-          <PgsLogoMark className="w-[200px] lg:h-16 lg:w-auto text-white dark:text-black" />
-        </div>
-        <div ref={menuItemsRef} className="flex flex-col w-full">
-          <button
-            type="button"
-            onClick={onShareConfiguration}
-            className="cursor-pointer px-4 py-2 hover:bg-white/10 dark:hover:bg-black/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white dark:text-black flex items-center justify-between"
+          <div
+            ref={logoRef}
+            className="flex justify-center items-center flex-1 w-full"
             style={{opacity: 0}}
           >
-            <span>Share Configuration</span>
-            <span>&rarr;</span>
-          </button>
-          <div className="h-px w-full bg-white/20 dark:bg-black/20 shrink-0" style={{opacity: 0}} />
-          <button
-            type="button"
-            onClick={onShareHomePage}
-            className="cursor-pointer px-4 py-2 hover:bg-white/10 dark:hover:bg-black/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white dark:text-black flex items-center justify-between"
-            style={{opacity: 0}}
-          >
-            <span>Share Home Page</span>
-            <span>&rarr;</span>
-          </button>
-          <div className="h-px w-full bg-white/20 dark:bg-black/20 shrink-0" style={{opacity: 0}} />
-          <button
-            type="button"
-            onClick={onEnquire}
-            className="cursor-pointer px-4 py-2 hover:bg-white/10 dark:hover:bg-black/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white dark:text-black flex items-center justify-between"
-            style={{opacity: 0}}
-          >
-            <span>Enquire About Selected Project</span>
-            <span>&rarr;</span>
-          </button>
+            <PgsLogoMark className="w-[200px] lg:h-16 lg:w-auto text-white dark:text-black" />
+          </div>
+          <div ref={menuItemsRef} className="flex flex-col w-full">
+            <button
+              type="button"
+              onClick={onShareConfiguration}
+              className="cursor-pointer px-4 py-2 hover:bg-white/10 dark:hover:bg-black/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white dark:text-black flex items-center justify-between"
+              style={{opacity: 0}}
+            >
+              <span>Share Configuration</span>
+              <span>&rarr;</span>
+            </button>
+            <div className="h-px w-full bg-white/20 dark:bg-black/20 shrink-0" style={{opacity: 0}} />
+            <button
+              type="button"
+              onClick={onShareHomePage}
+              className="cursor-pointer px-4 py-2 hover:bg-white/10 dark:hover:bg-black/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white dark:text-black flex items-center justify-between"
+              style={{opacity: 0}}
+            >
+              <span>Share Home Page</span>
+              <span>&rarr;</span>
+            </button>
+            <div className="h-px w-full bg-white/20 dark:bg-black/20 shrink-0" style={{opacity: 0}} />
+            <button
+              type="button"
+              onClick={onEnquire}
+              className="cursor-pointer px-4 py-2 hover:bg-white/10 dark:hover:bg-black/10 transition-[background-color] duration-200 whitespace-nowrap text-left text-white dark:text-black flex items-center justify-between"
+              style={{opacity: 0}}
+            >
+              <span>Enquire About Selected Project</span>
+              <span>&rarr;</span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
@@ -409,17 +484,21 @@ function Tab({
 
   return (
     <>
-      <div
-        ref={ref}
-        data-indextab={index}
-        onClick={() => {
-          setActive(index)
-        }}
-        className={cn(
-          `group relative rounded-full flex flex-col justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-visible transition-all duration-200 cursor-pointer h-[35px] w-[35px] shrink-0`,
-          active === index && '',
+      <div className="relative shrink-0">
+        {active === index && (
+          <div className="lg:hidden absolute inset-[-3px] rounded-full bg-selected-tab-highlight transition-all duration-300 ease-out" />
         )}
-      >
+        <div
+          ref={ref}
+          data-indextab={index}
+          onClick={() => {
+            setActive(index)
+          }}
+          className={cn(
+            `group relative rounded-full flex flex-col justify-center items-center shadow-[0_0_20px_rgba(0,0,0,0.08)] overflow-visible transition-all duration-200 cursor-pointer h-[35px] w-[35px] shrink-0`,
+            active === index && '',
+          )}
+        >
         {index > 0 && active === index && (
           <button
             type="button"
@@ -509,6 +588,7 @@ function Tab({
         ) : (
           <p>{index}</p>
         )}
+      </div>
       </div>
     </>
   )
