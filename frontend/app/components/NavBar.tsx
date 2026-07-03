@@ -348,7 +348,7 @@ export default function NavBar({
             className="flex justify-center items-center flex-1 w-full"
             style={{opacity: 0}}
           >
-            <PgsLogoMark className="w-[200px] lg:h-16 lg:w-auto text-white dark:text-black" />
+            <PgsLogoMark className="w-[50vw] lg:h-16 lg:w-auto text-white dark:text-black" />
           </div>
           <div ref={menuItemsRef} className="flex flex-col w-full">
             <button
