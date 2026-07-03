@@ -204,7 +204,7 @@ export default function NavBar({
   return (
     <>
       {/* Mobile: three separate pills */}
-      <div className="lg:hidden flex items-center gap-2 max-w-[calc(100vw-32px)]">
+      <div className="lg:hidden flex items-center justify-center gap-2 w-full max-w-[275px]">
         {/* Home pill */}
         <div className={cn(pillCls, 'shrink-0 w-[47px] h-[47px] justify-center')} style={{borderRadius: '60px'}}>
           <Tab
@@ -222,12 +222,15 @@ export default function NavBar({
           <>
             {/* Page tabs pill — scrollable, with add button */}
             <div
-              data-mobile-tabs-scroll
-              onTouchMoveCapture={(e) => e.stopPropagation()}
-              className={cn(pillCls, 'min-w-0 overflow-x-auto scrollbar-none touch-pan-x !p-0')}
+              className={cn(pillCls, 'min-w-0 overflow-hidden !p-0')}
               style={{borderRadius: '60px', height: CLOSED_NAV_HEIGHT}}
             >
-              <div className="flex items-center gap-2 px-[6px] w-max">
+              <div
+                data-mobile-tabs-scroll
+                onTouchMoveCapture={(e) => e.stopPropagation()}
+                className="overflow-x-auto scrollbar-none touch-pan-x h-full flex items-center"
+              >
+                <div className="flex items-center gap-2 px-[6px] w-max">
                 {Array.from({length: slots - 1}).map((_, j) => {
                   const i = j + 1
                   return (
@@ -258,6 +261,7 @@ export default function NavBar({
                     <line x1="5" y1="12" x2="19" y2="12" />
                   </svg>
                 </div>
+              </div>
               </div>
             </div>
           </>
