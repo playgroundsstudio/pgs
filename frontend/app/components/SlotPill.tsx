@@ -14,7 +14,7 @@ export default function SlotPill({mode, isVisible, onToggleMode, onClose, label}
   return (
     <div
       className={cn(
-        'absolute top-2 right-2 z-40 flex items-center gap-2 transition-all duration-300 ease-out',
+        'absolute top-4 right-4 z-40 flex items-center gap-2 transition-all duration-300 ease-out',
         isVisible ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0 pointer-events-none'
       )}
     >
