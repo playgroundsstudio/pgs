@@ -8,8 +8,9 @@ import type {AllProjectsQueryResult} from '@/sanity.types'
 import HomeHeader from '@/app/components/HomeHeader'
 import PgsLogoMark from '@/app/components/PgsLogoMark'
 import ProjectList from '@/app/components/ProjectList'
+import MuxPlayer from '@mux/mux-player-react'
+import '@mux/mux-player/themes/minimal'
 import {useLenis} from '@/app/hooks/useLenis'
-import {gridClsCq, tagsAlignClassesCq} from '@/app/lib/projectGrid'
 import StatementAndListBlock from '@/app/components/StatementAndListBlock'
 import Footer from '@/app/components/Footer'
 
@@ -109,27 +110,44 @@ export default function HomeContent({
               />
             </div>
 
-            <div className={`@container flex flex-col ${gridClsCq}`}>
-              <div className={tagsAlignClassesCq()}>
-                <StatementAndListBlock
-                  title='Services'
-                  statement={servicesStatement}
-                  items={services.map(s => ({label: s}))}
-                />
-                <StatementAndListBlock
-                  title='Sectors'
-                  statement={industryStatement}
-                  items={industries.map(s => ({label: s}))}
-                />
-                <StatementAndListBlock
-                  title='Actions'
-                  statement={actionsStatement}
-                  items={[
-                    {label: 'Kick off a project', onClick: () => handleClick('__enquiry__')},
-                    {label: 'Join the newsletter', onClick: () => handleClick('__newsletter__')},
-                    ...(email ? [{label: 'Say Hi', onClick: () => window.open(`mailto:${email}?subject=Saying Hi`, '_blank')}] : []),
-                  ]}
-                />
+            <div className='flex flex-col lg:flex-row gap-gutter'>
+              {showreel?.asset?.playbackId && (
+                <div className='lg:w-1/2 lg:self-end lg:sticky lg:bottom-0 p-4 pb-sa lg:pb-4'>
+                  <div className='overflow-hidden rounded-lg w-[250px] mx-auto lg:mx-0'>
+                    <MuxPlayer
+                      theme='minimal'
+                      playbackId={showreel.asset.playbackId}
+                      streamType='on-demand'
+                      autoPlay='muted'
+                      loop
+                      muted
+                      style={{width: '100%', display: 'block', borderRadius: 0, '--controls': 'none', '--media-object-fit': 'cover', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none'} as any}
+                    />
+                  </div>
+                </div>
+              )}
+              <div className='@container lg:w-1/2'>
+                <div>
+                  <StatementAndListBlock
+                    title='Services'
+                    statement={servicesStatement}
+                    items={services.map(s => ({label: s}))}
+                  />
+                  <StatementAndListBlock
+                    title='Sectors'
+                    statement={industryStatement}
+                    items={industries.map(s => ({label: s}))}
+                  />
+                  <StatementAndListBlock
+                    title='Actions'
+                    statement={actionsStatement}
+                    items={[
+                      {label: 'Kick off a project', onClick: () => handleClick('__enquiry__')},
+                      {label: 'Join the newsletter', onClick: () => handleClick('__newsletter__')},
+                      ...(email ? [{label: 'Say Hi', onClick: () => window.open(`mailto:${email}?subject=Saying Hi`, '_blank')}] : []),
+                    ]}
+                  />
+                </div>
               </div>
             </div>
 

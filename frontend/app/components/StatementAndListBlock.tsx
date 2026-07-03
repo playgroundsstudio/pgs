@@ -3,11 +3,11 @@
 import {useRef, useState} from 'react'
 
 const gridConfig = {
-  totalCols: {default:12, md: 4, sm: 12},
+  totalCols: {default: 6, md: 4, sm: 12},
   columns: {
-    title: {default: 1, start: 7, md: 0, sm: 0, hidden: {md: false, sm: false}},
-    label: {default: 4, start: 9, md: 0, sm: 0, hidden: {md: false, sm: false}},
-    list:  {default: 4, start: 9, sm: 0, hidden: {md: false, sm: false}},
+    title: {default: 1, start: 1, md: 0, sm: 0, hidden: {md: false, sm: false}},
+    label: {default: 4, start: 3, md: 3, sm: 0, hidden: {md: false, sm: false}},
+    list:  {default: 4, start: 3, sm: 3, hidden: {md: false, sm: false}},
 
   },
 } as const
@@ -15,22 +15,22 @@ const gridConfig = {
 type ColKey = keyof typeof gridConfig.columns
 
 const cqColSpanMap: Record<number, string> = {
-  1: '@min-[700px]:col-span-1', 2: '@min-[700px]:col-span-2', 3: '@min-[700px]:col-span-3',
-  4: '@min-[700px]:col-span-4', 5: '@min-[700px]:col-span-5', 6: '@min-[700px]:col-span-6',
-  7: '@min-[700px]:col-span-7', 8: '@min-[700px]:col-span-8', 9: '@min-[700px]:col-span-9',
+  1: '@min-[350px]:col-span-1', 2: '@min-[350px]:col-span-2', 3: '@min-[350px]:col-span-3',
+  4: '@min-[350px]:col-span-4', 5: '@min-[350px]:col-span-5', 6: '@min-[350px]:col-span-6',
+  7: '@min-[350px]:col-span-7', 8: '@min-[350px]:col-span-8', 9: '@min-[350px]:col-span-9',
 }
 const cqColStartMap: Record<number, string> = {
-  1: '@min-[700px]:col-start-1', 2: '@min-[700px]:col-start-2', 3: '@min-[700px]:col-start-3',
-  4: '@min-[700px]:col-start-4', 5: '@min-[700px]:col-start-5', 6: '@min-[700px]:col-start-6',
-  7: '@min-[700px]:col-start-7', 8: '@min-[700px]:col-start-8', 9: '@min-[700px]:col-start-9',
+  1: '@min-[350px]:col-start-1', 2: '@min-[350px]:col-start-2', 3: '@min-[350px]:col-start-3',
+  4: '@min-[350px]:col-start-4', 5: '@min-[350px]:col-start-5', 6: '@min-[350px]:col-start-6',
+  7: '@min-[350px]:col-start-7', 8: '@min-[350px]:col-start-8', 9: '@min-[350px]:col-start-9',
 }
 const cqGridColsMap: Record<number, string> = {
-  6: '@min-[700px]:grid-cols-6', 7: '@min-[700px]:grid-cols-7', 8: '@min-[700px]:grid-cols-8',
-  9: '@min-[700px]:grid-cols-9', 10: '@min-[700px]:grid-cols-10', 11: '@min-[700px]:grid-cols-11',
-  12: '@min-[700px]:grid-cols-12',
+  6: '@min-[350px]:grid-cols-6', 7: '@min-[350px]:grid-cols-7', 8: '@min-[350px]:grid-cols-8',
+  9: '@min-[350px]:grid-cols-9', 10: '@min-[350px]:grid-cols-10', 11: '@min-[350px]:grid-cols-11',
+  12: '@min-[350px]:grid-cols-12',
 }
 
-const gridCls = `mb-sa flex flex-col @min-[700px]:grid ${cqGridColsMap[gridConfig.totalCols.default]} gap-gutter`
+const gridCls = `mb-sa flex flex-col @min-[350px]:grid ${cqGridColsMap[gridConfig.totalCols.default]} gap-gutter`
 const titleCls = `${cqColStartMap[gridConfig.columns.title.start]} ${cqColSpanMap[gridConfig.columns.title.default]}`
 const labelCls = `${cqColStartMap[gridConfig.columns.label.start]} ${cqColSpanMap[gridConfig.columns.label.default]}`
 const listCls = `${cqColStartMap[gridConfig.columns.list.start]} ${cqColSpanMap[gridConfig.columns.list.default]}`
