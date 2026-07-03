@@ -21,8 +21,10 @@ export function useSwipeable({
 
   // Touch swipe
   useDrag(
-    ({swipe: [swipeX]}) => {
+    ({swipe: [swipeX], event}) => {
       if (slotsRef.current <= 1) return
+      const target = event?.target as HTMLElement | null
+      if (target?.closest('[data-mobile-tabs-scroll]')) return
       if (swipeX === -1) {
         setActive((prev) => Math.min(slotsRef.current - 1, prev + 1))
       } else if (swipeX === 1) {
@@ -53,6 +55,8 @@ export function useSwipeable({
     }
 
     function onTouchMove(e: TouchEvent) {
+      const target = e.target as HTMLElement | null
+      if (target?.closest('[data-mobile-tabs-scroll]')) return
       const dx = Math.abs(e.touches[0].clientX - startX)
       const dy = Math.abs(e.touches[0].clientY - startY)
       if (dx > dy) {

@@ -57,7 +57,7 @@ export default function NavBar({
   const CLOSED_NAV_HEIGHT = 47
   const containerRef = useRef<HTMLDivElement>(null)
   const tabsRef = useRef<HTMLDivElement>(null)
-  const mobileTabsRef = useRef<HTMLDivElement>(null)
+
   const menuRef = useRef<HTMLDivElement>(null)
   const logoRef = useRef<HTMLDivElement>(null)
   const menuItemsRef = useRef<HTMLDivElement>(null)
@@ -97,42 +97,6 @@ export default function NavBar({
     if (tabsRef.current) observer.observe(tabsRef.current)
     return () => observer.disconnect()
   }, [updateHighlight, shareMenuOpen])
-
-  // Touch-drag scrolling for mobile tabs pill
-  useEffect(() => {
-    const el = mobileTabsRef.current
-    if (!el) return
-    let isDown = false
-    let startX = 0
-    let scrollLeft = 0
-
-    const onPointerDown = (e: PointerEvent) => {
-      isDown = true
-      startX = e.clientX
-      scrollLeft = el.scrollLeft
-      el.setPointerCapture(e.pointerId)
-    }
-    const onPointerMove = (e: PointerEvent) => {
-      if (!isDown) return
-      e.preventDefault()
-      el.scrollLeft = scrollLeft - (e.clientX - startX)
-    }
-    const onPointerUp = (e: PointerEvent) => {
-      isDown = false
-      el.releasePointerCapture(e.pointerId)
-    }
-
-    el.addEventListener('pointerdown', onPointerDown)
-    el.addEventListener('pointermove', onPointerMove)
-    el.addEventListener('pointerup', onPointerUp)
-    el.addEventListener('pointercancel', onPointerUp)
-    return () => {
-      el.removeEventListener('pointerdown', onPointerDown)
-      el.removeEventListener('pointermove', onPointerMove)
-      el.removeEventListener('pointerup', onPointerUp)
-      el.removeEventListener('pointercancel', onPointerUp)
-    }
-  }, [])
 
   const prevShareMenuOpen = useRef(false)
   const savedTabsSize = useRef({width: 0, height: 0})
@@ -257,8 +221,13 @@ export default function NavBar({
         {openProjectIds.length > 0 && (
           <>
             {/* Page tabs pill — scrollable, with add button */}
-            <div ref={mobileTabsRef} className={cn(pillCls, 'min-w-0 overflow-x-auto scrollbar-none touch-pan-x !p-0')} style={{borderRadius: '60px', height: CLOSED_NAV_HEIGHT}}>
-              <div className="flex items-center gap-2 px-[6px]">
+            <div
+              data-mobile-tabs-scroll
+              onTouchMoveCapture={(e) => e.stopPropagation()}
+              className={cn(pillCls, 'min-w-0 overflow-x-auto scrollbar-none touch-pan-x !p-0')}
+              style={{borderRadius: '60px', height: CLOSED_NAV_HEIGHT}}
+            >
+              <div className="flex items-center gap-2 px-[6px] w-max">
                 {Array.from({length: slots - 1}).map((_, j) => {
                   const i = j + 1
                   return (
