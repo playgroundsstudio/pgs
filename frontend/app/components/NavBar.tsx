@@ -204,7 +204,7 @@ export default function NavBar({
   return (
     <>
       {/* Mobile: three separate pills */}
-      <div className="lg:hidden flex items-center justify-center gap-2 w-full max-w-[275px]">
+      <div className="lg:hidden flex items-center justify-center gap-2 w-full max-w-[300px]">
         {/* Home pill */}
         <div className={cn(pillCls, 'shrink-0 w-[47px] h-[47px] justify-center')} style={{borderRadius: '60px'}}>
           <Tab
