@@ -113,7 +113,7 @@ export default function HomeContent({
     const inlineRect = showreelRef.current.getBoundingClientRect()
     const vw = window.innerWidth
     const vh = window.innerHeight
-    const targetWidth = Math.min(vw * 0.9, 600)
+    const targetWidth = vw >= 1024 ? Math.min(vw * 0.7, 1200) : vw * 0.95
     const targetHeight = targetWidth * (inlineRect.height / inlineRect.width)
 
     gsap.set(expandedVideoRef.current, {
