@@ -1,5 +1,6 @@
 'use client'
-import {useRef} from 'react'
+import {useRef, useState, useCallback, useEffect} from 'react'
+import {createPortal} from 'react-dom'
 import type {Dispatch, SetStateAction} from 'react'
 import {cn} from '@/app/lib/cn'
 import {useSlotActions} from '@/app/hooks/useSlotActions'
@@ -11,6 +12,7 @@ import ProjectList from '@/app/components/ProjectList'
 import MuxPlayer from '@mux/mux-player-react'
 import '@mux/mux-player/themes/minimal'
 import {useLenis} from '@/app/hooks/useLenis'
+import gsap from 'gsap'
 import StatementAndListBlock from '@/app/components/StatementAndListBlock'
 import Footer from '@/app/components/Footer'
 
@@ -75,7 +77,73 @@ export default function HomeContent({
   const scrollRef = useRef<HTMLDivElement>(null)
   useLenis(scrollRef, isActive)
 
+  const [showreelExpanded, setShowreelExpanded] = useState(false)
+  const showreelRef = useRef<HTMLDivElement>(null)
+  const overlayRef = useRef<HTMLDivElement>(null)
+  const expandedVideoRef = useRef<HTMLDivElement>(null)
 
+  const expandShowreel = useCallback(() => {
+    if (!showreelRef.current) return
+    setShowreelExpanded(true)
+  }, [])
+
+  const collapseShowreel = useCallback(() => {
+    if (!showreelRef.current || !overlayRef.current || !expandedVideoRef.current) return
+    const inlineRect = showreelRef.current.getBoundingClientRect()
+    const tl = gsap.timeline({
+      onComplete: () => setShowreelExpanded(false),
+    })
+    tl.to(expandedVideoRef.current, {
+      x: inlineRect.left + inlineRect.width / 2 - window.innerWidth / 2,
+      y: inlineRect.top + inlineRect.height / 2 - window.innerHeight / 2,
+      width: inlineRect.width,
+      height: inlineRect.height,
+      duration: 0.4,
+      ease: 'power3.inOut',
+    }, 0)
+    tl.to(overlayRef.current, {
+      opacity: 0,
+      duration: 0.3,
+      ease: 'power2.inOut',
+    }, 0)
+  }, [])
+
+  useEffect(() => {
+    if (!showreelExpanded || !showreelRef.current || !overlayRef.current || !expandedVideoRef.current) return
+    const inlineRect = showreelRef.current.getBoundingClientRect()
+    const vw = window.innerWidth
+    const vh = window.innerHeight
+    const targetWidth = Math.min(vw * 0.9, 600)
+    const targetHeight = targetWidth * (inlineRect.height / inlineRect.width)
+
+    gsap.set(expandedVideoRef.current, {
+      position: 'fixed',
+      left: '50%',
+      top: '50%',
+      xPercent: -50,
+      yPercent: -50,
+      x: inlineRect.left + inlineRect.width / 2 - vw / 2,
+      y: inlineRect.top + inlineRect.height / 2 - vh / 2,
+      width: inlineRect.width,
+      height: inlineRect.height,
+    })
+    gsap.set(overlayRef.current, {opacity: 0})
+
+    const tl = gsap.timeline()
+    tl.to(overlayRef.current, {
+      opacity: 1,
+      duration: 0.3,
+      ease: 'power2.inOut',
+    }, 0)
+    tl.to(expandedVideoRef.current, {
+      x: 0,
+      y: 0,
+      width: targetWidth,
+      height: targetHeight,
+      duration: 0.4,
+      ease: 'power3.inOut',
+    }, 0)
+  }, [showreelExpanded])
 
   return (
     <div className='relative h-full w-full'>
@@ -113,12 +181,17 @@ export default function HomeContent({
             <div className='flex flex-col lg:flex-row gap-gutter'>
               {showreel?.asset?.playbackId && (
                 <div className='lg:w-1/2 lg:self-end lg:sticky lg:bottom-0 p-4 pb-sa lg:pb-4'>
-                  <div className='overflow-hidden rounded-lg w-[250px] mx-auto lg:mx-0'>
+                  <div
+                    ref={showreelRef}
+                    onClick={expandShowreel}
+                    className='overflow-hidden rounded-lg w-[250px] mx-auto lg:mx-0 cursor-pointer'
+                  >
                     <MuxPlayer
                       theme='minimal'
                       playbackId={showreel.asset.playbackId}
                       streamType='on-demand'
-                      autoPlay='muted'
+                      autoPlay={isActive ? 'muted' : false}
+                      paused={!isActive}
                       loop
                       muted
                       style={{width: '100%', display: 'block', borderRadius: 0, '--controls': 'none', '--media-object-fit': 'cover', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none'} as any}
@@ -158,6 +231,29 @@ export default function HomeContent({
 
       </div>
     </div>
+    {showreelExpanded && showreel?.asset?.playbackId && createPortal(
+      <div className='fixed inset-0 z-[9999]' onClick={collapseShowreel}>
+        <div ref={overlayRef} className='absolute inset-0 bg-black/70' />
+        <div
+          ref={expandedVideoRef}
+          className='overflow-hidden rounded-lg'
+          onClick={(e) => {
+            e.stopPropagation()
+            collapseShowreel()
+          }}
+        >
+          <MuxPlayer
+            theme='minimal'
+            playbackId={showreel.asset.playbackId}
+            streamType='on-demand'
+            autoPlay='muted'
+            loop
+            style={{width: '100%', height: '100%', display: 'block', borderRadius: 0, '--media-object-fit': 'cover', '--media-time-display-display': 'none', '--media-volume-range-display': 'none', '--media-mute-button-display': 'none'} as any}
+          />
+        </div>
+      </div>,
+      document.body,
+    )}
     </div>
   )
 }

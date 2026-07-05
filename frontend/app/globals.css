@@ -37,6 +37,14 @@ html {
     line-height: 1.4rem;
     transition: background-color 400ms ease;
   }
+
+  @media (min-width: 1500px) {
+    html,
+    body {
+      font-size: 1.3rem;
+      line-height: 1.6rem;
+    }
+  }
   /*
   @media (min-width: 768px) {
     html,
