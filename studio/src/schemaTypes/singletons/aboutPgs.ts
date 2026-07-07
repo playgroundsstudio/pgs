@@ -15,8 +15,7 @@ export const aboutPgs = defineType({
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'text',
-      rows: 4,
+      type: 'blockContentTextOnly',
     }),
     defineField({
       name: 'intro',
@@ -118,6 +117,39 @@ export const aboutPgs = defineType({
           },
         },
       ],
+    }),
+    defineField({
+      name: 'clients',
+      title: 'Clients',
+      type: 'array',
+      description: 'List of clients for the "We\'ve worked with" section',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'name',
+              title: 'Name',
+              type: 'string',
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'url',
+              title: 'URL',
+              type: 'url',
+            }),
+          ],
+          preview: {
+            select: {title: 'name', subtitle: 'url'},
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'internshipEmail',
+      title: 'Internship Email',
+      type: 'string',
+      description: 'Email address for internship enquiries',
     }),
     defineField({
       name: 'directors',
