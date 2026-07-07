@@ -163,7 +163,7 @@ export default function HomeContent({
 
       <div className='pt-[120px] lg:pt-32 pb-0 px-slotmargin max-w-[var(--slot-content-max-width)] mx-auto w-full'>
         <div className='relative z-0 mb-16 flex w-full items-start justify-start lg:h-auto'>
-          <div className='relative z-0 w-[30vw] lg:w-[25vw]'>
+          <div className='relative z-0 w-[35vw] lg:w-[25vw]'>
             <PgsLogoMark className='w-full h-auto text-dark-1' />
           </div>
         </div>
@@ -187,6 +187,7 @@ export default function HomeContent({
                     className='overflow-hidden rounded-lg w-[250px] mx-auto lg:mx-0 cursor-pointer'
                   >
                     <MuxPlayer
+                      preferPlayback='native'
                       theme='minimal'
                       playbackId={showreel.asset.playbackId}
                       streamType='on-demand'
@@ -243,6 +244,7 @@ export default function HomeContent({
           }}
         >
           <MuxPlayer
+            preferPlayback='native'
             theme='minimal'
             playbackId={showreel.asset.playbackId}
             streamType='on-demand'

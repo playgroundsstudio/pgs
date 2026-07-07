@@ -36,7 +36,6 @@ export default function NewsletterContent({
 
   const handleSubmit = () => {
     if (isValidEmail(email)) {
-      console.log('Newsletter subscription for:', email)
       setSubmitted(true)
       setEmail('')
     }

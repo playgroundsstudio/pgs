@@ -45,7 +45,6 @@ export default function Slot({
   const isVisable = true
   const isRounded = length > 1
 
-  console.log('---', slotActive, isRow, isVisable)
 
   const prevMode = useRef(mode)
   const prevActive = useRef(active)
@@ -72,14 +71,12 @@ export default function Slot({
 
   const handleClick = () => {
     if (active != index) {
-      console.log('setting from slot')
       const nextIndex = Number(ref.current?.dataset.index)
       if (Number.isNaN(nextIndex)) {
         return
       }
       setActive(nextIndex)
       setHoveredSlotIndex(index)
-      console.log(mode)
     }
   }
 

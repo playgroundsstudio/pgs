@@ -1,6 +1,5 @@
 'use client'
 import {useRef} from 'react'
-import Link from 'next/link'
 import type {Dispatch, SetStateAction} from 'react'
 import {cn} from '@/app/lib/cn'
 import {useSlotActions} from '@/app/hooks/useSlotActions'
@@ -106,9 +105,7 @@ export default function ProjectContent({
                       {tagItems.length ? (
                         tagItems.map((tag, tagIndex) => (
                           <span key={tag.slug}>
-                            <Link href={`/tags/${tag.slug}`} className='hover:text-dark-2'>
-                              {tag.title}
-                            </Link>
+                            {tag.title}
                             {tagIndex < tagItems.length - 1 ? ', ' : ''}
                           </span>
                         ))

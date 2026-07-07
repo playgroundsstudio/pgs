@@ -188,8 +188,10 @@ export const aboutPgsQuery = defineQuery(`
     services[]{title},
     industries[]{title},
     socialProfiles[]{title, url},
+    clients[]{name, url},
     directors[]{name, jobTitle, email, "svgUrl": svg.asset->url},
     email,
-    phone
+    phone,
+    internshipEmail
   }
 `)

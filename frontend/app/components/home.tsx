@@ -24,10 +24,13 @@ export default function Home({
   industries,
   socialProfiles,
   directors,
+  clients,
   email,
   phone,
+  internshipEmail,
   siteTitle,
   siteDescription,
+  siteDescriptionText,
   siteIntro,
   servicesStatement,
   industryStatement,
@@ -42,10 +45,13 @@ export default function Home({
   industries: string[]
   socialProfiles: Array<{title: string; url: string}>
   directors: Array<{name: string; jobTitle: string; email: string; svgUrl: string}>
+  clients: Array<{name: string; url: string}>
   email: string
   phone: string
+  internshipEmail: string
   siteTitle: string
-  siteDescription: string
+  siteDescription: any
+  siteDescriptionText: string
   siteIntro: string
   servicesStatement: string
   industryStatement: string
@@ -105,7 +111,7 @@ export default function Home({
   }, [])
 
   const hasPadding = slots > 1 && effectiveMode == 'row'
-  console.log(hasPadding)
+
 
   // Use custom hooks
   useKeyboardControls({slots, active, setActive, mode, setMode, openProjectIds, setOpenProjectIds})
@@ -242,7 +248,7 @@ export default function Home({
                 email={email}
                 phone={phone}
                 siteTitle={siteTitle}
-                siteDescription={siteDescription}
+                siteDescription={siteDescriptionText}
                 siteIntro={siteIntro}
                 servicesStatement={servicesStatement}
                 industryStatement={industryStatement}
@@ -261,6 +267,9 @@ export default function Home({
                 siteTitle={siteTitle}
                 description={siteDescription}
                 directors={directors}
+                clients={clients}
+                email={email}
+                internshipEmail={internshipEmail}
                 showreel={showreel}
                 index={i}
                 isActive={active === i}

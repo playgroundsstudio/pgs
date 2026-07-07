@@ -74,6 +74,7 @@ export default function MediaRenderer({media, isActive = true}: MediaRendererPro
       >
         <MuxPlayer
           ref={playerRef}
+          preferPlayback='native'
           theme='minimal'
           playbackId={playbackId}
           streamType='on-demand'

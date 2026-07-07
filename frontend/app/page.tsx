@@ -22,11 +22,13 @@ export default async function Page() {
         industries?: Array<{title?: string | null}> | null
         socialProfiles?: Array<{title?: string | null; url?: string | null}> | null
         directors?: Array<{name?: string | null; jobTitle?: string | null; email?: string | null; svgUrl?: string | null}> | null
+        clients?: Array<{name?: string | null; url?: string | null}> | null
         email?: string | null
         phone?: string | null
         title?: string | null
-        description?: string | null
+        description?: any
         intro?: string | null
+        internshipEmail?: string | null
       }
     | null
 
@@ -46,11 +48,22 @@ export default async function Page() {
       ?.filter((d): d is {name: string; jobTitle: string; email: string | null; svgUrl: string | null} =>
         typeof d.name === 'string' && typeof d.jobTitle === 'string')
       .map((d) => ({name: d.name, jobTitle: d.jobTitle, email: d.email ?? '', svgUrl: d.svgUrl ?? ''})) ?? []
+  const clients =
+    about?.clients
+      ?.filter((c): c is {name: string; url: string | null} => typeof c.name === 'string')
+      .map((c) => ({name: c.name, url: c.url ?? ''})) ?? []
   const email = about?.email ?? ''
   const phone = about?.phone ?? ''
   const siteTitle = about?.title ?? ''
-  const siteDescription = about?.description ?? ''
+  const siteDescription = about?.description ?? null
+  const siteDescriptionText = Array.isArray(siteDescription)
+    ? siteDescription
+        .filter((b: any) => b._type === 'block')
+        .map((b: any) => b.children?.map((c: any) => c.text).join('') ?? '')
+        .join(' ')
+    : (siteDescription ?? '')
   const siteIntro = about?.intro ?? ''
+  const internshipEmail = about?.internshipEmail ?? ''
   const homepageProjects = Array.isArray((homepage as {projectList?: AllProjectsQueryResult} | null)?.projectList)
     ? ((homepage as {projectList?: AllProjectsQueryResult}).projectList ?? [])
     : []
@@ -66,7 +79,7 @@ export default async function Page() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: siteTitle,
-    description: siteDescription,
+    description: siteDescriptionText,
     email: email || undefined,
     telephone: phone || undefined,
     sameAs: socialProfiles.map((p) => p.url),
@@ -86,10 +99,13 @@ export default async function Page() {
         industries={industries}
         socialProfiles={socialProfiles}
         directors={directors}
+        clients={clients}
         email={email}
         phone={phone}
+        internshipEmail={internshipEmail}
         siteTitle={siteTitle}
         siteDescription={siteDescription}
+        siteDescriptionText={siteDescriptionText}
         siteIntro={siteIntro}
         servicesStatement={servicesStatement}
         industryStatement={industryStatement}

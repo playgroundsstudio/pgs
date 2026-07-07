@@ -72,7 +72,7 @@ export default async function RootLayout({children}: {children: React.ReactNode}
   return (
     <html lang="en" className={`bg-surface text-dark-1 font-medium`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{__html: `(function(){try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}})()`}} />
+        <script dangerouslySetInnerHTML={{__html: `(function(){try{if(localStorage.getItem('theme')==='dark')document.documentElement.classList.add('dark')}catch(e){}var o=console.error;console.error=function(){if(arguments.length&&typeof arguments[0]==='string'&&arguments[0].indexOf('failed to upgrade')!==-1)return;o.apply(console,arguments)}})();console.log("ooooooooo.     .oooooo.     .oooooo..o \\n\`888   \`Y88.  d8P'  \`Y8b   d8P'    \`Y8 \\n 888   .d88' 888           Y88bo.      \\n 888ooo88P'  888            \`\\"Y8888o.  \\n 888         888     ooooo      \`\\"Y88b \\n 888         \`88.    .88'  oo     .d8P \\n o888o         \`Y8bood8P'   8\\"\\"88888P'  ")`}} />
       </head>
       <body>
         <section className="min-h-screen ">
